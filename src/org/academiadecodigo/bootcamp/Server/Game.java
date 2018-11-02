@@ -41,13 +41,16 @@ public class Game {
             addPoint(client1);
             return;
         }
-
-        System.out.println("It's a tie!");
+        String tieString = "It's a tie!"; //ADD TO A MESSAGES CLASS
+        client1.send(tieString);
+        client2.send(tieString);
     }
 
     public void start() {
         while (currentRound <= maxRounds) {
-            System.out.println("ROUND " + currentRound + ": < Waiting for each player >");
+            String roundString = "ROUND " + currentRound + ": < Waiting for each player >"; //ADD TO A MESSAGES CLASS
+            client1.send(roundString);
+            client2.send(roundString);
 
             Hand client1Hand;
             Hand client2Hand;
@@ -65,34 +68,44 @@ public class Game {
     }
 
     private void addPoint(Client client){
+        String winString = "You win this round!"; //ADD TO A MESSAGES CLASS
+        String looseString = "You lost this round!"; //ADD TO A MESSAGES CLASS
+
         if (client == client1){
             client1points++;
+            client1.send(winString);
+            client2.send(looseString);
         }else{
             client2points++;
+            client1.send(looseString);
+            client2.send(winString);
         }
-
-        System.out.println("Player "+client.getName()+" wins this round!");
     }
 
     private void endGame(){
-        String tieString = "The game ended in a tie!";
-        String winString = "Congratulations, you won the game!";
-        String looseString = "You lost the game!";
+        String tieString = "The game ended in a tie!"; //ADD TO A MESSAGES CLASS
+        String winString = "Congratulations, you won the game!"; //ADD TO A MESSAGES CLASS
+        String looseString = "You lost the game!"; //ADD TO A MESSAGES CLASS
 
         if (client1points == client2points){
             client1.send(tieString);
-            client1.send(tieString);
+            client2.send(tieString);
         }
 
         if (client1points > client2points){
             client1.send(winString);
-            client1.send(looseString);
+            client2.send(looseString);
         }
 
         client1.send(looseString);
-        client1.send(winString);
+        client2.send(winString);
     }
 
+    /**
+     *
+     * DESCRIPTION: in case a specific amount of rounds want to be played
+     * @param maxRounds
+     */
     public void setRounds(int maxRounds) {
         this.maxRounds = maxRounds;
     }
