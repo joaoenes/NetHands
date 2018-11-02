@@ -58,18 +58,6 @@ public class Game {
     }
 
 
-    public void setClient1(Client client1) {
-        this.client1 = client1;
-    }
-
-    public void setClient2(Client client2) {
-        this.client2 = client2;
-    }
-
-    public void setRounds(int maxRounds) {
-        this.maxRounds = maxRounds;
-    }
-
     private void addPoint(Client client){
         if (client == client1){
             client1points++;
@@ -92,4 +80,15 @@ public class Game {
         return client2;
     }
 
+    public void setClient1(Client client1) {
+        this.client1 = client1;
+    }
+
+    public void setClient2(Client client2) {
+        this.client2 = client2;
+    }
+
+    public void setRounds(int maxRounds) {
+        this.maxRounds = maxRounds;
+    }
 }
