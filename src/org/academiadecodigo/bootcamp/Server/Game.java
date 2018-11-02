@@ -63,6 +63,7 @@ public class Game {
     }
 
     private void addPoint(Client client){
+
         if (client == client1){
             client1points++;
         }else{
@@ -80,7 +81,6 @@ public class Game {
         if (client1points > client2points){
             return client1;
         }
-
         return client2;
     }
 

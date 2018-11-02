@@ -1,6 +1,9 @@
 package org.academiadecodigo.bootcamp.Server;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.LinkedList;
@@ -15,18 +18,46 @@ public class Server {
     private ExecutorService cachedPool;
     private Socket clientSocket1;
     private Socket clientSocket2;
-    private List<Client> listOfClients;
-    private List<Client> listOfGames;
+    private List<Game> listOfGames;
 
     public Server() {
         cachedPool = Executors.newCachedThreadPool();
-        listOfClients = new LinkedList<>();
         listOfGames = new LinkedList<>();
+    }
+
+    public void init() {
+        try {
+            System.out.print("PORT: ");
+            serverSocket = new ServerSocket(sacanner());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void startGame(Client client1, Client client2) {
+        cachedPool.submit(new Runnable() {
+            @Override
+            public void run() {
+                Game game = new Game(client1, client2);
+                listOfGames.add(game);
+                game.start();
+            }
+        });
+    }
+
+    private void newThread(Client client) {
+        cachedPool.submit(new Runnable() {
+            @Override
+            public void run() {
+                client.run();
+            }
+        });
     }
 
     public void run() {
         int counter = 0;
         String clientName = "";
+
         while (true) {
 
             try {
@@ -52,42 +83,24 @@ public class Server {
         }
     }
 
-    public void init() {
-        try {
-            System.out.print("PORT: ");
-            serverSocket = new ServerSocket(sacanner());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+    public static void saveLog(String buffer) {
 
-    private boolean checkPlayers(){
-        return listOfClients.size() % 2 == 0;
-    }
-
-    private void startGame(Client client1, Client client2){
-        cachedPool.submit(new Runnable() {
-            @Override
-            public void run() {
-                Game game = new Game(client1, client2);
-                game.start();
+        synchronized (Game.class) {
+            FileOutputStream outputStream = null;
+            try {
+                outputStream = new FileOutputStream("saveLog.txt");
+                outputStream.write(buffer.getBytes());
+                outputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        });
+        }
     }
 
     private int sacanner() {
         Scanner scanner = new Scanner(System.in);
         int port = Integer.parseInt(scanner.nextLine());
         return port;
-    }
-
-    private void newThread(Client client) {
-        cachedPool.submit(new Runnable() {
-            @Override
-            public void run() {
-                client.run();
-            }
-        });
     }
 
     public static void main(String[] args) {
