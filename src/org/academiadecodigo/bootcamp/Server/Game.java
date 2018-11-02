@@ -9,7 +9,7 @@ public class Game {
     private int currentRound = 1;
     private int maxRounds = 5;
 
-    public Game(Client client1, Client client2) {
+    public Game(Client client1, Client client2){
         this.client1 = client1;
         this.client2 = client2;
     }
@@ -17,21 +17,21 @@ public class Game {
     private void roundPlay(Hand client1Hand, Hand client2Hand) {
 
         if (client1Hand != client2Hand) {
-            switch (client1Hand) {
+            switch (client1Hand){
                 case ROCK:
-                    if (client2Hand == Hand.PAPER) {
+                    if (client2Hand == Hand.PAPER){
                         addPoint(client2);
                         return;
                     }
                     break;
                 case PAPER:
-                    if (client2Hand == Hand.SCISSORS) {
+                    if (client2Hand == Hand.SCISSORS){
                         addPoint(client2);
                         return;
                     }
                     break;
                 case SCISSORS:
-                    if (client2Hand == Hand.ROCK) {
+                    if (client2Hand == Hand.ROCK){
                         addPoint(client2);
                         return;
                     }
@@ -56,31 +56,41 @@ public class Game {
                 roundPlay(client1Hand, client2Hand);
                 break;
             }
+
             currentRound++;
         }
-        Server.saveLog(getWinner().getName());
+
+        endGame();
+
     }
 
-    private void addPoint(Client client) {
-
-        if (client == client1) {
+    private void addPoint(Client client){
+        if (client == client1){
             client1points++;
-        } else {
+        }else{
             client2points++;
         }
 
-        System.out.println("Player " + client.getName() + " wins!");
+        System.out.println("Player "+client.getName()+" wins this round!");
     }
 
-    private Client getWinner() {
-        if (client1points == client2points) {
-            return null;
+    private void endGame(){
+        String tieString = "The game ended in a tie!";
+        String winString = "Congratulations, you won the game!";
+        String looseString = "You lost the game!";
+
+        if (client1points == client2points){
+            client1.send(tieString);
+            client1.send(tieString);
         }
 
-        if (client1points > client2points) {
-            return client1;
+        if (client1points > client2points){
+            client1.send(winString);
+            client1.send(looseString);
         }
-        return client2;
+
+        client1.send(looseString);
+        client1.send(winString);
     }
 
     public void setRounds(int maxRounds) {
