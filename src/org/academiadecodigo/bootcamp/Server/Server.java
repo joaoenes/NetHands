@@ -28,7 +28,7 @@ public class Server {
             try {
                 String name = "Guess" + ++counter;
                 clientSocket = serverSocket.accept();
-                newThread(clientSocket, name);
+                newThread(name, clientSocket);
                 clientSocket.close();
 
             } catch (IOException e) {
