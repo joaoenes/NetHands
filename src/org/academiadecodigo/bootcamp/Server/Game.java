@@ -2,16 +2,16 @@ package org.academiadecodigo.bootcamp.Server;
 
 public class Game {
 
-    private Client client1;
-    private Client client2;
+    private ClientHandler clientHandler1;
+    private ClientHandler clientHandler2;
     private int client1points = 0;
     private int client2points = 0;
     private int currentRound = 1;
     private int maxRounds = 5;
 
-    public Game(Client client1, Client client2){
-        this.client1 = client1;
-        this.client2 = client2;
+    public Game(ClientHandler clientHandler1, ClientHandler clientHandler2){
+        this.clientHandler1 = clientHandler1;
+        this.clientHandler2 = clientHandler2;
     }
 
     private void roundPlay(Hand client1Hand, Hand client2Hand) {
@@ -20,42 +20,42 @@ public class Game {
             switch (client1Hand){
                 case ROCK:
                     if (client2Hand == Hand.PAPER){
-                        addPoint(client2);
+                        addPoint(clientHandler2);
                         return;
                     }
                     break;
                 case PAPER:
                     if (client2Hand == Hand.SCISSORS){
-                        addPoint(client2);
+                        addPoint(clientHandler2);
                         return;
                     }
                     break;
                 case SCISSORS:
                     if (client2Hand == Hand.ROCK){
-                        addPoint(client2);
+                        addPoint(clientHandler2);
                         return;
                     }
                     break;
             }
 
-            addPoint(client1);
+            addPoint(clientHandler1);
             return;
         }
         String tieString = "It's a tie!"; //ADD TO A MESSAGES CLASS
-        client1.send(tieString);
-        client2.send(tieString);
+        clientHandler1.send(tieString);
+        clientHandler2.send(tieString);
     }
 
     public void start() {
         while (currentRound <= maxRounds) {
             String roundString = "ROUND " + currentRound + ": < Waiting for each player >"; //ADD TO A MESSAGES CLASS
-            client1.send(roundString);
-            client2.send(roundString);
+            clientHandler1.send(roundString);
+            clientHandler2.send(roundString);
 
             Hand client1Hand;
             Hand client2Hand;
 
-            while ((client1Hand = client1.getHand()) != null && (client2Hand = client2.getHand()) != null) {
+            while ((client1Hand = clientHandler1.getHand()) != null && (client2Hand = clientHandler2.getHand()) != null) {
                 roundPlay(client1Hand, client2Hand);
                 break;
             }
@@ -67,18 +67,18 @@ public class Game {
 
     }
 
-    private void addPoint(Client client){
+    private void addPoint(ClientHandler clientHandler){
         String winString = "You win this round!"; //ADD TO A MESSAGES CLASS
         String looseString = "You lost this round!"; //ADD TO A MESSAGES CLASS
 
-        if (client == client1){
+        if (clientHandler == clientHandler1){
             client1points++;
-            client1.send(winString);
-            client2.send(looseString);
+            clientHandler1.send(winString);
+            clientHandler2.send(looseString);
         }else{
             client2points++;
-            client1.send(looseString);
-            client2.send(winString);
+            clientHandler1.send(looseString);
+            clientHandler2.send(winString);
         }
     }
 
@@ -88,17 +88,17 @@ public class Game {
         String looseString = "You lost the game!"; //ADD TO A MESSAGES CLASS
 
         if (client1points == client2points){
-            client1.send(tieString);
-            client2.send(tieString);
+            clientHandler1.send(tieString);
+            clientHandler2.send(tieString);
         }
 
         if (client1points > client2points){
-            client1.send(winString);
-            client2.send(looseString);
+            clientHandler1.send(winString);
+            clientHandler2.send(looseString);
         }
 
-        client1.send(looseString);
-        client2.send(winString);
+        clientHandler1.send(looseString);
+        clientHandler2.send(winString);
     }
 
     /**

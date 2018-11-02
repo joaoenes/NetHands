@@ -6,7 +6,6 @@ public class Messages {
     public static final String LOGIN = "Enter your username and password";
     public static final String PICK_HAND = "Pick the hand you want to play";
     public static final String PICK_OPTION = "Choose what you want to do";
-   // public static final String
 
     public static final String QUIT_REPEAT = "Play again?";
 
