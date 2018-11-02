@@ -9,7 +9,7 @@ import java.net.Socket;
 public class Client {
 
     private String name;
-    private Hand hand;
+    //private Hand hand;
     private Socket socket;
     private BufferedReader input;
     private PrintWriter output;
@@ -33,23 +33,23 @@ public class Client {
         return name;
     }
 
-    public Hand getHand() {
-        return hand;
-    }
+    /*public Hand getHand() {
+        return receive();
+    }*/
 
-    public void setHand(Hand hand) {
+    /*public void setHand(Hand hand) {
         this.hand = hand;
-    }
+    }*/
 
     public Socket getSocket() {
         return socket;
     }
 
-    public void receive() {
+    public Hand getHand() {
         try {
             String inString = input.readLine();
 
-            if (inString == null || inString == "quit") {
+            /*if (inString == null || inString == "quit") {
                 System.out.println(getName() + " DISCONNECTED FROM THE SERVER!");
                 close();
                 return;
@@ -58,18 +58,20 @@ public class Client {
             if (inString == "repeat") {
                 //to implement
                 return;
-            }
+            }*/
 
             for (Hand hand : Hand.values()) {
-                if (inString == hand.getName()) {
-                    this.hand = hand;
-                    return;
+                if (hand.getName().equals(inString)) {
+                    //this.hand = hand;
+                    return hand;
                 }
             }
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        return null;
     }
 
     public void run(){
