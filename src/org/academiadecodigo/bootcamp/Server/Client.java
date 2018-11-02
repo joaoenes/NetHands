@@ -72,6 +72,10 @@ public class Client {
         }
     }
 
+    public void run(){
+
+    }
+
     public void send(String str) {
         output.write(str);
     }
