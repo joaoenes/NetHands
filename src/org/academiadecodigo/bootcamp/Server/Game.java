@@ -9,30 +9,29 @@ public class Game {
     private int currentRound = 1;
     private int maxRounds = 5;
 
-    public Game(Client client1, Client client2){
+    public Game(Client client1, Client client2) {
         this.client1 = client1;
         this.client2 = client2;
     }
 
     private void roundPlay(Hand client1Hand, Hand client2Hand) {
-        currentRound++;
 
         if (client1Hand != client2Hand) {
-            switch (client1Hand){
+            switch (client1Hand) {
                 case ROCK:
-                    if (client2Hand == Hand.PAPER){
+                    if (client2Hand == Hand.PAPER) {
                         addPoint(client2);
                         return;
                     }
                     break;
                 case PAPER:
-                    if (client2Hand == Hand.SCISSORS){
+                    if (client2Hand == Hand.SCISSORS) {
                         addPoint(client2);
                         return;
                     }
                     break;
                 case SCISSORS:
-                    if (client2Hand == Hand.ROCK){
+                    if (client2Hand == Hand.ROCK) {
                         addPoint(client2);
                         return;
                     }
@@ -57,28 +56,28 @@ public class Game {
                 roundPlay(client1Hand, client2Hand);
                 break;
             }
+            currentRound++;
         }
-
-        getWinner();
+        Server.saveLog(getWinner().getName());
     }
 
-    private void addPoint(Client client){
+    private void addPoint(Client client) {
 
-        if (client == client1){
+        if (client == client1) {
             client1points++;
-        }else{
+        } else {
             client2points++;
         }
 
-        System.out.println("Player "+client.getName()+" wins!");
+        System.out.println("Player " + client.getName() + " wins!");
     }
 
-    private Client getWinner(){
-        if (client1points == client2points){
+    private Client getWinner() {
+        if (client1points == client2points) {
             return null;
         }
 
-        if (client1points > client2points){
+        if (client1points > client2points) {
             return client1;
         }
         return client2;
