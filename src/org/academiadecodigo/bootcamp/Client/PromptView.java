@@ -7,13 +7,12 @@ import static org.academiadecodigo.bootcamp.Client.Messages.*;
 
 public class PromptView {
 
-    Prompt prompt = new Prompt(System.in, System.out);
-
-    public void showGameMenu() {
+    public static Integer showGameMenu(Prompt prompt) {
         String[] hands = { ROCK_PROMPT, PAPER_PROMPT, SCISSORS_PROMPT};
 
         MenuInputScanner menu = new MenuInputScanner(hands);
         menu.setMessage(PICK_HAND);
 
+        return prompt.getUserInput(menu);
     }
 }

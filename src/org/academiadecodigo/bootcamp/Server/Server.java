@@ -57,7 +57,7 @@ public class Server {
         cachedPool.submit(new Runnable() {
             @Override
             public void run() {
-                listClients.add(new Client(clientSocket, name));
+                listClients.add(new Client(name, clientSocket));
             }
         });
     }
