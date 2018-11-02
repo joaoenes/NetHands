@@ -7,7 +7,12 @@ public class Game {
     private int client1points = 0;
     private int client2points = 0;
     private int currentRound = 1;
-    private int maxRounds;
+    private int maxRounds = 5;
+
+    public Game(Client client1, Client client2){
+        this.client1 = client1;
+        this.client2 = client2;
+    }
 
     private void roundPlay(Hand client1Hand, Hand client2Hand) {
         currentRound++;
@@ -57,7 +62,6 @@ public class Game {
         getWinner();
     }
 
-
     private void addPoint(Client client){
         if (client == client1){
             client1points++;
@@ -78,14 +82,6 @@ public class Game {
         }
 
         return client2;
-    }
-
-    public void setClient1(Client client1) {
-        this.client1 = client1;
-    }
-
-    public void setClient2(Client client2) {
-        this.client2 = client2;
     }
 
     public void setRounds(int maxRounds) {
