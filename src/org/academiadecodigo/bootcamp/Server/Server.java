@@ -3,6 +3,8 @@ package org.academiadecodigo.bootcamp.Server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -12,18 +14,21 @@ public class Server {
     private ServerSocket serverSocket;
     private ExecutorService cachedPool;
     private Socket clientSocket;
+    private List<Client> listClients;
 
     public Server() {
         cachedPool = Executors.newCachedThreadPool();
+        listClients = new LinkedList<>();
     }
 
     public void run() {
+        int counter = 0;
         while (true) {
 
             try {
-                
+                String name = "Guess" + ++counter;
                 clientSocket = serverSocket.accept();
-                newThread(clientSocket);
+                newThread(clientSocket, name);
                 clientSocket.close();
 
             } catch (IOException e) {
@@ -48,11 +53,11 @@ public class Server {
         return port;
     }
 
-    private void newThread(Socket clientSocket) {
+    private void newThread(String name, Socket clientSocket) {
         cachedPool.submit(new Runnable() {
             @Override
             public void run() {
-                new Client(clientSocket);
+                listClients.add(new Client(clientSocket, name));
             }
         });
     }
