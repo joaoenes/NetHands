@@ -79,7 +79,7 @@ public class Client {
     }
 
     public void send(String str) {
-        output.write(str);
+        output.println(str);
     }
 
     private void close() {
