@@ -70,7 +70,7 @@ public class Server {
             @Override
             public void run() {
                 Game game = new Game(client1, client2);
-                game.run();
+                game.start();
             }
         });
     }
