@@ -13,23 +13,37 @@ public class Server {
 
     private ServerSocket serverSocket;
     private ExecutorService cachedPool;
-    private Socket clientSocket;
-    private List<Client> listClients;
+    private Socket clientSocket1;
+    private Socket clientSocket2;
+    private List<Client> listOfClients;
+    private List<Client> listOfGames;
 
     public Server() {
         cachedPool = Executors.newCachedThreadPool();
-        listClients = new LinkedList<>();
+        listOfClients = new LinkedList<>();
+        listOfGames = new LinkedList<>();
     }
 
     public void run() {
         int counter = 0;
+        String clientName = "";
         while (true) {
 
             try {
-                String name = "Guess" + ++counter;
-                clientSocket = serverSocket.accept();
-                newThread(name, clientSocket);
-                clientSocket.close();
+
+                clientName = "Guess" + ++counter;
+                clientSocket1 = serverSocket.accept();
+                Client client1 = new Client(clientName, clientSocket1);
+
+                clientName = "Guess" + ++counter;
+                clientSocket2 = serverSocket.accept();
+                Client client2 = new Client(clientName, clientSocket2);
+
+
+                newThread(client1);
+                newThread(client2);
+
+                startGame(client1, client2);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -47,17 +61,31 @@ public class Server {
         }
     }
 
+    private boolean checkPlayers(){
+        return listOfClients.size() % 2 == 0;
+    }
+
+    private void startGame(Client client1, Client client2){
+        cachedPool.submit(new Runnable() {
+            @Override
+            public void run() {
+                Game game = new Game(client1, client2);
+                game.start();
+            }
+        });
+    }
+
     private int sacanner() {
         Scanner scanner = new Scanner(System.in);
         int port = Integer.parseInt(scanner.nextLine());
         return port;
     }
 
-    private void newThread(String name, Socket clientSocket) {
+    private void newThread(Client client) {
         cachedPool.submit(new Runnable() {
             @Override
             public void run() {
-                listClients.add(new Client(name, clientSocket));
+                client.run();
             }
         });
     }
