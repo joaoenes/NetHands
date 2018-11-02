@@ -23,7 +23,5 @@ public class Client {
             game_option = PromptView.showGameMenu(prompt);
             System.out.println("Game option: " + game_option);
         }
-
-
     }
 }
