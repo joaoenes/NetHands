@@ -7,8 +7,12 @@ public class Client {
     public static void main(String[] args) {
 
         Prompt prompt = new Prompt(System.in, System.out);
+        String game_option;
 
-        PromptView.showGameMenu(prompt);
+        game_option = PromptView.showGameMenu(prompt);
+        System.out.println("Game option: " + game_option);
+
+
 
     }
 }
