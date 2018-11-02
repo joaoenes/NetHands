@@ -15,7 +15,6 @@ public class Game {
     }
 
     private void roundPlay(Hand client1Hand, Hand client2Hand) {
-        currentRound++;
 
         if (client1Hand != client2Hand) {
             switch (client1Hand){
@@ -57,9 +56,12 @@ public class Game {
                 roundPlay(client1Hand, client2Hand);
                 break;
             }
+
+            currentRound++;
         }
 
-        getWinner();
+        endGame();
+
     }
 
     private void addPoint(Client client){
@@ -69,19 +71,26 @@ public class Game {
             client2points++;
         }
 
-        System.out.println("Player "+client.getName()+" wins!");
+        System.out.println("Player "+client.getName()+" wins this round!");
     }
 
-    private Client getWinner(){
+    private void endGame(){
+        String tieString = "The game ended in a tie!";
+        String winString = "Congratulations, you won the game!";
+        String looseString = "You lost the game!";
+
         if (client1points == client2points){
-            return null;
+            client1.send(tieString);
+            client1.send(tieString);
         }
 
         if (client1points > client2points){
-            return client1;
+            client1.send(winString);
+            client1.send(looseString);
         }
 
-        return client2;
+        client1.send(looseString);
+        client1.send(winString);
     }
 
     public void setRounds(int maxRounds) {
