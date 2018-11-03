@@ -8,7 +8,6 @@ import java.util.List;
 
 public class Game {
 
-    public static final String ESCAPE_TAG = "[/$]";
     private List<ClientHandler> clients;
     private int[] clientScores;
     private int currentRound;
@@ -98,41 +97,31 @@ public class Game {
     }
 
     private void endGame(){
-        String tieString = "The game ended in a tie!"; //ADD TO A MESSAGES CLASS
-        String winString = "Congratulations, you won the game!"; //ADD TO A MESSAGES CLASS
-        String looseString = "You lost the game!"; //ADD TO A MESSAGES CLASS
 
-        String scoreLogLinePart1_client1 = clients.get(0) + ESCAPE_TAG;
-        String scoreLogLinePart2_client1 = ESCAPE_TAG + clientScores[0]+"\n";
-
-        String scoreLogLinePart1_client2 = clients.get(1) + ESCAPE_TAG;
-        String scoreLogLinePart2_client2 = ESCAPE_TAG + clientScores[1]+"\n";
+        String client1status = Messages.WON_LOG;
+        String client2stauts = Messages.WON_LOG;
 
         if (clientScores[0] == clientScores[1]){
             clients.get(0).send(Messages.GAME_TIE);
             clients.get(1).send(Messages.GAME_TIE);
-            clients.get(0).setInGame(false);
-            clients.get(1).setInGame(false);
-
-            Server.saveLog(scoreLogLinePart1_client1 + Messages.TIE_LOG + scoreLogLinePart2_client1+
-                    scoreLogLinePart1_client2 + Messages.TIE_LOG + scoreLogLinePart2_client2);
+            client1status = Messages.TIE_LOG;
+            client2stauts = Messages.TIE_LOG;
         }
 
         if (clientScores[0] > clientScores[1]){
-            clients.get(0).send(winString);
-            clients.get(1).send(looseString);
-            clients.get(0).setInGame(false);
-            clients.get(1).setInGame(false);
-            Server.saveLog(scoreLogLinePart1_client1 + "WON" + scoreLogLinePart2_client1+
-                    scoreLogLinePart1_client2 + "LOST" + scoreLogLinePart2_client2);
+            clients.get(0).send(Messages.GAME_WON);
+            clients.get(1).send(Messages.GAME_LOST);
+            client2stauts = Messages.LOST_LOG;
+        }else{
+            clients.get(0).send(Messages.GAME_LOST);
+            clients.get(1).send(Messages.GAME_WON);
+            client1status = Messages.LOST_LOG;
         }
 
-        clients.get(0).send(looseString);
-        clients.get(1).send(winString);
         clients.get(0).setInGame(false);
         clients.get(1).setInGame(false);
-        Server.saveLog(scoreLogLinePart1_client1 + "LOST" + scoreLogLinePart2_client1+
-                scoreLogLinePart1_client2 + "WON" + scoreLogLinePart2_client2);
+        Server.saveLog(clients.get(0) + Messages.ESCAPE_TAG + client1status + Messages.ESCAPE_TAG + clients.get(1) + Messages.NEW_LINE);
+        Server.saveLog(clients.get(1) + Messages.ESCAPE_TAG + client2stauts + Messages.ESCAPE_TAG + clients.get(2) + Messages.NEW_LINE);
     }
 
     /**
