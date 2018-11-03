@@ -117,7 +117,12 @@ public class Client {
         PrintWriter output = new PrintWriter(clientSocket.getOutputStream(), true);
         BufferedReader input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
+        System.out.println("Your option is: " + option);
+        
         output.println(option);
+
+        String message = input.readLine();
+        System.out.println(message);
 
         Integer inputOption = Integer.parseInt(input.readLine());
 
