@@ -51,12 +51,12 @@ public class Game {
                     break;
             }
 
-            addPoint(listOfClients.get(0));
+            addPoint(listOfClients.get(0), client1Hand, client2Hand);
             return;
         }
 
-        listOfClients.get(0).send(Messages.ROUND_TIE);
-        listOfClients.get(1).send(Messages.ROUND_TIE);
+        listOfClients.get(0).send(listOfClients.get(1).getName() + Messages.OPPONENT_PLAYED + client2Hand + Messages.ROUND_TIE);
+        listOfClients.get(1).send(listOfClients.get(0).getName() + Messages.OPPONENT_PLAYED + client1Hand + Messages.ROUND_TIE);
     }
 
     public void start() {
@@ -71,7 +71,7 @@ public class Game {
 
             clientWaiting();
 
-            while ((client1Hand = listOfClients.get(0).getHand()) != null && (client2Hand = listOfClients.get(0).getHand()) != null) {
+            while ((client1Hand = listOfClients.get(0).getHand()) != null && (client2Hand = listOfClients.get(1).getHand()) != null) {
                 roundPlay(client1Hand, client2Hand);
                 break;
             }
@@ -99,15 +99,15 @@ public class Game {
         listOfClients.get(1).gameOver();
     }
 
-    private void addPoint(ClientHandler clientHandler){
+    private void addPoint(ClientHandler clientHandler, Hand client1Hand, Hand client2Hand){
         if (clientHandler == listOfClients.get(0)) {
             clientScores[0]++;
-            listOfClients.get(0).send(Messages.ROUND_WIN);
-            listOfClients.get(1).send(Messages.ROUND_LOST);
+            listOfClients.get(0).send(listOfClients.get(1).getName() + Messages.OPPONENT_PLAYED + client2Hand + Messages.ROUND_WIN);
+            listOfClients.get(1).send(listOfClients.get(0).getName() + Messages.OPPONENT_PLAYED + client1Hand + Messages.ROUND_LOST);
         }else{
             clientScores[1]++;
-            listOfClients.get(0).send(Messages.ROUND_LOST);
-            listOfClients.get(1).send(Messages.ROUND_WIN);
+            listOfClients.get(0).send(listOfClients.get(1).getName() + Messages.OPPONENT_PLAYED + client2Hand + Messages.ROUND_LOST);
+            listOfClients.get(1).send(listOfClients.get(0).getName() + Messages.OPPONENT_PLAYED + client1Hand + Messages.ROUND_WIN);
         }
     }
 

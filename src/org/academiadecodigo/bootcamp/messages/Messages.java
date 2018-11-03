@@ -44,8 +44,8 @@ public class Messages {
      * To tell the clients the status of the game
      */
     public static final String WAITING_FOR_PLAYER = "< Waiting for another player to join the game >";
-    public static final String VERSUS_PART1 = "You are playing against ";
-    public static final String VERSUS_PART2 = ", good luck!";
+    public static final String VERSUS_PART1 = "< You are playing against ";
+    public static final String VERSUS_PART2 = ", good luck! >";
     public static final String ROUND_PART1 = "< ROUND ";
     public static final String ROUND_PART2 = " >";
     public static final String WAITING_FOR_PLAY = "< Waiting for each play >";
@@ -54,9 +54,10 @@ public class Messages {
     /**
      * To tell the clients the result of the round they just played
      */
-    public static final String ROUND_TIE = "It's a tie!";
-    public static final String ROUND_WIN = "You won this round!";
-    public static final String ROUND_LOST = "You lost this round!";
+    public static final String OPPONENT_PLAYED = " played ";
+    public static final String ROUND_TIE = ". It's a tie!";
+    public static final String ROUND_WIN = ". You won this round!";
+    public static final String ROUND_LOST = ". You lost this round!";
 
     /**
      *  To tell the clients how his game ended

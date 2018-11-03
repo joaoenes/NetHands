@@ -1,1 +1,1 @@
-LUIS[/$]WON[/$]TIAGO\r\n
+org.academiadecodigo.bootcamp.server.ClientHandler@3c414d5[/$]LOST[/$]org.academiadecodigo.bootcamp.server.ClientHandler@7e2e763a
