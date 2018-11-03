@@ -50,7 +50,7 @@ public class Client {
             String inString = input.readLine();
 
             /*if (inString == null || inString == "quit") {
-                System.out.println(getName() + " DISCONNECTED FROM THE SERVER!");
+                System.out.println(getName() + " DISCONNECTED FROM THE SERVER!"); //ADD TO A MESSAGES CLASS
                 close();
                 return;
             }

@@ -5,7 +5,6 @@ public class Messages {
     public static final String WELCOME = "Welcome to Net Hands";
     public static final String LOGIN = "Enter your username and password";
     public static final String PICK_HAND = "Pick the hand you want to play";
-    public static final String
 
     public static final String QUIT_REPEAT = "Play again?";
 
