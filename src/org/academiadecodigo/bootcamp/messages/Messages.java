@@ -14,8 +14,7 @@ public class Messages {
     public static final String LOGIN = "Enter your username and password: ";
     public static final String WELCOME = "Welcome to Net Hands!";
     public static final String PICK_OPTION = "What do you want to do?";
-
-
+    
     /**
      * Descriptions of the options of the client prompt
      */
