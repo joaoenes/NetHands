@@ -13,6 +13,7 @@ import java.net.Socket;
 
 import static org.academiadecodigo.bootcamp.client.Messages.WELCOME;
 import static org.academiadecodigo.bootcamp.enums.GameState.*;
+import static org.academiadecodigo.bootcamp.messages.Messages.WELCOME;
 
 public class Client {
 
@@ -25,7 +26,7 @@ public class Client {
 
     public Client() {
         prompt = new Prompt(System.in, System.out);
-        gameState = LOBBY;
+        gameState = LOGIN;
     }
 
     public static void main(String[] args) {
@@ -47,11 +48,6 @@ public class Client {
     }
 
     private void run() {
-        BufferedReader input;
-        PrintWriter output;
-
-        Integer option;
-        Integer inputOption;
 
         System.out.println(WELCOME);
 
@@ -59,23 +55,10 @@ public class Client {
             while (clientSocket.isConnected()) {
 
                 switch (gameState) {
+
+
                     case LOBBY:
-                        option = PromptView.showLobbyMenu(prompt);
-
-
-                        output = new PrintWriter(clientSocket.getOutputStream(), true);
-                        input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-
-                        output.println(option);
-
-                        inputOption = Integer.parseInt(input.readLine());
-
-                        if (inputOption == null) {
-                            System.out.println("Connection closed from server side");
-                            System.exit(0);
-                        }
-
-                        responseToServer(inputOption);
+                        inLobby();
                         break;
 
                     case GAME:
@@ -93,7 +76,7 @@ public class Client {
         switch (response) {
             case PLAY:
                 gameState = GAME;
-                return PromptView.showGameMenu(prompt);
+                break;
 
             case SCORE:
                 gameState = SCORE;
@@ -104,6 +87,24 @@ public class Client {
         }
 
         return -1;
+    }
+
+    private void inLobby() throws IOException {
+        Integer option = PromptView.showLobbyMenu(prompt);
+
+        PrintWriter output = new PrintWriter(clientSocket.getOutputStream(), true);
+        BufferedReader input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+
+        output.println(option);
+
+        Integer inputOption = Integer.parseInt(input.readLine());
+
+        if (inputOption == null) {
+            System.out.println("Connection closed from server side");
+            System.exit(0);
+        }
+
+        responseToServer(inputOption);
     }
 }
 
