@@ -1,9 +1,11 @@
 package org.academiadecodigo.bootcamp.Client;
 
 import org.academiadecodigo.bootcamp.Prompt;
+import org.academiadecodigo.bootcamp.enums.ServerResponse;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -44,30 +46,46 @@ public class Client {
         BufferedReader input;
         PrintWriter output;
 
-        String option;
+        Integer option;
         String game_option;
-        String inputString;
+        Integer inputOption;
 
         System.out.println(WELCOME);
 
         try {
             while (clientSocket.isConnected()) {
-                option = PromptView.showLobbyMenu(prompt);
-
                 output = new PrintWriter(clientSocket.getOutputStream(), true);
+                input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
+                option = PromptView.showLobbyMenu(prompt);
+                output.println(option);
 
-            }
+                inputOption = Integer.parseInt(input.readLine());
 
-            option = PromptView.showLobbyMenu(prompt);
+                if (inputOption == null) {
+                    System.out.println("Connection closed from server side");
+                    System.exit(0);
+                }
 
-            if (option.equals("play")) {
-
-                game_option = PromptView.showGameMenu(prompt);
-                System.out.println("Game option: " + game_option);
+                responseToServer(inputOption);
             }
         } catch (IOException ex) {
             ex.printStackTrace();
+        }
+    }
+
+    private void responseToServer(Integer input) {
+        ServerResponse response = ServerResponse.values()[input];
+
+        switch (response) {
+            case PLAY:
+                
+                break;
+
+            case SCORE:
+                break;
+
+            case QUIT:
         }
     }
 }
