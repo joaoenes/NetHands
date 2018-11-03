@@ -8,21 +8,20 @@ public class ClientDB {
 
     public static synchronized void saveClient(String client) {
 
-        BufferedWriter writer = null;
+        FileWriter fileWriter = null;
 
         try {
-            writer = new BufferedWriter(new FileWriter(FILE));
 
-            writer.write(client, 0, client.length());
-
-            writer.flush();
+            fileWriter = new FileWriter(FILE, true);
+            fileWriter.write(client + "\n");
+            fileWriter.flush();
 
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            if (writer != null) {
+            if (fileWriter != null) {
                 try {
-                    writer.close();
+                    fileWriter.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

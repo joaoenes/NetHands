@@ -18,13 +18,13 @@ public class ClientHandler {
     private Socket socket;
     private BufferedReader input;
     private PrintWriter output;
-    private boolean inGame;
+    private boolean inLobby;
     private boolean logged;
 
     public ClientHandler(String name, Socket socket) {
         this.name = name;
         this.socket = socket;
-        this.inGame = false;
+        this.inLobby = false;
         this.logged = false;
         init();
     }
@@ -43,8 +43,7 @@ public class ClientHandler {
     }
 
     public void clientCommand() {
-
-        while (!inGame) {
+        while (!inLobby) {
             try {
                 int userInput = Integer.parseInt(input.readLine());
                 checkOption(LobbyOption.values()[userInput - 1]);
@@ -97,7 +96,7 @@ public class ClientHandler {
         output.println(Score.readScore(name));
     }
 
-    private void guestPlay(){
+    private void guestPlay() {
         Server.joinGame(this);
     }
 
@@ -110,6 +109,7 @@ public class ClientHandler {
                 this.name = name;
                 this.logged = true;
                 output.println(Messages.SUCCESSFUL_LOGIN + name);
+                clientCommand();
                 return;
             }
 
@@ -150,8 +150,8 @@ public class ClientHandler {
 
     }
 
-    public void stillPlaying() {
-        output.println(ServerResponse.PLAY.ordinal());
+    public void gameOver() {
+        output.println(Messages.GAME_OVER);
     }
 
     private void register(String name) {
@@ -159,16 +159,17 @@ public class ClientHandler {
     }
 
     private void joinGame() {
+        inLobby = true;
+        output.println(Messages.WAITING);
         Server.joinGame(this);
     }
 
     public void gameStart() {
-        inGame = true;
         output.println(ServerResponse.PLAY.ordinal());
     }
 
-    public void setInGame(boolean inGame) {
-        this.inGame = inGame;
+    public void setInLobby(boolean inLobby) {
+        this.inLobby = inLobby;
     }
 
     public Hand getHand() {
@@ -193,9 +194,6 @@ public class ClientHandler {
     }
 
     public void run() {
-        if (logged) {
-            clientCommand();
-        }
         mainMenu();
     }
 
