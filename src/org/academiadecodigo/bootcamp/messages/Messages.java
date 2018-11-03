@@ -16,12 +16,13 @@ public class Messages {
     public static final String PICK_OPTION = "What do you want to do?";
     public static final String GUEST = "Play as guest";
     public static final String REGISTER = "Register";
-    public static final String INVALID_USERNAME = "Invalid username";
 
     /**
      * After Login
      */
     public static final String ASK_USERNAME = "Username: ";
+    public static final String SUCCESSFUL_LOGIN = "Welcome ";
+    public static final String INVALID_USERNAME = "Invalid username";
 
     /**
      * Descriptions of the options of the client prompt

@@ -6,6 +6,8 @@ import org.academiadecodigo.bootcamp.client.promptview.LobbyMenu;
 import org.academiadecodigo.bootcamp.client.promptview.MainMenu;
 import org.academiadecodigo.bootcamp.enums.GameState;
 import org.academiadecodigo.bootcamp.enums.ServerResponse;
+import org.academiadecodigo.bootcamp.messages.Messages;
+import org.academiadecodigo.bootcamp.server.Server;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -28,7 +30,7 @@ public class Client {
 
     public Client() {
         prompt = new Prompt(System.in, System.out);
-        gameState = LOGIN;
+        gameState = MAIN;
     }
 
     public static void main(String[] args) {
@@ -92,6 +94,7 @@ public class Client {
                 gameState = SCORE;
                 break;
 
+            case LOGIN:
             case INVALID_USER:
             case USER_EXISTS:
                 gameState = LOGIN;
@@ -142,9 +145,15 @@ public class Client {
 
         output.println(username);
 
-        Integer inputOption = Integer.parseInt(input.readLine());
+        String message = input.readLine();
+        System.out.println(message);
 
-        reactionToServer(inputOption);
+        if (message.equals(Messages.INVALID_USERNAME)) {
+            reactionToServer(ServerResponse.LOGIN.ordinal());
+            return;
+        }
+
+        reactionToServer(ServerResponse.LOBBY.ordinal());
     }
 
     private void inGame() throws IOException {

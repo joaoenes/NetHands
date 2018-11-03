@@ -5,7 +5,9 @@ public enum ServerResponse {
     SCORE,
     QUIT,
     LOBBY,
+    LOGIN,
     INVALID_USER,
     USER_EXISTS,
+    SUCCESSFUL_LOGIN,
     VALID_REGISTER
 }

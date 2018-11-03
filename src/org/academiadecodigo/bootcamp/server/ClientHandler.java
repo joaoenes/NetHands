@@ -94,11 +94,14 @@ public class ClientHandler {
 
     private void waitLogin() {
         try {
+            output.println(ServerResponse.LOGIN.ordinal());
             String name = input.readLine();
 
             if (checkClientExist(name)) {
                 this.name = name;
                 this.logged = true;
+                output.println(Messages.SUCCESSFUL_LOGIN + name);
+                return;
             }
 
             output.println(Messages.INVALID_USERNAME);
