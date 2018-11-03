@@ -9,7 +9,9 @@ public class Score {
     private static final File file = new File(ROOT_PATH + PATH_SCORELOG);
 
     public static void readScore(){
+        synchronized (Game.class){
 
+        }
     }
 
     public static void saveLog(String line) {
