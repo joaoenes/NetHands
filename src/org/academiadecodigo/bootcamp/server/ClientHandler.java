@@ -88,6 +88,7 @@ public class ClientHandler {
 
     public void gameStart(){
         output.println(ServerResponse.PLAY.ordinal());
+        output.println();
     }
 
     public void setInGame(boolean inGame) {
