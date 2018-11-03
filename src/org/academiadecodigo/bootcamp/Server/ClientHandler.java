@@ -2,6 +2,7 @@ package org.academiadecodigo.bootcamp.Server;
 
 import org.academiadecodigo.bootcamp.enums.ClientOption;
 import org.academiadecodigo.bootcamp.enums.Hand;
+import org.academiadecodigo.bootcamp.enums.ServerResponse;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -56,14 +57,22 @@ public class ClientHandler {
     public void checkOption(ClientOption option) {
         switch (option) {
             case PLAY:
-                inGame = true;
-                Server.joinGame(this);
+                joinGame();
                 break;
             case SCORE:
                 break;
             case QUIT:
                 break;
         }
+    }
+
+    private void joinGame(){
+        inGame = true;
+        Server.joinGame(this);
+    }
+
+    public void gameStart(){
+        output.println(ServerResponse.PLAY.ordinal());
     }
 
     public void setInGame(boolean inGame) {
