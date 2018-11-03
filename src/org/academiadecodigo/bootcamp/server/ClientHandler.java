@@ -77,8 +77,14 @@ public class ClientHandler {
                 case LOGIN:
                     waitLogin();
                     break;
+                case GUEST:
+                    guestPlay();
+                    break;
                 case REGISTER:
                     waitRegister();
+                    break;
+                case QUIT:
+
                     break;
             }
 
@@ -89,6 +95,10 @@ public class ClientHandler {
 
     private void seeScore() {
         output.println(Score.readScore(name));
+    }
+
+    private void guestPlay(){
+        Server.joinGame(this);
     }
 
     private void waitLogin() {
@@ -149,13 +159,12 @@ public class ClientHandler {
     }
 
     private void joinGame() {
-        inGame = true;
         Server.joinGame(this);
     }
 
     public void gameStart() {
+        inGame = true;
         output.println(ServerResponse.PLAY.ordinal());
-        output.println();
     }
 
     public void setInGame(boolean inGame) {
