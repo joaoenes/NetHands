@@ -1,6 +1,7 @@
 package org.academiadecodigo.bootcamp.Client;
 
 import org.academiadecodigo.bootcamp.Prompt;
+import org.academiadecodigo.bootcamp.enums.ServerResponse;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -47,7 +48,7 @@ public class Client {
 
         Integer option;
         String game_option;
-        String inputString;
+        Integer inputOption;
 
         System.out.println(WELCOME);
 
@@ -59,21 +60,32 @@ public class Client {
                 option = PromptView.showLobbyMenu(prompt);
                 output.println(option);
 
-                inputString = input.readLine();
+                inputOption = Integer.parseInt(input.readLine());
 
-                if (inputString == null) {
+                if (inputOption == null) {
                     System.out.println("Connection closed from server side");
                     System.exit(0);
                 }
 
-                responseToServer(inputString);
+                responseToServer(inputOption);
             }
         } catch (IOException ex) {
             ex.printStackTrace();
         }
     }
 
-    private void responseToServer(String input) {
-        
+    private void responseToServer(Integer input) {
+        ServerResponse response = ServerResponse.values()[input];
+
+        switch (response) {
+            case PLAY:
+                
+                break;
+
+            case SCORE:
+                break;
+
+            case QUIT:
+        }
     }
 }
