@@ -1,5 +1,7 @@
-package org.academiadecodigo.bootcamp.Server;
+package org.academiadecodigo.bootcamp.server;
 
 public class Score {
+
+
     
 }

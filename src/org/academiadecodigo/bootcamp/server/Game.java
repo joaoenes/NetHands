@@ -1,6 +1,7 @@
 package org.academiadecodigo.bootcamp.server;
 
 import org.academiadecodigo.bootcamp.enums.Hand;
+import org.academiadecodigo.bootcamp.messages.Messages;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -53,22 +54,21 @@ public class Game {
             addPoint(clients.get(0));
             return;
         }
-        String tieString = "It's a tie!"; //ADD TO A MESSAGES CLASS
-        clients.get(0).send(tieString);
-        clients.get(1).send(tieString);
+
+        clients.get(0).send(Messages.ROUND_TIE);
+        clients.get(1).send(Messages.ROUND_TIE);
     }
 
     public void start() {
-        String versusPart1String = "You are playing against "; //ADD TO A MESSAGES CLASS
-        String versusPart2String = ", good luck!"; //ADD TO A MESSAGES CLASS
-
-        clients.get(0).send(versusPart1String + clients.get(1).getName() + versusPart2String);
-        clients.get(1).send(versusPart1String + clients.get(0).getName() + versusPart2String);
+        clients.get(0).send(Messages.VERSUS_PART1 + clients.get(1).getName() + Messages.VERSUS_PART2);
+        clients.get(1).send(Messages.VERSUS_PART1 + clients.get(0).getName() + Messages.VERSUS_PART2);
 
         while (currentRound <= maxRounds) {
-            String roundString = "ROUND " + currentRound + ": < Waiting for each player >"; //ADD TO A MESSAGES CLASS
-            clients.get(0).send(roundString);
-            clients.get(1).send(roundString);
+            clients.get(0).send(Messages.ROUND_PART1 + currentRound + Messages.ROUND_PART2);
+            clients.get(1).send(Messages.ROUND_PART1 + currentRound + Messages.ROUND_PART2);
+
+            clients.get(0).send(Messages.WAITING);
+            clients.get(1).send(Messages.WAITING);
 
             Hand client1Hand;
             Hand client2Hand;
@@ -86,17 +86,14 @@ public class Game {
     }
 
     private void addPoint(ClientHandler clientHandler){
-        String winString = "You win this round!"; //ADD TO A MESSAGES CLASS
-        String looseString = "You lost this round!"; //ADD TO A MESSAGES CLASS
-
         if (clientHandler == clients.get(0)){
             clientScores[0]++;
-            clients.get(0).send(winString);
-            clients.get(1).send(looseString);
+            clients.get(0).send(Messages.ROUND_WIN);
+            clients.get(1).send(Messages.ROUND_LOST);
         }else{
             clientScores[1]++;
-            clients.get(0).send(looseString);
-            clients.get(1).send(winString);
+            clients.get(0).send(Messages.ROUND_LOST);
+            clients.get(1).send(Messages.ROUND_WIN);
         }
     }
 
@@ -112,12 +109,13 @@ public class Game {
         String scoreLogLinePart2_client2 = ESCAPE_TAG + clientScores[1]+"\n";
 
         if (clientScores[0] == clientScores[1]){
-            clients.get(0).send(tieString);
-            clients.get(1).send(tieString);
+            clients.get(0).send(Messages.GAME_TIE);
+            clients.get(1).send(Messages.GAME_TIE);
             clients.get(0).setInGame(false);
             clients.get(1).setInGame(false);
-            Server.saveLog(scoreLogLinePart1_client1 + "TIE" + scoreLogLinePart2_client1+
-                    scoreLogLinePart1_client2 + "TIE" + scoreLogLinePart2_client2);
+
+            Server.saveLog(scoreLogLinePart1_client1 + Messages.TIE_LOG + scoreLogLinePart2_client1+
+                    scoreLogLinePart1_client2 + Messages.TIE_LOG + scoreLogLinePart2_client2);
         }
 
         if (clientScores[0] > clientScores[1]){
