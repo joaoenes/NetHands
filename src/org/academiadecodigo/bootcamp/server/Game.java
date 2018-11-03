@@ -123,13 +123,4 @@ public class Game {
         Server.saveLog(clients.get(0) + Messages.ESCAPE_TAG + client1status + Messages.ESCAPE_TAG + clients.get(1) + Messages.NEW_LINE);
         Server.saveLog(clients.get(1) + Messages.ESCAPE_TAG + client2stauts + Messages.ESCAPE_TAG + clients.get(2) + Messages.NEW_LINE);
     }
-
-    /**
-     *
-     * DESCRIPTION: in case a specific amount of rounds want to be played
-     * @param maxRounds
-     */
-    public void setRounds(int maxRounds) {
-        this.maxRounds = maxRounds;
-    }
 }
