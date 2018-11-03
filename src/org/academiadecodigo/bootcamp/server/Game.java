@@ -1,4 +1,4 @@
-package org.academiadecodigo.bootcamp.Server;
+package org.academiadecodigo.bootcamp.server;
 
 import org.academiadecodigo.bootcamp.enums.Hand;
 
@@ -7,6 +7,7 @@ import java.util.List;
 
 public class Game {
 
+    public static final String ESCAPE_TAG = "[/$]";
     private List<ClientHandler> clients;
     private int[] clientScores;
     private int currentRound;
@@ -104,11 +105,19 @@ public class Game {
         String winString = "Congratulations, you won the game!"; //ADD TO A MESSAGES CLASS
         String looseString = "You lost the game!"; //ADD TO A MESSAGES CLASS
 
+        String scoreLogLinePart1_client1 = clients.get(0) + ESCAPE_TAG;
+        String scoreLogLinePart2_client1 = ESCAPE_TAG + clientScores[0]+"\n";
+
+        String scoreLogLinePart1_client2 = clients.get(1) + ESCAPE_TAG;
+        String scoreLogLinePart2_client2 = ESCAPE_TAG + clientScores[1]+"\n";
+
         if (clientScores[0] == clientScores[1]){
             clients.get(0).send(tieString);
             clients.get(1).send(tieString);
             clients.get(0).setInGame(false);
             clients.get(1).setInGame(false);
+            Server.saveLog(scoreLogLinePart1_client1 + "TIE" + scoreLogLinePart2_client1+
+                    scoreLogLinePart1_client2 + "TIE" + scoreLogLinePart2_client2);
         }
 
         if (clientScores[0] > clientScores[1]){
@@ -116,12 +125,16 @@ public class Game {
             clients.get(1).send(looseString);
             clients.get(0).setInGame(false);
             clients.get(1).setInGame(false);
+            Server.saveLog(scoreLogLinePart1_client1 + "WON" + scoreLogLinePart2_client1+
+                    scoreLogLinePart1_client2 + "LOST" + scoreLogLinePart2_client2);
         }
 
         clients.get(0).send(looseString);
         clients.get(1).send(winString);
         clients.get(0).setInGame(false);
         clients.get(1).setInGame(false);
+        Server.saveLog(scoreLogLinePart1_client1 + "LOST" + scoreLogLinePart2_client1+
+                scoreLogLinePart1_client2 + "WON" + scoreLogLinePart2_client2);
     }
 
     /**

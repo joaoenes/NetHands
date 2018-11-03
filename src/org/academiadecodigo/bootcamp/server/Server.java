@@ -1,4 +1,4 @@
-package org.academiadecodigo.bootcamp.Server;
+package org.academiadecodigo.bootcamp.server;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -73,7 +73,7 @@ public class Server {
         synchronized (Game.class) {
             FileOutputStream outputStream = null;
             try {
-                outputStream = new FileOutputStream("saveLog.txt");
+                outputStream = new FileOutputStream("resources/scoreLog.txt");
                 outputStream.write(buffer.getBytes());
                 outputStream.close();
             } catch (IOException e) {
