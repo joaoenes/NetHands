@@ -1,6 +1,6 @@
 package org.academiadecodigo.bootcamp.server;
 
-import org.academiadecodigo.bootcamp.enums.ClientOption;
+import org.academiadecodigo.bootcamp.enums.LobbyOption;
 import org.academiadecodigo.bootcamp.enums.Hand;
 import org.academiadecodigo.bootcamp.enums.ServerResponse;
 
@@ -46,7 +46,7 @@ public class ClientHandler {
         while (!inGame) {
             try {
                 int userInput = Integer.parseInt(input.readLine());
-                checkOption(ClientOption.values()[userInput - 1]);
+                checkOption(LobbyOption.values()[userInput - 1]);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -54,7 +54,7 @@ public class ClientHandler {
 
     }
 
-    public void checkOption(ClientOption option) {
+    public void checkOption(LobbyOption option) {
         switch (option) {
             case PLAY:
                 joinGame();

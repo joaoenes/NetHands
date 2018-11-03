@@ -19,6 +19,11 @@ public class Messages {
     public static final String INVALID_USERNAME = "Invalid username";
 
     /**
+     * After Login
+     */
+    public static final String ASK_USERNAME = "Username: ";
+
+    /**
      * Descriptions of the options of the client prompt
      */
     public static final String QUIT = "Quit";
