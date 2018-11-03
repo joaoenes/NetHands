@@ -20,8 +20,16 @@ public class GameHandler {
 
     public void clientJoin(ClientHandler client){
         listOfClients.offer(client);
+        
         if(listOfClients.size() >= 2){
-            startGame(listOfClients.poll(), listOfClients.poll());
+
+            ClientHandler clientHandler1 = listOfClients.poll();
+            ClientHandler clientHandler2 = listOfClients.poll();
+
+            clientHandler1.gameStart();
+            clientHandler2.gameStart();
+
+            startGame(clientHandler1, clientHandler2);
         }
     }
 
