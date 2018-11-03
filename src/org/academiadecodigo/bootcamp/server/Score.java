@@ -80,33 +80,5 @@ public class Score {
                 }
             }
         }
-
-        /*FileOutputStream output = null;
-
-        try {
-
-            output = new FileOutputStream(file);
-
-            output.write(line.getBytes());
-
-            output.flush();
-
-            output.close();
-
-        } catch (IOException e) {
-
-            e.printStackTrace();
-
-        } finally {
-
-            if (output != null) {
-                try {
-                    output.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }*/
     }
-
 }

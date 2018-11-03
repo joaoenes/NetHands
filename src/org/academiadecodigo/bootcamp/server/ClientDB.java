@@ -2,7 +2,7 @@ package org.academiadecodigo.bootcamp.server;
 
 import java.io.*;
 
-public class CheckClient {
+public class ClientDB {
 
     public static final File FILE = new File("resources/clientSet.txt");
 

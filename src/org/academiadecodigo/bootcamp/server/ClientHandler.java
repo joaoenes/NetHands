@@ -70,7 +70,6 @@ public class ClientHandler {
 
     public void mainMenu() {
         try {
-
             int userInput = Integer.parseInt(input.readLine());
             MainMenuOption option = MainMenuOption.values()[userInput - 1];
 
@@ -109,10 +108,7 @@ public class ClientHandler {
     }
 
     private boolean checkClientExist(String name) {
-        if (Server.getClients().contains(name)) {
-            return true;
-        }
-        return false;
+        return ClientDB.clientExists(name);
     }
 
     private void waitRegister() {
@@ -132,7 +128,7 @@ public class ClientHandler {
             }
 
             //output.println(Messages.REGISTER_SUCESS);
-            Server.addClientToSet(name);
+            ClientDB.saveClient(name);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -197,16 +193,9 @@ public class ClientHandler {
 
     private void close() {
         try {
-            if (input != null) {
-                input.close();
-            }
-            if (output != null) {
-                output.close();
-            }
             if (!socket.isClosed()) {
                 socket.close();
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }
