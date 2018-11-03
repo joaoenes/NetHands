@@ -1,5 +1,7 @@
 package org.academiadecodigo.bootcamp.Server;
 
+import org.academiadecodigo.bootcamp.enums.Hand;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;

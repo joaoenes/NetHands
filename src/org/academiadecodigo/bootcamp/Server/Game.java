@@ -1,5 +1,7 @@
 package org.academiadecodigo.bootcamp.Server;
 
+import org.academiadecodigo.bootcamp.enums.Hand;
+
 public class Game {
 
     private ClientHandler clientHandler1;

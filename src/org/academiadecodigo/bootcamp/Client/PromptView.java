@@ -1,10 +1,12 @@
 package org.academiadecodigo.bootcamp.Client;
 
 import org.academiadecodigo.bootcamp.Prompt;
+import org.academiadecodigo.bootcamp.enums.Hand;
+import org.academiadecodigo.bootcamp.scanners.integer.IntegerInputScanner;
 import org.academiadecodigo.bootcamp.scanners.menu.MenuInputScanner;
+import org.academiadecodigo.bootcamp.scanners.string.StringInputScanner;
 
-import static org.academiadecodigo.bootcamp.Client.Messages.PICK_HAND;
-import static org.academiadecodigo.bootcamp.Client.Messages.PICK_OPTION;
+import static org.academiadecodigo.bootcamp.Client.Messages.*;
 
 public class PromptView {
 
@@ -14,7 +16,7 @@ public class PromptView {
         MenuInputScanner menu = new MenuInputScanner(hands);
         menu.setMessage(PICK_HAND);
 
-        return ClientHand.getNameByNumber(prompt.getUserInput(menu));
+        return Hand.getNameByNumber(prompt.getUserInput(menu));
     }
 
     public static String showLobbyMenu(Prompt prompt) {
@@ -25,4 +27,20 @@ public class PromptView {
 
         return ClientOption.getNameByNumber(prompt.getUserInput(menu));
     }
+
+    public static String askServerAddress(Prompt prompt) {
+        StringInputScanner server = new StringInputScanner();
+        server.setMessage(SERVER);
+
+        return prompt.getUserInput(server);
+    }
+
+    public static Integer askServerPort(Prompt prompt) {
+        IntegerInputScanner port = new IntegerInputScanner();
+        port.setMessage(PORT);
+
+        return prompt.getUserInput(port);
+    }
+
+
 }
