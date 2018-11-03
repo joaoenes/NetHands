@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class Client {
+public class ClientHandler {
 
     private String name;
     //private Hand hand;
@@ -14,7 +14,7 @@ public class Client {
     private BufferedReader input;
     private PrintWriter output;
 
-    public Client(String name, Socket socket) {
+    public ClientHandler(String name, Socket socket) {
         this.name = name;
         this.socket = socket;
         init();

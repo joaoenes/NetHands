@@ -2,16 +2,18 @@ package org.academiadecodigo.bootcamp.Server;
 
 public class Game {
 
-    private Client client1;
-    private Client client2;
-    private int client1points = 0;
-    private int client2points = 0;
-    private int currentRound = 1;
-    private int maxRounds = 5;
+    private ClientHandler clientHandler1;
+    private ClientHandler clientHandler2;
+    private int client1points;
+    private int client2points;
+    private int maxRounds;
 
-    public Game(Client client1, Client client2){
-        this.client1 = client1;
-        this.client2 = client2;
+    public Game(ClientHandler clientHandler1, ClientHandler clientHandler2){
+        this.clientHandler1 = clientHandler1;
+        this.clientHandler2 = clientHandler2;
+        this.maxRounds = 5;
+        this.client1points = 0;
+        this.client2points = 0;
     }
 
     private void roundPlay(Hand client1Hand, Hand client2Hand) {
@@ -20,25 +22,25 @@ public class Game {
             switch (client1Hand){
                 case ROCK:
                     if (client2Hand == Hand.PAPER){
-                        addPoint(client2);
+                        addPoint(clientHandler2);
                         return;
                     }
                     break;
                 case PAPER:
                     if (client2Hand == Hand.SCISSORS){
-                        addPoint(client2);
+                        addPoint(clientHandler2);
                         return;
                     }
                     break;
                 case SCISSORS:
                     if (client2Hand == Hand.ROCK){
-                        addPoint(client2);
+                        addPoint(clientHandler2);
                         return;
                     }
                     break;
             }
 
-            addPoint(client1);
+            addPoint(clientHandler1);
             return;
         }
 
@@ -46,13 +48,14 @@ public class Game {
     }
 
     public void start() {
+        int currentRound = 1;
         while (currentRound <= maxRounds) {
             System.out.println("ROUND " + currentRound + ": < Waiting for each player >");
 
             Hand client1Hand;
             Hand client2Hand;
 
-            while ((client1Hand = client1.getHand()) != null && (client2Hand = client2.getHand()) != null) {
+            while ((client1Hand = clientHandler1.getHand()) != null && (client2Hand = clientHandler2.getHand()) != null) {
                 roundPlay(client1Hand, client2Hand);
                 break;
             }
@@ -64,14 +67,14 @@ public class Game {
 
     }
 
-    private void addPoint(Client client){
-        if (client == client1){
+    private void addPoint(ClientHandler clientHandler){
+        if (clientHandler == clientHandler1){
             client1points++;
         }else{
             client2points++;
         }
 
-        System.out.println("Player "+client.getName()+" wins this round!");
+        System.out.println("Player "+ clientHandler.getName()+" wins this round!");
     }
 
     private void endGame(){
@@ -80,17 +83,17 @@ public class Game {
         String looseString = "You lost the game!";
 
         if (client1points == client2points){
-            client1.send(tieString);
-            client1.send(tieString);
+            clientHandler1.send(tieString);
+            clientHandler1.send(tieString);
         }
 
         if (client1points > client2points){
-            client1.send(winString);
-            client1.send(looseString);
+            clientHandler1.send(winString);
+            clientHandler1.send(looseString);
         }
 
-        client1.send(looseString);
-        client1.send(winString);
+        clientHandler1.send(looseString);
+        clientHandler1.send(winString);
     }
 
     public void setRounds(int maxRounds) {

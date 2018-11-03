@@ -1,9 +1,7 @@
 package org.academiadecodigo.bootcamp.Server;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.LinkedList;
@@ -29,27 +27,27 @@ public class Server {
         try {
             System.out.print("PORT: ");
             serverSocket = new ServerSocket(sacanner());
-        } catch (IOException e) {
+        } catch (IOException  e) {
             e.printStackTrace();
         }
     }
 
-    private void startGame(Client client1, Client client2) {
+    private void startGame(ClientHandler clientHandler1, ClientHandler clientHandler2) {
         cachedPool.submit(new Runnable() {
             @Override
             public void run() {
-                Game game = new Game(client1, client2);
+                Game game = new Game(clientHandler1, clientHandler2);
                 listOfGames.add(game);
                 game.start();
             }
         });
     }
 
-    private void newThread(Client client) {
+    private void newThread(ClientHandler clientHandler) {
         cachedPool.submit(new Runnable() {
             @Override
             public void run() {
-                client.run();
+                clientHandler.run();
             }
         });
     }
@@ -64,17 +62,17 @@ public class Server {
 
                 clientName = "Guess" + ++counter;
                 clientSocket1 = serverSocket.accept();
-                Client client1 = new Client(clientName, clientSocket1);
+                ClientHandler clientHandler1 = new ClientHandler(clientName, clientSocket1);
 
                 clientName = "Guess" + ++counter;
                 clientSocket2 = serverSocket.accept();
-                Client client2 = new Client(clientName, clientSocket2);
+                ClientHandler clientHandler2 = new ClientHandler(clientName, clientSocket2);
 
 
-                newThread(client1);
-                newThread(client2);
+                newThread(clientHandler1);
+                newThread(clientHandler2);
 
-                startGame(client1, client2);
+                startGame(clientHandler1, clientHandler2);
 
             } catch (IOException e) {
                 e.printStackTrace();
