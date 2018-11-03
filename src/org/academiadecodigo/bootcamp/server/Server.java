@@ -14,7 +14,7 @@ public class Server {
     private ExecutorService cachedPool;
     private Socket clientSocket;
     private List<Game> listOfGames;
-    private Set<String> clients;
+    private static Set<String> clients;
 
 
     public Server() {
@@ -51,8 +51,7 @@ public class Server {
 
             try {
 
-                clientName = "Guess" + ++counter;
-                clients.add(clientName);
+                clientName = "Guest" + ++counter;
                 clientSocket = serverSocket.accept();
                 ClientHandler clientHandler = new ClientHandler(clientName, clientSocket);
                 newThread(clientHandler);
@@ -126,6 +125,14 @@ public class Server {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static synchronized void addClientToSet(String name) {
+        clients.add(name);
+    }
+
+    public static synchronized Set<String> getClients() {
+        return clients;
     }
 
     private int scanner() {

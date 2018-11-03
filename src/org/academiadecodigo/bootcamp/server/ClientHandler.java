@@ -66,6 +66,21 @@ public class ClientHandler {
         }
     }
 
+    private void login(String name) {
+        if (Server.getClients().contains(name)) {
+            this.name = name;
+        }
+    }
+
+    private boolean register(String name) {
+        if (Server.getClients().contains(name)) {
+            return false;
+        }
+        this.name = name;
+        Server.addClientToSet(name);
+        return true;
+    }
+
     private void joinGame(){
         inGame = true;
         Server.joinGame(this);
