@@ -48,6 +48,7 @@ public class Messages {
     public static final String ROUND_PART1 = "< Round ";
     public static final String ROUND_PART2 = " >";
     public static final String WAITING = "< Waiting for each player >";
+    public static final String GAME_OVER = "< GAME OVER >";
 
     /**
      * To tell the clients the result of the round they just played
