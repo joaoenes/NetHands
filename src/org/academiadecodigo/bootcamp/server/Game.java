@@ -62,23 +62,14 @@ public class Game {
     public void start() {
         listOfClients.get(0).send(Messages.VERSUS_PART1 + listOfClients.get(1).getName() + Messages.VERSUS_PART2);
         listOfClients.get(1).send(Messages.VERSUS_PART1 + listOfClients.get(0).getName() + Messages.VERSUS_PART2);
-        String play = ServerResponse.PLAY.ordinal() + "";
+
+        Hand client1Hand;
+        Hand client2Hand;
 
         while (currentRound <= maxRounds) {
-            listOfClients.get(0).stillPlaying();
-            listOfClients.get(1).stillPlaying();
+            newRoundMessage();
 
-            listOfClients.get(0).send(play);
-            listOfClients.get(1).send(play);
-
-            listOfClients.get(0).send(Messages.ROUND_PART1 + currentRound + Messages.ROUND_PART2);
-            listOfClients.get(1).send(Messages.ROUND_PART1 + currentRound + Messages.ROUND_PART2);
-
-            listOfClients.get(0).send(Messages.WAITING);
-            listOfClients.get(1).send(Messages.WAITING);
-
-            Hand client1Hand;
-            Hand client2Hand;
+            clientWaiting();
 
             while ((client1Hand = listOfClients.get(0).getHand()) != null && (client2Hand = listOfClients.get(0).getHand()) != null) {
                 roundPlay(client1Hand, client2Hand);
@@ -88,8 +79,24 @@ public class Game {
             currentRound++;
         }
 
+        gameOver();
         endGame();
 
+    }
+
+    private void newRoundMessage(){
+        listOfClients.get(0).send(Messages.ROUND_PART1 + currentRound + Messages.ROUND_PART2);
+        listOfClients.get(1).send(Messages.ROUND_PART1 + currentRound + Messages.ROUND_PART2);
+    }
+
+    private void clientWaiting(){
+        listOfClients.get(0).send(Messages.WAITING);
+        listOfClients.get(1).send(Messages.WAITING);
+    }
+
+    private void gameOver(){
+        listOfClients.get(0).gameOver();
+        listOfClients.get(1).gameOver();
     }
 
     private void addPoint(ClientHandler clientHandler){
@@ -126,8 +133,8 @@ public class Game {
             client1status = Messages.LOST_LOG;
         }
 
-        listOfClients.get(0).setInGame(false);
-        listOfClients.get(1).setInGame(false);
+        listOfClients.get(0).setInLobby(false);
+        listOfClients.get(1).setInLobby(false);
         Score.saveLog(listOfClients.get(0) + Messages.ESCAPE_TAG + client1status + Messages.ESCAPE_TAG + listOfClients.get(1) + Messages.NEW_LINE);
         Score.saveLog(listOfClients.get(1) + Messages.ESCAPE_TAG + client2stauts + Messages.ESCAPE_TAG + listOfClients.get(2) + Messages.NEW_LINE);
     }
