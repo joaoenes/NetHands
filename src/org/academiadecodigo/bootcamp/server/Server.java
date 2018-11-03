@@ -68,20 +68,6 @@ public class Server {
         gameHandler.clientJoin(client);
     }
 
-    public static void saveLog(String buffer) {
-
-        synchronized (Game.class) {
-            FileOutputStream outputStream = null;
-            try {
-                outputStream = new FileOutputStream("resources/scoreLog.txt");
-                outputStream.write(buffer.getBytes());
-                outputStream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     private int sacanner() {
         Scanner scanner = new Scanner(System.in);
         int port = Integer.parseInt(scanner.nextLine());

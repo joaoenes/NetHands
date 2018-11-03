@@ -28,7 +28,7 @@ public class Game {
     }
 
     private void roundPlay(Hand client1Hand, Hand client2Hand) {
-
+        
         if (client1Hand != client2Hand) {
             switch (client1Hand){
                 case ROCK:
