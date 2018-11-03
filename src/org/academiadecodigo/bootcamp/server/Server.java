@@ -1,12 +1,9 @@
 package org.academiadecodigo.bootcamp.server;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -17,20 +14,24 @@ public class Server {
     private ExecutorService cachedPool;
     private Socket clientSocket;
     private List<Game> listOfGames;
+    private Set<String> clients;
+
 
     public Server() {
         cachedPool = Executors.newCachedThreadPool();
         listOfGames = new LinkedList<>();
         gameHandler = new GameHandler();
+        clients = new HashSet<>();
     }
 
     public void init() {
         try {
             System.out.print("PORT: ");
-            serverSocket = new ServerSocket(sacanner());
-        } catch (IOException  e) {
+            serverSocket = new ServerSocket(scanner());
+        } catch (IOException e) {
             e.printStackTrace();
         }
+        readClientSet();
     }
 
     private void newThread(ClientHandler clientHandler) {
@@ -51,6 +52,7 @@ public class Server {
             try {
 
                 clientName = "Guess" + ++counter;
+                clients.add(clientName);
                 clientSocket = serverSocket.accept();
                 ClientHandler clientHandler = new ClientHandler(clientName, clientSocket);
                 newThread(clientHandler);
@@ -64,7 +66,7 @@ public class Server {
         }
     }
 
-    public static void joinGame(ClientHandler client){
+    public static void joinGame(ClientHandler client) {
         gameHandler.clientJoin(client);
     }
 
@@ -82,7 +84,51 @@ public class Server {
         }
     }
 
-    private int sacanner() {
+    private void saveClientSet() {
+
+        synchronized (this) {
+            FileOutputStream outputStream = null;
+            try {
+                outputStream = new FileOutputStream("resources/clientSet.txt");
+
+                for (String name : clients) {
+                    String toWrite = name + "\n";
+                    outputStream.write(toWrite.getBytes());
+                    outputStream.flush();
+                }
+
+                outputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void readClientSet() {
+
+        synchronized (this) {
+            try {
+                FileReader reader = new FileReader("resources/clientSet.txt");
+
+                BufferedReader bufferedReader = new BufferedReader(reader);
+
+                String name = "";
+
+                while ((name = bufferedReader.readLine()) != null) {
+                    clients.add(name);
+                }
+
+                bufferedReader.close();
+
+                System.out.println(clients.toString());
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private int scanner() {
         Scanner scanner = new Scanner(System.in);
         int port = Integer.parseInt(scanner.nextLine());
         return port;
