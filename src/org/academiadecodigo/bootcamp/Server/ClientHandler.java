@@ -72,11 +72,17 @@ public class ClientHandler {
 
     public Hand getHand() {
         try {
-            String inString = input.readLine();
-            for (Hand hand : Hand.values()) {
-                if (hand.getName().equals(inString)) {
-                    return hand;
-                }
+
+            int inputHand = Integer.parseInt(input.readLine());
+            Hand option = Hand.values()[inputHand - 1];
+
+            switch (option){
+                case ROCK:
+                    return Hand.ROCK;
+                case PAPER:
+                    return Hand.PAPER;
+                case SCISSORS:
+                    return Hand.SCISSORS;
             }
 
         } catch (IOException e) {
