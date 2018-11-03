@@ -1,4 +1,4 @@
-package org.academiadecodigo.bootcamp.Server;
+package org.academiadecodigo.bootcamp.server;
 
 import java.util.LinkedList;
 import java.util.List;

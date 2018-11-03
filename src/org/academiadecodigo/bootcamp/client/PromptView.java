@@ -1,13 +1,11 @@
-package org.academiadecodigo.bootcamp.Client;
+package org.academiadecodigo.bootcamp.client;
 
 import org.academiadecodigo.bootcamp.Prompt;
-import org.academiadecodigo.bootcamp.enums.ClientOption;
-import org.academiadecodigo.bootcamp.enums.Hand;
 import org.academiadecodigo.bootcamp.scanners.integer.IntegerInputScanner;
 import org.academiadecodigo.bootcamp.scanners.menu.MenuInputScanner;
 import org.academiadecodigo.bootcamp.scanners.string.StringInputScanner;
 
-import static org.academiadecodigo.bootcamp.Client.Messages.*;
+import static org.academiadecodigo.bootcamp.client.Messages.*;
 
 public class PromptView {
 

@@ -1,4 +1,4 @@
-package org.academiadecodigo.bootcamp.Client;
+package org.academiadecodigo.bootcamp.client;
 
 import org.academiadecodigo.bootcamp.Prompt;
 import org.academiadecodigo.bootcamp.enums.ServerResponse;
@@ -10,7 +10,7 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 
-import static org.academiadecodigo.bootcamp.Client.Messages.WELCOME;
+import static org.academiadecodigo.bootcamp.client.Messages.WELCOME;
 
 public class Client {
 

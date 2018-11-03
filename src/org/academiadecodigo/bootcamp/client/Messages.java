@@ -1,4 +1,4 @@
-package org.academiadecodigo.bootcamp.Client;
+package org.academiadecodigo.bootcamp.client;
 
 public class Messages {
 
