@@ -4,6 +4,7 @@ import org.academiadecodigo.bootcamp.Prompt;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -44,7 +45,7 @@ public class Client {
         BufferedReader input;
         PrintWriter output;
 
-        String option;
+        Integer option;
         String game_option;
         String inputString;
 
@@ -52,22 +53,27 @@ public class Client {
 
         try {
             while (clientSocket.isConnected()) {
-                option = PromptView.showLobbyMenu(prompt);
-
                 output = new PrintWriter(clientSocket.getOutputStream(), true);
+                input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
+                option = PromptView.showLobbyMenu(prompt);
+                output.println(option);
 
-            }
+                inputString = input.readLine();
 
-            option = PromptView.showLobbyMenu(prompt);
+                if (inputString == null) {
+                    System.out.println("Connection closed from server side");
+                    System.exit(0);
+                }
 
-            if (option.equals("play")) {
-
-                game_option = PromptView.showGameMenu(prompt);
-                System.out.println("Game option: " + game_option);
+                responseToServer(inputString);
             }
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+    }
+
+    private void responseToServer(String input) {
+        
     }
 }
