@@ -12,14 +12,12 @@ public class Score {
 
     }
 
-    public static void saveLog(String name, int score) {
+    public static void saveLog(String line) {
 
         synchronized (Game.class) {
             FileOutputStream output = null;
 
             try {
-
-                String line = "&"+name+"&"+score;
 
                 output = new FileOutputStream(file);
 
@@ -28,7 +26,6 @@ public class Score {
                 output.flush();
 
                 output.close();
-
 
             } catch (IOException e) {
 
