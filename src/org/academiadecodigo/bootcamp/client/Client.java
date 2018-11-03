@@ -1,6 +1,7 @@
 package org.academiadecodigo.bootcamp.client;
 
 import org.academiadecodigo.bootcamp.Prompt;
+import org.academiadecodigo.bootcamp.enums.GameState;
 import org.academiadecodigo.bootcamp.enums.ServerResponse;
 
 import java.io.BufferedReader;
@@ -10,6 +11,7 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 
+import static org.academiadecodigo.bootcamp.enums.GameState.*;
 import static org.academiadecodigo.bootcamp.messages.Messages.WELCOME;
 
 public class Client {
@@ -18,11 +20,11 @@ public class Client {
     private String serverAddress;
     private Integer serverPort;
     private Socket clientSocket;
-    private Boolean inGame;
-
+    private GameState gameState;
 
     public Client() {
         prompt = new Prompt(System.in, System.out);
+        gameState = LOGIN;
     }
 
     public static void main(String[] args) {
@@ -48,31 +50,39 @@ public class Client {
         PrintWriter output;
 
         Integer option;
-        String game_option;
         Integer inputOption;
 
         System.out.println(WELCOME);
 
         try {
-            option = PromptView.showLobbyMenu(prompt);
-
             while (clientSocket.isConnected()) {
-                output = new PrintWriter(clientSocket.getOutputStream(), true);
-                input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
-                output.println(option);
+                switch (gameState) {
+                    case LOBBY:
+                        option = PromptView.showLobbyMenu(prompt);
 
-                inputOption = Integer.parseInt(input.readLine());
 
-                if (inputOption == null) {
-                    System.out.println("Connection closed from server side");
-                    System.exit(0);
+                        output = new PrintWriter(clientSocket.getOutputStream(), true);
+                        input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+
+                        output.println(option);
+
+                        inputOption = Integer.parseInt(input.readLine());
+
+                        if (inputOption == null) {
+                            System.out.println("Connection closed from server side");
+                            System.exit(0);
+                        }
+
+                        responseToServer(inputOption);
+                        break;
+
+                    case GAME:
+
                 }
-
-                option = responseToServer(inputOption);
             }
-        } catch (IOException ex) {
-            ex.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -81,10 +91,11 @@ public class Client {
 
         switch (response) {
             case PLAY:
-                inGame = true;
+                gameState = GAME;
                 return PromptView.showGameMenu(prompt);
 
             case SCORE:
+                gameState = SCORE;
                 break;
 
             case QUIT:
