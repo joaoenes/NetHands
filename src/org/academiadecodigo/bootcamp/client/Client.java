@@ -1,4 +1,4 @@
-package org.academiadecodigo.bootcamp.Client;
+package org.academiadecodigo.bootcamp.client;
 
 import org.academiadecodigo.bootcamp.Prompt;
 import org.academiadecodigo.bootcamp.enums.ServerResponse;
@@ -10,7 +10,7 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 
-import static org.academiadecodigo.bootcamp.Client.Messages.WELCOME;
+import static org.academiadecodigo.bootcamp.client.Messages.WELCOME;
 
 public class Client {
 
@@ -18,6 +18,7 @@ public class Client {
     private String serverAddress;
     private Integer serverPort;
     private Socket clientSocket;
+    private Boolean inGame;
 
 
     public Client() {
@@ -53,11 +54,12 @@ public class Client {
         System.out.println(WELCOME);
 
         try {
+            option = PromptView.showLobbyMenu(prompt);
+
             while (clientSocket.isConnected()) {
                 output = new PrintWriter(clientSocket.getOutputStream(), true);
                 input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
-                option = PromptView.showLobbyMenu(prompt);
                 output.println(option);
 
                 inputOption = Integer.parseInt(input.readLine());
@@ -67,25 +69,29 @@ public class Client {
                     System.exit(0);
                 }
 
-                responseToServer(inputOption);
+                option = responseToServer(inputOption);
             }
         } catch (IOException ex) {
             ex.printStackTrace();
         }
     }
 
-    private void responseToServer(Integer input) {
+    private Integer responseToServer(Integer input) {
         ServerResponse response = ServerResponse.values()[input];
 
         switch (response) {
             case PLAY:
-                
-                break;
+                inGame = true;
+                return PromptView.showGameMenu(prompt);
 
             case SCORE:
                 break;
 
             case QUIT:
+                break;
         }
+
+        return -1;
     }
 }
+
