@@ -11,11 +11,10 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 
-import static org.academiadecodigo.bootcamp.client.Messages.WELCOME;
+import static org.academiadecodigo.bootcamp.messages.Messages.WELCOME;
 import static org.academiadecodigo.bootcamp.enums.GameState.*;
 
 public class Client {
-
 
     private Prompt prompt;
     private String serverAddress;
