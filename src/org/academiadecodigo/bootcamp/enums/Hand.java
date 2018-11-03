@@ -1,6 +1,6 @@
-package org.academiadecodigo.bootcamp.Client;
+package org.academiadecodigo.bootcamp.enums;
 
-public enum ClientHand {
+public enum Hand {
     ROCK(1, "rock"),
     PAPER(2, "paper"),
     SCISSORS(3, "scissors");
@@ -8,7 +8,7 @@ public enum ClientHand {
     private String name;
     private Integer option;
 
-    ClientHand(Integer option, String name) {
+    Hand(Integer option, String name) {
         this.option = option;
         this.name = name;
     }
@@ -21,10 +21,19 @@ public enum ClientHand {
         return option;
     }
 
+    public static String[] getNames() {
+        String[] messages = new String[values().length];
+
+        for (Hand hand : values()) {
+            messages[hand.option - 1] = hand.name;
+        }
+        return messages;
+    }
+
     public static String getNameByNumber(Integer option) {
         String chosenHand = null;
 
-        for (ClientHand hand : values()) {
+        for (Hand hand : values()) {
             if (hand.getOption().equals(option)) {
                 chosenHand = hand.getName();
             }

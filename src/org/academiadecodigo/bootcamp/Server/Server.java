@@ -15,12 +15,12 @@ public class Server {
     private ExecutorService cachedPool;
     private Socket clientSocket1;
     private Socket clientSocket2;
-    private List<Client> listOfClients;
-    private List<Client> listOfGames;
+    private List<ClientHandler> listOfClientHandlers;
+    private List<ClientHandler> listOfGames;
 
     public Server() {
         cachedPool = Executors.newCachedThreadPool();
-        listOfClients = new LinkedList<>();
+        listOfClientHandlers = new LinkedList<>();
         listOfGames = new LinkedList<>();
     }
 
@@ -33,17 +33,17 @@ public class Server {
 
                 clientName = "Guess" + ++counter;
                 clientSocket1 = serverSocket.accept();
-                Client client1 = new Client(clientName, clientSocket1);
+                ClientHandler clientHandler1 = new ClientHandler(clientName, clientSocket1);
 
                 clientName = "Guess" + ++counter;
                 clientSocket2 = serverSocket.accept();
-                Client client2 = new Client(clientName, clientSocket2);
+                ClientHandler clientHandler2 = new ClientHandler(clientName, clientSocket2);
 
 
-                newThread(client1);
-                newThread(client2);
+                newThread(clientHandler1);
+                newThread(clientHandler2);
 
-                startGame(client1, client2);
+                startGame(clientHandler1, clientHandler2);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -55,37 +55,37 @@ public class Server {
     public void init() {
         try {
             System.out.print("PORT: ");
-            serverSocket = new ServerSocket(sacanner());
+            serverSocket = new ServerSocket(scanner());
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     private boolean checkPlayers(){
-        return listOfClients.size() % 2 == 0;
+        return listOfClientHandlers.size() % 2 == 0;
     }
 
-    private void startGame(Client client1, Client client2){
+    private void startGame(ClientHandler clientHandler1, ClientHandler clientHandler2){
         cachedPool.submit(new Runnable() {
             @Override
             public void run() {
-                Game game = new Game(client1, client2);
+                Game game = new Game(clientHandler1, clientHandler2);
                 game.start();
             }
         });
     }
 
-    private int sacanner() {
+    private int scanner() {
         Scanner scanner = new Scanner(System.in);
         int port = Integer.parseInt(scanner.nextLine());
         return port;
     }
 
-    private void newThread(Client client) {
+    private void newThread(ClientHandler clientHandler) {
         cachedPool.submit(new Runnable() {
             @Override
             public void run() {
-                client.run();
+                clientHandler.run();
             }
         });
     }
