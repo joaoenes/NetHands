@@ -56,12 +56,9 @@ public class Server {
                 ClientHandler clientHandler = new ClientHandler(clientName, clientSocket);
                 newThread(clientHandler);
 
-                //clientJoin(clientHandler1, clientHandler2);
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         }
     }
 
@@ -91,9 +88,11 @@ public class Server {
                 outputStream = new FileOutputStream("resources/clientSet.txt");
 
                 for (String name : clients) {
+
                     String toWrite = name + "\n";
                     outputStream.write(toWrite.getBytes());
                     outputStream.flush();
+                    
                 }
 
                 outputStream.close();
@@ -118,8 +117,6 @@ public class Server {
                 }
 
                 bufferedReader.close();
-
-                System.out.println(clients.toString());
 
             } catch (IOException e) {
                 e.printStackTrace();
