@@ -27,7 +27,7 @@ public class Server {
     public void init() {
         try {
             System.out.print("PORT: ");
-            serverSocket = new ServerSocket(sacanner());
+            serverSocket = new ServerSocket(scanner());
         } catch (IOException  e) {
             e.printStackTrace();
         }
@@ -82,7 +82,7 @@ public class Server {
         }
     }
 
-    private int sacanner() {
+    private int scanner() {
         Scanner scanner = new Scanner(System.in);
         int port = Integer.parseInt(scanner.nextLine());
         return port;
