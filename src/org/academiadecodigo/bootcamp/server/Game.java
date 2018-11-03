@@ -65,7 +65,9 @@ public class Game {
         String play = ServerResponse.PLAY.ordinal() + "";
 
         while (currentRound <= maxRounds) {
-
+            listOfClients.get(0).stillPlaying();
+            listOfClients.get(1).stillPlaying();
+            
             listOfClients.get(0).send(play);
             listOfClients.get(1).send(play);
 

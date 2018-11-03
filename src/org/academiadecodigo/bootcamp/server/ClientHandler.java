@@ -119,12 +119,15 @@ public class ClientHandler {
             //output.println(Messages.REGISTER_SUCESS);
             Server.addClientToSet(name);
 
-
         } catch (IOException e) {
             e.printStackTrace();
         }
 
 
+    }
+
+    public void stillPlaying(){
+        output.println(ServerResponse.PLAY.ordinal());
     }
 
     private void register(String name) {

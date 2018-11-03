@@ -8,18 +8,17 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Server {
-
+    private static File clientFile;
     private static GameHandler gameHandler;
     private ServerSocket serverSocket;
     private ExecutorService cachedPool;
     private Socket clientSocket;
-    private List<Game> listOfGames;
     private static Set<String> clients;
 
 
     public Server() {
+        clientFile = new File("resources/clientSet.txt");
         cachedPool = Executors.newCachedThreadPool();
-        listOfGames = new LinkedList<>();
         gameHandler = new GameHandler();
         clients = new HashSet<>();
     }
@@ -66,20 +65,6 @@ public class Server {
         gameHandler.clientJoin(client);
     }
 
-    public static void saveLog(String buffer) {
-
-        synchronized (Game.class) {
-            FileOutputStream outputStream = null;
-            try {
-                outputStream = new FileOutputStream("resources/scoreLog.txt");
-                outputStream.write(buffer.getBytes());
-                outputStream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     private void saveClientSet() {
 
         synchronized (this) {
@@ -106,7 +91,7 @@ public class Server {
 
         synchronized (this) {
             try {
-                FileReader reader = new FileReader("resources/clientSet.txt");
+                FileReader reader = new FileReader(clientFile);
 
                 BufferedReader bufferedReader = new BufferedReader(reader);
 
