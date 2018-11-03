@@ -67,7 +67,7 @@ public class ClientHandler {
                 waitLogin();
                 break;
             case REGISTER:
-
+                waitRegister();
                 break;
             case QUIT:
                 break;

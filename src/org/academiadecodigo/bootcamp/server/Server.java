@@ -92,7 +92,7 @@ public class Server {
                     String toWrite = name + "\n";
                     outputStream.write(toWrite.getBytes());
                     outputStream.flush();
-                    
+
                 }
 
                 outputStream.close();
@@ -126,6 +126,7 @@ public class Server {
 
     public static synchronized void addClientToSet(String name) {
         clients.add(name);
+
     }
 
     public static synchronized Set<String> getClients() {
