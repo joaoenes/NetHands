@@ -8,15 +8,21 @@ import java.util.List;
 public class Game {
 
     private List<ClientHandler> clients;
-    private int client1points = 0;
-    private int client2points = 0;
-    private int currentRound = 1;
-    private int maxRounds = 5;
+    private int[] clientScores;
+    private int currentRound;
+    private int maxRounds;
 
     public Game(ClientHandler clientHandler1, ClientHandler clientHandler2){
-        clients = new LinkedList<>();
+        init();
         clients.add(clientHandler1);
         clients.add(clientHandler2);
+    }
+
+    private void init(){
+        clients = new LinkedList<>();
+        clientScores = new int[2];
+        currentRound = 1;
+        maxRounds = 5;
     }
 
     private void roundPlay(Hand client1Hand, Hand client2Hand) {
@@ -83,11 +89,11 @@ public class Game {
         String looseString = "You lost this round!"; //ADD TO A MESSAGES CLASS
 
         if (clientHandler == clients.get(0)){
-            client1points++;
+            clientScores[0]++;
             clients.get(0).send(winString);
             clients.get(1).send(looseString);
         }else{
-            client2points++;
+            clientScores[1]++;
             clients.get(0).send(looseString);
             clients.get(1).send(winString);
         }
@@ -98,14 +104,14 @@ public class Game {
         String winString = "Congratulations, you won the game!"; //ADD TO A MESSAGES CLASS
         String looseString = "You lost the game!"; //ADD TO A MESSAGES CLASS
 
-        if (client1points == client2points){
+        if (clientScores[0] == clientScores[1]){
             clients.get(0).send(tieString);
             clients.get(1).send(tieString);
             clients.get(0).setInGame(false);
             clients.get(1).setInGame(false);
         }
 
-        if (client1points > client2points){
+        if (clientScores[0] > clientScores[1]){
             clients.get(0).send(winString);
             clients.get(1).send(looseString);
             clients.get(0).setInGame(false);
