@@ -33,19 +33,19 @@ public class Game {
             switch (client1Hand){
                 case ROCK:
                     if (client2Hand == Hand.PAPER){
-                        addPoint(listOfClients.get(1));
+                        addPoint(listOfClients.get(1), client1Hand, client2Hand);
                         return;
                     }
                     break;
                 case PAPER:
                     if (client2Hand == Hand.SCISSORS){
-                        addPoint(listOfClients.get(1));
+                        addPoint(listOfClients.get(1), client1Hand, client2Hand);
                         return;
                     }
                     break;
                 case SCISSORS:
                     if (client2Hand == Hand.ROCK){
-                        addPoint(listOfClients.get(1));
+                        addPoint(listOfClients.get(1), client1Hand, client2Hand);
                         return;
                     }
                     break;
