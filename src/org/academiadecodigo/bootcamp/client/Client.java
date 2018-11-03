@@ -57,19 +57,33 @@ public class Client {
             option = PromptView.showLobbyMenu(prompt);
 
             while (clientSocket.isConnected()) {
-                output = new PrintWriter(clientSocket.getOutputStream(), true);
-                input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                if (!inGame) {
+                    output = new PrintWriter(clientSocket.getOutputStream(),
+                            true);
+                    input = new BufferedReader(new InputStreamReader(
+                            clientSocket.getInputStream()));
 
-                output.println(option);
+                    output.println(option);
 
-                inputOption = Integer.parseInt(input.readLine());
+                    inputOption = Integer.parseInt(input.readLine());
 
-                if (inputOption == null) {
-                    System.out.println("Connection closed from server side");
-                    System.exit(0);
+                    if (inputOption == null) {
+                        System.out
+                                .println("Connection closed from server side");
+                        System.exit(0);
+                    }
+
+                    option = responseToServer(inputOption);
                 }
 
-                option = responseToServer(inputOption);
+                if(inGame) {
+                    output = new PrintWriter(clientSocket.getOutputStream(),
+                            true);
+                    input = new BufferedReader(new InputStreamReader(
+                            clientSocket.getInputStream()));
+
+                    output.println(option);
+                }
             }
         } catch (IOException ex) {
             ex.printStackTrace();
