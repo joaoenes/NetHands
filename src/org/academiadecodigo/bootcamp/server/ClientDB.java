@@ -12,8 +12,9 @@ public class ClientDB {
 
         try {
 
-            fileWriter = new FileWriter(FILE,true);
-            fileWriter.write(client+"\n");
+            fileWriter = new FileWriter(FILE, true);
+            fileWriter.write(client + "\n");
+            fileWriter.flush();
 
         } catch (IOException e) {
             e.printStackTrace();
