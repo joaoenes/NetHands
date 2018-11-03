@@ -2,18 +2,21 @@ package org.academiadecodigo.bootcamp.Server;
 
 import org.academiadecodigo.bootcamp.enums.Hand;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class Game {
 
-    private ClientHandler clientHandler1;
-    private ClientHandler clientHandler2;
+    private List<ClientHandler> clients;
     private int client1points = 0;
     private int client2points = 0;
     private int currentRound = 1;
     private int maxRounds = 5;
 
     public Game(ClientHandler clientHandler1, ClientHandler clientHandler2){
-        this.clientHandler1 = clientHandler1;
-        this.clientHandler2 = clientHandler2;
+        clients = new LinkedList<>();
+        clients.add(clientHandler1);
+        clients.add(clientHandler2);
     }
 
     private void roundPlay(Hand client1Hand, Hand client2Hand) {
@@ -22,42 +25,48 @@ public class Game {
             switch (client1Hand){
                 case ROCK:
                     if (client2Hand == Hand.PAPER){
-                        addPoint(clientHandler2);
+                        addPoint(clients.get(1));
                         return;
                     }
                     break;
                 case PAPER:
                     if (client2Hand == Hand.SCISSORS){
-                        addPoint(clientHandler2);
+                        addPoint(clients.get(1));
                         return;
                     }
                     break;
                 case SCISSORS:
                     if (client2Hand == Hand.ROCK){
-                        addPoint(clientHandler2);
+                        addPoint(clients.get(1));
                         return;
                     }
                     break;
             }
 
-            addPoint(clientHandler1);
+            addPoint(clients.get(0));
             return;
         }
         String tieString = "It's a tie!"; //ADD TO A MESSAGES CLASS
-        clientHandler1.send(tieString);
-        clientHandler2.send(tieString);
+        clients.get(0).send(tieString);
+        clients.get(1).send(tieString);
     }
 
     public void start() {
+        String versusPart1String = "You are playing against "; //ADD TO A MESSAGES CLASS
+        String versusPart2String = ", good luck!"; //ADD TO A MESSAGES CLASS
+
+        clients.get(0).send(versusPart1String + clients.get(1).getName() + versusPart2String);
+        clients.get(1).send(versusPart1String + clients.get(0).getName() + versusPart2String);
+
         while (currentRound <= maxRounds) {
             String roundString = "ROUND " + currentRound + ": < Waiting for each player >"; //ADD TO A MESSAGES CLASS
-            clientHandler1.send(roundString);
-            clientHandler2.send(roundString);
+            clients.get(0).send(roundString);
+            clients.get(1).send(roundString);
 
             Hand client1Hand;
             Hand client2Hand;
 
-            while ((client1Hand = clientHandler1.getHand()) != null && (client2Hand = clientHandler2.getHand()) != null) {
+            while ((client1Hand = clients.get(0).getHand()) != null && (client2Hand = clients.get(0).getHand()) != null) {
                 roundPlay(client1Hand, client2Hand);
                 break;
             }
@@ -73,14 +82,14 @@ public class Game {
         String winString = "You win this round!"; //ADD TO A MESSAGES CLASS
         String looseString = "You lost this round!"; //ADD TO A MESSAGES CLASS
 
-        if (clientHandler == clientHandler1){
+        if (clientHandler == clients.get(0)){
             client1points++;
-            clientHandler1.send(winString);
-            clientHandler2.send(looseString);
+            clients.get(0).send(winString);
+            clients.get(1).send(looseString);
         }else{
             client2points++;
-            clientHandler1.send(looseString);
-            clientHandler2.send(winString);
+            clients.get(0).send(looseString);
+            clients.get(1).send(winString);
         }
     }
 
@@ -90,17 +99,23 @@ public class Game {
         String looseString = "You lost the game!"; //ADD TO A MESSAGES CLASS
 
         if (client1points == client2points){
-            clientHandler1.send(tieString);
-            clientHandler2.send(tieString);
+            clients.get(0).send(tieString);
+            clients.get(1).send(tieString);
+            clients.get(0).setInGame(false);
+            clients.get(1).setInGame(false);
         }
 
         if (client1points > client2points){
-            clientHandler1.send(winString);
-            clientHandler2.send(looseString);
+            clients.get(0).send(winString);
+            clients.get(1).send(looseString);
+            clients.get(0).setInGame(false);
+            clients.get(1).setInGame(false);
         }
 
-        clientHandler1.send(looseString);
-        clientHandler2.send(winString);
+        clients.get(0).send(looseString);
+        clients.get(1).send(winString);
+        clients.get(0).setInGame(false);
+        clients.get(1).setInGame(false);
     }
 
     /**
