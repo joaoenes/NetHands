@@ -6,19 +6,19 @@ import java.util.Queue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class GameHandler {
+class GameHandler {
 
     private ExecutorService cachedPool;
     private Queue<ClientHandler> listOfClients;
     private List<Game> listOfGames;
 
-    public GameHandler(){
+    GameHandler(){
         cachedPool = Executors.newCachedThreadPool();
         listOfClients = new LinkedList<>();
         listOfGames = new LinkedList<>();
     }
 
-    public void clientJoin(ClientHandler client){
+    void clientJoin(ClientHandler client){
         listOfClients.offer(client);
         
         if(listOfClients.size() >= 2){

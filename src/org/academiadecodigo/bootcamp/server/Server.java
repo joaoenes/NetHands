@@ -8,18 +8,17 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Server {
-
+    private static File clientFile;
     private static GameHandler gameHandler;
     private ServerSocket serverSocket;
     private ExecutorService cachedPool;
     private Socket clientSocket;
-    private List<Game> listOfGames;
-    private Set<String> clients;
+    private static Set<String> clients;
 
 
     public Server() {
+        clientFile = new File("resources/clientSet.txt");
         cachedPool = Executors.newCachedThreadPool();
-        listOfGames = new LinkedList<>();
         gameHandler = new GameHandler();
         clients = new HashSet<>();
     }
@@ -51,37 +50,19 @@ public class Server {
 
             try {
 
-                clientName = "Guess" + ++counter;
-                clients.add(clientName);
+                clientName = "Guest" + ++counter;
                 clientSocket = serverSocket.accept();
                 ClientHandler clientHandler = new ClientHandler(clientName, clientSocket);
                 newThread(clientHandler);
 
-                //clientJoin(clientHandler1, clientHandler2);
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         }
     }
 
     public static void joinGame(ClientHandler client) {
         gameHandler.clientJoin(client);
-    }
-
-    public static void saveLog(String buffer) {
-
-        synchronized (Game.class) {
-            FileOutputStream outputStream = null;
-            try {
-                outputStream = new FileOutputStream("resources/scoreLog.txt");
-                outputStream.write(buffer.getBytes());
-                outputStream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     private void saveClientSet() {
@@ -92,9 +73,11 @@ public class Server {
                 outputStream = new FileOutputStream("resources/clientSet.txt");
 
                 for (String name : clients) {
+
                     String toWrite = name + "\n";
                     outputStream.write(toWrite.getBytes());
                     outputStream.flush();
+
                 }
 
                 outputStream.close();
@@ -108,7 +91,7 @@ public class Server {
 
         synchronized (this) {
             try {
-                FileReader reader = new FileReader("resources/clientSet.txt");
+                FileReader reader = new FileReader(clientFile);
 
                 BufferedReader bufferedReader = new BufferedReader(reader);
 
@@ -120,12 +103,19 @@ public class Server {
 
                 bufferedReader.close();
 
-                System.out.println(clients.toString());
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static synchronized void addClientToSet(String name) {
+        clients.add(name);
+
+    }
+
+    public static synchronized Set<String> getClients() {
+        return clients;
     }
 
     private int scanner() {
