@@ -11,10 +11,11 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 
+import static org.academiadecodigo.bootcamp.client.Messages.WELCOME;
 import static org.academiadecodigo.bootcamp.enums.GameState.*;
-import static org.academiadecodigo.bootcamp.messages.Messages.WELCOME;
 
 public class Client {
+
 
     private Prompt prompt;
     private String serverAddress;
@@ -24,7 +25,7 @@ public class Client {
 
     public Client() {
         prompt = new Prompt(System.in, System.out);
-        gameState = LOGIN;
+        gameState = LOBBY;
     }
 
     public static void main(String[] args) {
