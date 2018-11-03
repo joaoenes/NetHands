@@ -28,7 +28,7 @@ public class Game {
     }
 
     private void roundPlay(Hand client1Hand, Hand client2Hand) {
-        
+
         if (client1Hand != client2Hand) {
             switch (client1Hand){
                 case ROCK:
@@ -67,7 +67,7 @@ public class Game {
         while (currentRound <= maxRounds) {
             listOfClients.get(0).stillPlaying();
             listOfClients.get(1).stillPlaying();
-            
+
             listOfClients.get(0).send(play);
             listOfClients.get(1).send(play);
 
@@ -93,7 +93,7 @@ public class Game {
     }
 
     private void addPoint(ClientHandler clientHandler){
-        if (clientHandler == listOfClients.get(0)){
+        if (clientHandler == listOfClients.get(0)) {
             clientScores[0]++;
             listOfClients.get(0).send(Messages.ROUND_WIN);
             listOfClients.get(1).send(Messages.ROUND_LOST);

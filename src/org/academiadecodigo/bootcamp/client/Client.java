@@ -158,7 +158,7 @@ public class Client {
 
         String inputOption = input.readLine();
 
-        if(inputOption.equals("1")) {
+        if (Integer.parseInt(inputOption) == ServerResponse.PLAY.ordinal()) {
             reactionToServer(Integer.parseInt(inputOption));
             return;
         }

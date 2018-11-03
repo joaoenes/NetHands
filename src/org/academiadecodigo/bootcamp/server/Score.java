@@ -71,8 +71,8 @@ public class Score {
 
         } catch (IOException e) {
             e.printStackTrace();
-        }finally {
-            if (writer != null){
+        } finally {
+            if (writer != null) {
                 try {
                     writer.close();
                 } catch (IOException e) {

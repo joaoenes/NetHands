@@ -1,7 +1,8 @@
 package org.academiadecodigo.bootcamp.server;
 
-import org.academiadecodigo.bootcamp.enums.LobbyOption;
 import org.academiadecodigo.bootcamp.enums.Hand;
+import org.academiadecodigo.bootcamp.enums.LobbyOption;
+import org.academiadecodigo.bootcamp.enums.MainMenuOption;
 import org.academiadecodigo.bootcamp.enums.ServerResponse;
 import org.academiadecodigo.bootcamp.messages.Messages;
 
@@ -17,11 +18,14 @@ public class ClientHandler {
     private Socket socket;
     private BufferedReader input;
     private PrintWriter output;
-    private boolean inGame = false;
+    private boolean inGame;
+    private boolean logged;
 
     public ClientHandler(String name, Socket socket) {
         this.name = name;
         this.socket = socket;
+        this.inGame = false;
+        this.logged = false;
         init();
     }
 
@@ -36,10 +40,6 @@ public class ClientHandler {
 
     public String getName() {
         return name;
-    }
-
-    public Socket getSocket() {
-        return socket;
     }
 
     public void clientCommand() {
@@ -63,14 +63,28 @@ public class ClientHandler {
             case SCORE:
                 seeScore();
                 break;
-            case LOGIN:
-                waitLogin();
-                break;
-            case REGISTER:
-                waitRegister();
-                break;
             case QUIT:
                 break;
+        }
+    }
+
+    public void mainMenu() {
+        try {
+
+            int userInput = Integer.parseInt(input.readLine());
+            MainMenuOption option = MainMenuOption.values()[userInput - 1];
+
+            switch (option) {
+                case LOGIN:
+                    waitLogin();
+                    break;
+                case REGISTER:
+                    waitRegister();
+                    break;
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -84,6 +98,7 @@ public class ClientHandler {
 
             if (checkClientExist(name)) {
                 this.name = name;
+                this.logged = true;
             }
 
             output.println(Messages.INVALID_USERNAME);
@@ -106,7 +121,7 @@ public class ClientHandler {
         try {
             name = input.readLine();
 
-            if(name.trim().equals("") || name.contains(Messages.ESCAPE_TAG)){
+            if (name.trim().equals("") || name.contains(Messages.ESCAPE_TAG)) {
                 output.println(Messages.INVALID_USERNAME);
                 return;
             }
@@ -126,7 +141,7 @@ public class ClientHandler {
 
     }
 
-    public void stillPlaying(){
+    public void stillPlaying() {
         output.println(ServerResponse.PLAY.ordinal());
     }
 
@@ -170,7 +185,10 @@ public class ClientHandler {
     }
 
     public void run() {
-        clientCommand();
+        if (logged) {
+            clientCommand();
+        }
+        mainMenu();
     }
 
     public void send(String str) {

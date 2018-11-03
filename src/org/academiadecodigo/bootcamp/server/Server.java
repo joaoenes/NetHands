@@ -3,7 +3,9 @@ package org.academiadecodigo.bootcamp.server;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Scanner;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -42,6 +44,19 @@ public class Server {
         });
     }
 
+    public static synchronized void addClientToSet(String name) {
+        clients.add(name);
+
+    }
+
+    public static void joinGame(ClientHandler client) {
+        gameHandler.clientJoin(client);
+    }
+
+    public static synchronized Set<String> getClients() {
+        return clients;
+    }
+
     public void run() {
         int counter = 0;
         String clientName = "";
@@ -59,10 +74,6 @@ public class Server {
                 e.printStackTrace();
             }
         }
-    }
-
-    public static void joinGame(ClientHandler client) {
-        gameHandler.clientJoin(client);
     }
 
     private void saveClientSet() {
@@ -107,15 +118,6 @@ public class Server {
                 e.printStackTrace();
             }
         }
-    }
-
-    public static synchronized void addClientToSet(String name) {
-        clients.add(name);
-
-    }
-
-    public static synchronized Set<String> getClients() {
-        return clients;
     }
 
     private int scanner() {

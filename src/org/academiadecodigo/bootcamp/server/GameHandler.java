@@ -12,13 +12,13 @@ class GameHandler {
     private Queue<ClientHandler> listOfClients;
     private List<Game> listOfGames;
 
-    GameHandler(){
+    GameHandler() {
         cachedPool = Executors.newCachedThreadPool();
         listOfClients = new LinkedList<>();
         listOfGames = new LinkedList<>();
     }
 
-    void clientJoin(ClientHandler client){
+    void clientJoin(ClientHandler client) {
         listOfClients.offer(client);
         
         if(listOfClients.size() >= 2){
