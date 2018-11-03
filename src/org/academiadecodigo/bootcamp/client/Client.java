@@ -7,7 +7,6 @@ import org.academiadecodigo.bootcamp.client.promptview.MainMenu;
 import org.academiadecodigo.bootcamp.enums.GameState;
 import org.academiadecodigo.bootcamp.enums.ServerResponse;
 import org.academiadecodigo.bootcamp.messages.Messages;
-import org.academiadecodigo.bootcamp.server.Server;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -27,10 +26,12 @@ public class Client {
     private Integer serverPort;
     private Socket clientSocket;
     private GameState gameState;
+    private boolean guest;
 
     public Client() {
         prompt = new Prompt(System.in, System.out);
         gameState = MAIN;
+        guest = true;
     }
 
     public static void main(String[] args) {
@@ -149,11 +150,12 @@ public class Client {
         System.out.println(message);
 
         if (message.equals(Messages.INVALID_USERNAME)) {
-            reactionToServer(ServerResponse.LOGIN.ordinal());
+            gameState = LOGIN;
             return;
         }
 
-        reactionToServer(ServerResponse.LOBBY.ordinal());
+        guest = false;
+        gameState = LOBBY;
     }
 
     private void inGame() throws IOException {
@@ -173,7 +175,13 @@ public class Client {
         }
 
         System.out.println(inputOption);
-        reactionToServer(ServerResponse.LOBBY.ordinal());
+
+        if (guest) {
+            gameState = MAIN;
+        } else {
+            gameState = LOBBY;
+        }
+
     }
 }
 
