@@ -90,8 +90,8 @@ public class Game {
     }
 
     private void clientWaiting(){
-        listOfClients.get(0).send(Messages.WAITING);
-        listOfClients.get(1).send(Messages.WAITING);
+        listOfClients.get(0).send(Messages.WAITING_FOR_PLAY);
+        listOfClients.get(1).send(Messages.WAITING_FOR_PLAY);
     }
 
     private void gameOver(){

@@ -160,7 +160,7 @@ public class ClientHandler {
 
     private void joinGame() {
         inLobby = true;
-        output.println(Messages.WAITING);
+        output.println(Messages.WAITING_FOR_PLAYER);
         Server.joinGame(this);
     }
 
