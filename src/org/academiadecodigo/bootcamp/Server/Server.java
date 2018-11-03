@@ -12,15 +12,16 @@ import java.util.concurrent.Executors;
 
 public class Server {
 
+    private static GameHandler gameHandler;
     private ServerSocket serverSocket;
     private ExecutorService cachedPool;
-    private Socket clientSocket1;
-    private Socket clientSocket2;
+    private Socket clientSocket;
     private List<Game> listOfGames;
 
     public Server() {
         cachedPool = Executors.newCachedThreadPool();
         listOfGames = new LinkedList<>();
+        gameHandler = new GameHandler();
     }
 
     public void init() {
@@ -30,17 +31,6 @@ public class Server {
         } catch (IOException  e) {
             e.printStackTrace();
         }
-    }
-
-    private void startGame(ClientHandler clientHandler1, ClientHandler clientHandler2) {
-        cachedPool.submit(new Runnable() {
-            @Override
-            public void run() {
-                Game game = new Game(clientHandler1, clientHandler2);
-                listOfGames.add(game);
-                game.start();
-            }
-        });
     }
 
     private void newThread(ClientHandler clientHandler) {
@@ -61,24 +51,21 @@ public class Server {
             try {
 
                 clientName = "Guess" + ++counter;
-                clientSocket1 = serverSocket.accept();
-                ClientHandler clientHandler1 = new ClientHandler(clientName, clientSocket1);
+                clientSocket = serverSocket.accept();
+                ClientHandler clientHandler = new ClientHandler(clientName, clientSocket);
+                newThread(clientHandler);
 
-                clientName = "Guess" + ++counter;
-                clientSocket2 = serverSocket.accept();
-                ClientHandler clientHandler2 = new ClientHandler(clientName, clientSocket2);
-
-
-                newThread(clientHandler1);
-                newThread(clientHandler2);
-
-                startGame(clientHandler1, clientHandler2);
+                //clientJoin(clientHandler1, clientHandler2);
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
         }
+    }
+
+    public static void joinGame(ClientHandler client){
+        gameHandler.clientJoin(client);
     }
 
     public static void saveLog(String buffer) {

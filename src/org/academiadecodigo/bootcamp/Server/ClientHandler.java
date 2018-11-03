@@ -1,5 +1,6 @@
 package org.academiadecodigo.bootcamp.Server;
 
+import org.academiadecodigo.bootcamp.enums.ClientOption;
 import org.academiadecodigo.bootcamp.enums.Hand;
 
 import java.io.BufferedReader;
@@ -11,10 +12,10 @@ import java.net.Socket;
 public class ClientHandler {
 
     private String name;
-    //private Hand hand;
     private Socket socket;
     private BufferedReader input;
     private PrintWriter output;
+    private boolean inGame = false;
 
     public ClientHandler(String name, Socket socket) {
         this.name = name;
@@ -35,36 +36,45 @@ public class ClientHandler {
         return name;
     }
 
-    /*public Hand getHand() {
-        return receive();
-    }*/
-
-    /*public void setHand(Hand hand) {
-        this.hand = hand;
-    }*/
-
     public Socket getSocket() {
         return socket;
+    }
+
+    public void clientCommand() {
+
+        while (!inGame) {
+            try {
+                int userInput = Integer.parseInt(input.readLine());
+                checkOption(ClientOption.values()[userInput - 1]);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    public void checkOption(ClientOption option) {
+        switch (option) {
+            case PLAY:
+                inGame = true;
+                Server.joinGame(this);
+                break;
+            case SCORE:
+                break;
+            case QUIT:
+                break;
+        }
+    }
+
+    public void setInGame(boolean inGame) {
+        this.inGame = inGame;
     }
 
     public Hand getHand() {
         try {
             String inString = input.readLine();
-
-            /*if (inString == null || inString == "quit") {
-                System.out.println(getName() + " DISCONNECTED FROM THE SERVER!");
-                close();
-                return;
-            }
-
-            if (inString == "repeat") {
-                //to implement
-                return;
-            }*/
-
             for (Hand hand : Hand.values()) {
                 if (hand.getName().equals(inString)) {
-                    //this.hand = hand;
                     return hand;
                 }
             }
@@ -72,12 +82,11 @@ public class ClientHandler {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return null;
     }
 
-    public void run(){
-
+    public void run() {
+        clientCommand();
     }
 
     public void send(String str) {

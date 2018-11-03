@@ -1,4 +1,4 @@
-package org.academiadecodigo.bootcamp.Client;
+package org.academiadecodigo.bootcamp.enums;
 
 public enum ClientOption {
     PLAY(1, "play"),
