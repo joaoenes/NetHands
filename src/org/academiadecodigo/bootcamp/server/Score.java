@@ -77,6 +77,6 @@ public class Score {
                     e.printStackTrace();
                 }
             }
-        }
+        }    
     }
 }
