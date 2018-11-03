@@ -185,11 +185,10 @@ public class Client {
             System.out.println(inputOption);
 
             option = gameMenu.show();
+            output.println(option);
 
             inputOption = input.readLine();
         }
-
-
 
         if (guest) {
             gameState = MAIN;
