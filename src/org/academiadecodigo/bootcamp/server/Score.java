@@ -60,14 +60,12 @@ public class Score {
 
     public static synchronized void saveLog(String line) {
 
-        BufferedWriter writer = null;
+        FileWriter writer = null;
 
         try {
-            writer = new BufferedWriter(new FileWriter(file));
+            writer = new FileWriter(file);
 
-            writer.write(line, 0, line.length());
-
-            writer.flush();
+            writer.write(line);
 
         } catch (IOException e) {
             e.printStackTrace();
