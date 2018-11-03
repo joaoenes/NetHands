@@ -120,6 +120,7 @@ public class Client {
         System.out.println("Your option is: " + option);
         
         output.println(option);
+        System.out.println("message sent");
 
         String message = input.readLine();
         System.out.println(message);
@@ -165,21 +166,30 @@ public class Client {
 
     private void inGame() throws IOException {
         GameMenu gameMenu = new GameMenu(prompt);
-        Integer option = gameMenu.show();
+        Integer option;
+        String inputOption;
 
         PrintWriter output = new PrintWriter(clientSocket.getOutputStream(), true);
         BufferedReader input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
-        output.println(option);
+        inputOption = input.readLine();
+        System.out.println(inputOption);
 
-        String inputOption = input.readLine();
+        inputOption = input.readLine();
 
-        if (Integer.parseInt(inputOption) == ServerResponse.PLAY.ordinal()) {
-            reactionToServer(Integer.parseInt(inputOption));
-            return;
+        while(!inputOption.equals(Messages.GAME_OVER)) {
+
+            System.out.println(inputOption);
+
+            inputOption = input.readLine();
+            System.out.println(inputOption);
+
+            option = gameMenu.show();
+
+            inputOption = input.readLine();
         }
 
-        System.out.println(inputOption);
+
 
         if (guest) {
             gameState = MAIN;
