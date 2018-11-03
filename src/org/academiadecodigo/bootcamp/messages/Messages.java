@@ -11,10 +11,13 @@ public class Messages {
     /**
      * To show to show when connected to server
      */
-    public static final String LOGIN = "Enter your username and password: ";
+    public static final String LOGIN = "Login ";
     public static final String WELCOME = "Welcome to Net Hands!";
     public static final String PICK_OPTION = "What do you want to do?";
-    
+    public static final String GUEST = "Play as guest";
+    public static final String REGISTER = "Register";
+    public static final String INVALID_USERNAME = "Invalid username";
+
     /**
      * Descriptions of the options of the client prompt
      */
