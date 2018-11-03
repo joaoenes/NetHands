@@ -60,7 +60,28 @@ public class Score {
 
     public static synchronized void saveLog(String line) {
 
-        FileOutputStream output = null;
+        BufferedWriter writer = null;
+
+        try {
+            writer = new BufferedWriter(new FileWriter(file));
+
+            writer.write(line, 0, line.length());
+
+            writer.flush();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            if (writer != null){
+                try {
+                    writer.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        /*FileOutputStream output = null;
 
         try {
 
@@ -85,7 +106,7 @@ public class Score {
                     e.printStackTrace();
                 }
             }
-        }
+        }*/
     }
 
 }
