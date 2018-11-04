@@ -74,7 +74,7 @@ public class ClientHandler {
                     waitLogin();
                     break;
                 case GUEST:
-                    guestPlay();
+                    joinGame();
                     break;
                 case REGISTER:
                     waitRegister();
@@ -91,10 +91,6 @@ public class ClientHandler {
 
     private void seeScore() {
         output.println(Score.readScore(name));
-    }
-
-    private void guestPlay() {
-        Server.joinGame(this);
     }
 
     private void waitLogin() {

@@ -1,1 +1,1 @@
-Guest1[/$]WON[/$]Guest2
+Guest2[/$]LOST[/$]Guest1

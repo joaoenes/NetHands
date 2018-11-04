@@ -5,6 +5,8 @@ import org.academiadecodigo.bootcamp.client.promptview.GameMenu;
 import org.academiadecodigo.bootcamp.client.promptview.LobbyMenu;
 import org.academiadecodigo.bootcamp.client.promptview.MainMenu;
 import org.academiadecodigo.bootcamp.enums.GameState;
+import org.academiadecodigo.bootcamp.enums.LobbyOption;
+import org.academiadecodigo.bootcamp.enums.MainMenuOption;
 import org.academiadecodigo.bootcamp.enums.ServerResponse;
 import org.academiadecodigo.bootcamp.messages.Messages;
 
@@ -16,15 +18,14 @@ import java.net.InetAddress;
 import java.net.Socket;
 
 import static org.academiadecodigo.bootcamp.enums.GameState.*;
-import static org.academiadecodigo.bootcamp.messages.Messages.WELCOME;
 
 public class Client {
 
 
     private Prompt prompt;
-    private String serverAddress;
-    private Integer serverPort;
     private Socket clientSocket;
+    private PrintWriter output;
+    private BufferedReader input;
     private GameState gameState;
     private boolean guest;
 
@@ -42,8 +43,8 @@ public class Client {
     }
 
     private void init() {
-        serverAddress = PromptView.askServerAddress(prompt);
-        serverPort = PromptView.askServerPort(prompt);
+        String serverAddress = PromptView.askServerAddress(prompt);
+        Integer serverPort = PromptView.askServerPort(prompt);
 
         try {
             clientSocket = new Socket(InetAddress.getByName(serverAddress), serverPort);
@@ -53,11 +54,14 @@ public class Client {
     }
 
     private void run() {
-
-        System.out.println(WELCOME);
-
         try {
-            while (clientSocket.isConnected()) {
+            output = new PrintWriter(clientSocket.getOutputStream(), true);
+            input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+
+            System.out.println(Messages.WELCOME);
+
+
+            while (!clientSocket.isClosed()) {
 
                 switch (gameState) {
                     case MAIN:
@@ -75,10 +79,16 @@ public class Client {
                     case GAME:
                         inGame();
                         break;
+
+                    case QUIT:
+                        clientSocket.close();
                 }
             }
+
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            closeStreams();
         }
     }
 
@@ -106,6 +116,7 @@ public class Client {
                 break;
 
             case QUIT:
+                gameState = QUIT;
                 break;
         }
     }
@@ -114,10 +125,12 @@ public class Client {
         LobbyMenu lobbyMenu = new LobbyMenu(prompt);
         Integer option = lobbyMenu.show();
 
-        PrintWriter output = new PrintWriter(clientSocket.getOutputStream(), true);
-        BufferedReader input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-
         output.println(option);
+
+        if (option - 1 == LobbyOption.QUIT.ordinal()) {
+            gameState = QUIT;
+            return;
+        }
 
         String message = input.readLine();
         System.out.println(message);
@@ -131,10 +144,17 @@ public class Client {
         MainMenu mainMenu = new MainMenu(prompt);
         Integer option = mainMenu.show();
 
-        PrintWriter output = new PrintWriter(clientSocket.getOutputStream(), true);
-        BufferedReader input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-
         output.println(option);
+
+        if (option - 1 == MainMenuOption.QUIT.ordinal()) {
+            gameState = QUIT;
+            return;
+        }
+
+        if (option - 1 == MainMenuOption.GUEST.ordinal()) {
+            String message = input.readLine();
+            System.out.println(message);
+        }
 
         Integer inputOption = Integer.parseInt(input.readLine());
 
@@ -143,9 +163,6 @@ public class Client {
 
     private void inLogin() throws IOException {
         String username = PromptView.askUsername(prompt);
-
-        PrintWriter output = new PrintWriter(clientSocket.getOutputStream(), true);
-        BufferedReader input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
         output.println(username);
 
@@ -159,22 +176,21 @@ public class Client {
 
         guest = false;
         gameState = LOBBY;
+
     }
 
     private void inGame() throws IOException {
+
         GameMenu gameMenu = new GameMenu(prompt);
         Integer option;
         String inputOption;
-
-        PrintWriter output = new PrintWriter(clientSocket.getOutputStream(), true);
-        BufferedReader input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
         inputOption = input.readLine();
         System.out.println(inputOption);
 
         inputOption = input.readLine();
 
-        while(!inputOption.equals(Messages.GAME_OVER)) {
+        while (!inputOption.equals(Messages.GAME_OVER)) {
 
             System.out.println(Messages.NEW_LINE + inputOption);
 
@@ -198,7 +214,29 @@ public class Client {
         } else {
             gameState = LOBBY;
         }
+    }
 
+    private void closeStreams() {
+        try {
+            if (output != null) {
+                output.close();
+            }
+        } finally {
+            try {
+                if (input != null) {
+                    input.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    if (!clientSocket.isClosed()) {
+                        clientSocket.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }
-
