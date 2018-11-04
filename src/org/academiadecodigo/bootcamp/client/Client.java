@@ -179,16 +179,22 @@ public class Client {
 
         while(!inputOption.equals(Messages.GAME_OVER)) {
 
-            System.out.println(inputOption);
-
-            inputOption = input.readLine();
-            System.out.println(inputOption);
+            System.out.println(Messages.NEW_LINE + inputOption);
 
             option = gameMenu.show();
+            System.out.println(Messages.WAITING_FOR_PLAY);
             output.println(option);
 
             inputOption = input.readLine();
+            System.out.println(Messages.NEW_LINE + inputOption);
+
+            inputOption = input.readLine();
         }
+
+        System.out.println(Messages.NEW_LINE + inputOption);
+
+        inputOption = input.readLine();
+        System.out.println(Messages.NEW_LINE + inputOption);
 
         if (guest) {
             gameState = MAIN;
