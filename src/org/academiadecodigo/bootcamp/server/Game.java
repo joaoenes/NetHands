@@ -63,25 +63,54 @@ public class Game {
         listOfClients.get(0).send(Messages.VERSUS_PART1 + listOfClients.get(1).getName() + Messages.VERSUS_PART2);
         listOfClients.get(1).send(Messages.VERSUS_PART1 + listOfClients.get(0).getName() + Messages.VERSUS_PART2);
 
-        Hand client1Hand;
-        Hand client2Hand;
+
 
         while (currentRound <= maxRounds) {
             newRoundMessage();
 
             clientWaiting();
 
-            while ((client1Hand = listOfClients.get(0).getHand()) != null && (client2Hand = listOfClients.get(1).getHand()) != null) {
-                roundPlay(client1Hand, client2Hand);
-                break;
-            }
+            roundHands();
 
             currentRound++;
         }
 
         gameOver();
         endGame();
+    }
 
+    private void roundHands(){
+
+        final Hand[] clientHands = new Hand[2];
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                clientHands[0] = listOfClients.get(0).getHand();
+            }
+        }).start();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                clientHands[1] = listOfClients.get(1).getHand();
+            }
+        }).start();
+
+
+        while (clientHands[0] == null || clientHands[1] == null) {
+
+
+            if(clientHands[0] != null){
+                listOfClients.get(0).send(Messages.WAITING_FOR_PLAYER);
+            }
+
+            if(clientHands[1] != null){
+                listOfClients.get(1).send(Messages.WAITING_FOR_PLAYER);
+            }
+        }
+
+        roundPlay(clientHands[0], clientHands[1]);
     }
 
     private void newRoundMessage(){

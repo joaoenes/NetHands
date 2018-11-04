@@ -176,16 +176,7 @@ public class ClientHandler {
         try {
 
             int inputHand = Integer.parseInt(input.readLine());
-            Hand option = Hand.values()[inputHand - 1];
-
-            switch (option) {
-                case ROCK:
-                    return Hand.ROCK;
-                case PAPER:
-                    return Hand.PAPER;
-                case SCISSORS:
-                    return Hand.SCISSORS;
-            }
+            return Hand.values()[inputHand - 1];
 
         } catch (IOException e) {
             e.printStackTrace();
