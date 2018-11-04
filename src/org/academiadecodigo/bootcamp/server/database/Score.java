@@ -21,11 +21,10 @@ public class Score {
                 lineWords = line.split(Messages.ESCAPE_TAG_REGEX);
 
                 if (lineWords[0].equals(clientName)) {
-
                     if (lineWords[1].equals(Messages.TIE_LOG)) {
                         score = score + 1;
-                        break;
                     }
+
                     if (lineWords[1].equals(Messages.WON_LOG)) {
                         score = score + 2;
                     }

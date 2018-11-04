@@ -18,3 +18,9 @@ Guest1[*]LOST[*]Guest2
 Guest2[*]TIE[*]Guest1
 Guest1[*]WON[*]Guest2
 Guest2[*]LOST[*]Guest1
+Guest2[*]LOST[*]MrDuck
+MrDuck[*]WON[*]Guest2
+Guest2[*]LOST[*]MrDuck
+MrDuck[*]WON[*]Guest2
+MrDuck[*]WON[*]Guest2
+Guest2[*]LOST[*]MrDuck
