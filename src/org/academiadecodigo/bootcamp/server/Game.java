@@ -111,7 +111,6 @@ class Game {
     }
 
     private void endGame(){
-
         String client1status = Messages.WON_LOG;
         String client2stauts = Messages.WON_LOG;
 

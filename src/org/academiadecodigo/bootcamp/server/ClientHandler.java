@@ -1,7 +1,7 @@
 package org.academiadecodigo.bootcamp.server;
 import org.academiadecodigo.bootcamp.enums.*;
 import org.academiadecodigo.bootcamp.messages.Messages;
-import org.academiadecodigo.bootcamp.server.database.ClientDB;
+import org.academiadecodigo.bootcamp.server.database.Client;
 import org.academiadecodigo.bootcamp.server.database.Score;
 
 import java.io.BufferedReader;
@@ -112,27 +112,30 @@ class ClientHandler {
     }
 
     private boolean checkClientExist(String name) {
-        return ClientDB.clientExists(name);
+        return Client.clientExists(name);
     }
 
     private void waitRegister() {
-        String name = null;
+        String name;
 
         try {
+            output.println(ServerResponse.REGISTER.ordinal());
             name = input.readLine();
 
             if (name.trim().equals("") || name.contains(Messages.ESCAPE_TAG)) {
                 output.println(Messages.INVALID_USERNAME);
+                waitRegister();
                 return;
             }
 
             if (checkClientExist(name)) {
-                // output.println(Messages.REGISTER_NAME_EXIST);
+                output.println(Messages.REGISTER_NAME_EXIST);
+                waitRegister();
                 return;
             }
 
-            //output.println(Messages.REGISTER_SUCESS);
-            ClientDB.saveClient(name);
+            output.println(Messages.REGISTER_SUCESS);
+            Client.saveClient(name);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -141,10 +144,6 @@ class ClientHandler {
 
     void gameOver() {
         output.println(Messages.GAME_OVER);
-    }
-
-    private void register(String name) {
-
     }
 
     void goToMenu(){

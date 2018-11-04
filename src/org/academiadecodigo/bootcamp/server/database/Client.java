@@ -2,9 +2,9 @@ package org.academiadecodigo.bootcamp.server.database;
 
 import java.io.*;
 
-public class ClientDB {
+public class Client {
 
-    public static final File FILE = new File("resources/clientSet.txt");
+    public static final File FILE = new File("resources/clientList.txt");
 
     public static synchronized void saveClient(String client) {
 
