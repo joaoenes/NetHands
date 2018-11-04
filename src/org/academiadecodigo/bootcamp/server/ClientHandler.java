@@ -51,7 +51,6 @@ public class ClientHandler {
                 e.printStackTrace();
             }
         }
-
     }
 
     public void checkOption(LobbyOption option) {
@@ -63,6 +62,7 @@ public class ClientHandler {
                 seeScore();
                 break;
             case QUIT:
+                close();
                 break;
         }
     }
