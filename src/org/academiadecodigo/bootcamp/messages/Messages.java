@@ -12,6 +12,7 @@ public class Messages {
      * To show to show when connected to server
      */
     public static final String LOGIN = "Login ";
+    public static final String PASSWORD = "Insert your password now";
     public static final String WELCOME = "Welcome to Net Hands!";
     public static final String PICK_OPTION = "What do you want to do?";
     public static final String GUEST = "Play as guest";
@@ -28,8 +29,10 @@ public class Messages {
      * After Login
      */
     public static final String ASK_USERNAME = "Username: ";
+    public static final String ASK_PASSWORD = "Password: ";
     public static final String SUCCESSFUL_LOGIN = "Welcome ";
     public static final String INVALID_USERNAME = "Invalid username";
+    public static final String INVALID_PASSWORD = "Invalid password";
 
     /**
      * Descriptions of the options of the client prompt

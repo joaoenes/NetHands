@@ -70,6 +70,10 @@ public class Client {
                         inLogin();
                         break;
 
+                    case PASSWORD:
+                        inPassWord();
+                        break;
+
                     case GAME:
                         inGame();
                         break;
@@ -92,6 +96,7 @@ public class Client {
             closeStreams();
         }
     }
+
 
     private void reactionToServer(Integer input) {
         ServerResponse response = ServerResponse.values()[input];
@@ -118,6 +123,8 @@ public class Client {
             case REGISTER:
                 gameState = REGISTER;
                 break;
+            case PASSWORD:
+                gameState = PASSWORD;
 
             case QUIT:
                 gameState = QUIT;
@@ -151,6 +158,7 @@ public class Client {
 
         output.println(option);
 
+
         if (option - 1 == MainMenuOption.QUIT.ordinal()) {
             gameState = QUIT;
             return;
@@ -168,15 +176,14 @@ public class Client {
         output.println(username);
 
         String message = input.readLine();
-        System.out.println(message);
 
         if (message.equals(Messages.INVALID_USERNAME)) {
+            System.out.println(message);
             gameState = LOGIN;
             return;
         }
 
-        guest = false;
-        gameState = LOBBY;
+        gameState = PASSWORD;
     }
 
     private void inGame() throws IOException {
@@ -236,6 +243,22 @@ public class Client {
         gameState = LOBBY;
     }
 
+    private void inPassWord() throws IOException {
+             StringQuestion usernameQuestion = new StringQuestion(prompt, Messages.ASK_PASSWORD);
+             String passWord = usernameQuestion.askPass();
+             output.println(passWord);
+
+             String message = input.readLine();
+            System.out.println(message);
+
+       if (message.equals(Messages.INVALID_PASSWORD)) {
+            gameState = PASSWORD;
+            return;
+        }
+        System.out.println("teste");
+        guest = false;
+        gameState = LOBBY;
+    }
     private void inScore(){
         try {
             String messages = input.readLine();

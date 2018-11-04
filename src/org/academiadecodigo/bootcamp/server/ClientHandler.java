@@ -98,21 +98,32 @@ class ClientHandler {
     private void waitLogin() {
         try {
             String name = input.readLine();
-
             if (checkClientExist(name)) {
                 this.name = name;
-                this.logged = true;
-                output.println(Messages.SUCCESSFUL_LOGIN + name);
-                loggedMenu();
+                checkPassword();
+                System.out.println("teasd");
+                goToMenu();
                 return;
             }
-
             output.println(Messages.INVALID_USERNAME);
             waitLogin();
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void checkPassword() throws IOException {
+        output.println(Messages.PASSWORD);
+        String password  = input.readLine();
+
+         if(Client.checkPass(this.name, password)){
+             this.logged = true;
+             output.println(Messages.SUCCESSFUL_LOGIN + this.name);
+             return;
+         }
+        output.println(Messages.INVALID_PASSWORD);
+        checkPassword();
     }
 
     private boolean checkClientExist(String name) {
