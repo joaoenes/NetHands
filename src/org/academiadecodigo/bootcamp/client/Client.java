@@ -37,7 +37,7 @@ public class Client {
         client.run();
     }
 
-    private void init() {
+    public void init() {
         StringQuestion serverQuestion = new StringQuestion(prompt,
                 Messages.SERVER);
         String         serverAddress  = serverQuestion.ask();
@@ -54,7 +54,7 @@ public class Client {
         }
     }
 
-    private void run() {
+    public void run() {
         try {
             output = new PrintWriter(clientSocket.getOutputStream(), true);
             input = new BufferedReader(
@@ -128,7 +128,6 @@ public class Client {
         }
 
         int inputOption = Integer.parseInt(input.readLine());
-
         clientState = ServerResponse.values()[inputOption];
     }
 
