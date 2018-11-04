@@ -126,6 +126,11 @@ public class Client {
             return;
         }
 
+        if (option - 1 == MainMenuOption.GUEST.ordinal()) {
+            String message = input.readLine();
+            System.out.println(message);
+        }
+
         int inputOption = Integer.parseInt(input.readLine());
         clientState = ServerResponse.values()[inputOption];
     }
