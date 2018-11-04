@@ -5,10 +5,9 @@ import org.academiadecodigo.bootcamp.messages.Messages;
 
 public class LobbyMenu extends Menu{
 
-    String[] options = { Messages.PLAY, Messages.SCORE, Messages.QUIT };
-
     public LobbyMenu(Prompt prompt) {
         super(prompt);
+        String[] options = {Messages.PLAY, Messages.SCORE, Messages.QUIT};
         setOptions(options);
     }
 

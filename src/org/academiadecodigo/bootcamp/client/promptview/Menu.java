@@ -10,7 +10,7 @@ public abstract class Menu {
     private Prompt prompt;
     private String[] options;
 
-    protected Menu(Prompt prompt) {
+    Menu(Prompt prompt) {
         this.prompt = prompt;
     }
 
@@ -21,15 +21,11 @@ public abstract class Menu {
         return getPrompt().getUserInput(menu);
     }
 
-    public Prompt getPrompt() {
+    private Prompt getPrompt() {
         return prompt;
     }
 
-    public void setOptions(String[] options) {
+    void setOptions(String[] options) {
         this.options = options;
-    }
-
-    public String[] getOptions() {
-        return options;
     }
 }

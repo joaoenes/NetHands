@@ -4,13 +4,13 @@ import org.academiadecodigo.bootcamp.messages.Messages;
 
 import java.io.*;
 
-public class Score {
+class Score {
 
     private static final String PATH_SCORELOG = "scoreLog.txt";
     private static final String ROOT_PATH = "resources/";
     private static final File file = new File(ROOT_PATH + PATH_SCORELOG);
 
-    public static synchronized String readScore(String clientName) {
+    static synchronized String readScore(String clientName) {
         BufferedReader reader = null;
         int score = 0;
 
@@ -40,8 +40,6 @@ public class Score {
             }
 
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -58,7 +56,7 @@ public class Score {
 
     }
 
-    public static synchronized void saveLog(String line) {
+    static synchronized void saveLog(String line) {
 
         FileWriter writer = null;
 

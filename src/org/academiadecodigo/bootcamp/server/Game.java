@@ -1,25 +1,21 @@
 package org.academiadecodigo.bootcamp.server;
 
 import org.academiadecodigo.bootcamp.enums.Hand;
-import org.academiadecodigo.bootcamp.enums.ServerResponse;
 import org.academiadecodigo.bootcamp.messages.Messages;
-
 import java.util.LinkedList;
 import java.util.List;
 
-public class Game {
+class Game {
 
     private List<ClientHandler> listOfClients;
     private int[] clientScores;
     private int currentRound;
     private int maxRounds;
-    private boolean state;
 
-    public Game(ClientHandler clientHandler1, ClientHandler clientHandler2){
+    Game(ClientHandler clientHandler1, ClientHandler clientHandler2){
         init();
         listOfClients.add(clientHandler1);
         listOfClients.add(clientHandler2);
-        state = false;
     }
 
     private void init(){
@@ -29,9 +25,6 @@ public class Game {
         maxRounds = 1;
     }
 
-    public boolean isState() {
-        return state;
-    }
 
     private void roundPlay(Hand client1Hand, Hand client2Hand) {
 
@@ -65,7 +58,7 @@ public class Game {
         listOfClients.get(1).send(listOfClients.get(0).getName() + Messages.OPPONENT_PLAYED + client1Hand + Messages.ROUND_TIE);
     }
 
-    public void start() {
+    void start() {
         listOfClients.get(0).send(Messages.VERSUS_PART1 + listOfClients.get(1).getName() + Messages.VERSUS_PART2);
         listOfClients.get(1).send(Messages.VERSUS_PART1 + listOfClients.get(0).getName() + Messages.VERSUS_PART2);
 
@@ -144,6 +137,5 @@ public class Game {
                 listOfClients.get(1).getName() + Messages.NEW_LINE);
         Score.saveLog(listOfClients.get(1).getName() + Messages.ESCAPE_TAG + client2stauts + Messages.ESCAPE_TAG +
                 listOfClients.get(2).getName() + Messages.NEW_LINE);
-        state = true;
     }
 }

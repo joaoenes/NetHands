@@ -1,7 +1,6 @@
 package org.academiadecodigo.bootcamp.server;
 
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -10,12 +9,10 @@ class GameHandler {
 
     private ExecutorService cachedPool;
     private Queue<ClientHandler> listOfClients;
-    private List<Game> listOfGames;
 
     GameHandler() {
         cachedPool = Executors.newCachedThreadPool();
         listOfClients = new LinkedList<>();
-        listOfGames = new LinkedList<>();
     }
 
     void clientJoin(ClientHandler client) {
@@ -37,9 +34,7 @@ class GameHandler {
         cachedPool.submit(new Runnable() {
             @Override
             public void run() {
-                Game game = new Game(clientHandler1, clientHandler2);
-                listOfGames.add(game);
-                game.start();
+                new Game(clientHandler1, clientHandler2).start();
             }
         });
     }

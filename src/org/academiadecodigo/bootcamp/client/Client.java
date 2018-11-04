@@ -19,11 +19,7 @@ import static org.academiadecodigo.bootcamp.enums.GameState.*;
 import static org.academiadecodigo.bootcamp.messages.Messages.WELCOME;
 
 public class Client {
-
-
     private Prompt prompt;
-    private String serverAddress;
-    private Integer serverPort;
     private Socket clientSocket;
     private GameState gameState;
     private boolean guest;
@@ -42,8 +38,8 @@ public class Client {
     }
 
     private void init() {
-        serverAddress = PromptView.askServerAddress(prompt);
-        serverPort = PromptView.askServerPort(prompt);
+        String serverAddress = PromptView.askServerAddress(prompt);
+        Integer serverPort = PromptView.askServerPort(prompt);
 
         try {
             clientSocket = new Socket(InetAddress.getByName(serverAddress), serverPort);
@@ -174,7 +170,7 @@ public class Client {
 
         inputOption = input.readLine();
 
-        while(!inputOption.equals(Messages.GAME_OVER)) {
+        while (!inputOption.equals(Messages.GAME_OVER)) {
 
             System.out.println(Messages.NEW_LINE + inputOption);
 
