@@ -135,6 +135,8 @@ public class Client {
                 Messages.ASK_USERNAME);
         String         username         = usernameQuestion.ask();
 
+
+
         output.println(username);
 
         String message = input.readLine();
