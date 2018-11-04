@@ -38,7 +38,7 @@ class ClientHandler {
         return name;
     }
 
-    private void clientCommand() {
+    private void loggedMenu() {
         try {
             int userInput = Integer.parseInt(input.readLine());
             checkOption(LobbyOption.values()[userInput - 1]);
@@ -102,7 +102,7 @@ class ClientHandler {
                 this.name = name;
                 this.logged = true;
                 output.println(Messages.SUCCESSFUL_LOGIN + name);
-                clientCommand();
+                loggedMenu();
                 return;
             }
 
@@ -149,7 +149,7 @@ class ClientHandler {
 
     void goToMenu(){
         if(logged){
-            clientCommand();
+            loggedMenu();
             return;
         }
         mainMenu();

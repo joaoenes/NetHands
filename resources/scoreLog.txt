@@ -1,5 +1,2 @@
-
-teste
-asdasdasd
-Guest1[*]WON[*]teste
-
+Guest2[*]LOST[*]MrDuck
+MrDuck[*]WON[*]Guest2
