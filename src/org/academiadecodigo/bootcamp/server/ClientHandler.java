@@ -83,7 +83,7 @@ public class ClientHandler {
                     waitRegister();
                     break;
                 case QUIT:
-
+                    close();
                     break;
             }
 
@@ -146,8 +146,6 @@ public class ClientHandler {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
 
     public void gameOver() {
