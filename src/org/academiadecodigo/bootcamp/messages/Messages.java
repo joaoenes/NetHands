@@ -48,7 +48,7 @@ public class Messages {
     public static final String VERSUS_PART2 = ", good luck! >";
     public static final String ROUND_PART1 = "< ROUND ";
     public static final String ROUND_PART2 = " >";
-    public static final String WAITING_FOR_PLAY = "< Waiting for each play >";
+    public static final String WAITING_FOR_PLAY = "< Waiting for opponent to play >";
     public static final String GAME_OVER = "< GAME OVER >";
 
     /**
