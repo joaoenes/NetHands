@@ -118,23 +118,21 @@ class ClientHandler {
 
     private void waitRegister() {
         String name;
-
         try {
             name = input.readLine();
 
-            if (name.trim().equals("") || name.contains(Messages.ESCAPE_TAG)) {
+            if (name.trim().equals("") || name.contains(Messages.ESCAPE_TAG_REGEX)) {
                 output.println(Messages.INVALID_USERNAME);
                 waitRegister();
-                return;
             }
 
             if (checkClientExist(name)) {
                 output.println(Messages.REGISTER_NAME_EXISTS);
                 waitRegister();
-                return;
             }
 
             output.println(Messages.REGISTER_SUCCESS);
+            System.out.println(name);
             Client.saveClient(name);
 
         } catch (IOException e) {
