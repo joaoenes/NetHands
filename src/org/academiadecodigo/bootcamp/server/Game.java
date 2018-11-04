@@ -1,20 +1,30 @@
 package org.academiadecodigo.bootcamp.server;
 
 import org.academiadecodigo.bootcamp.enums.Hand;
+import org.academiadecodigo.bootcamp.messages.Messages;
+import java.util.LinkedList;
+import java.util.List;
 
-public class Game {
+class Game {
 
-    private ClientHandler clientHandler1;
-    private ClientHandler clientHandler2;
-    private int client1points = 0;
-    private int client2points = 0;
-    private int currentRound = 1;
-    private int maxRounds = 5;
+    private List<ClientHandler> listOfClients;
+    private int[] clientScores;
+    private int currentRound;
+    private int maxRounds;
 
-    public Game(ClientHandler clientHandler1, ClientHandler clientHandler2){
-        this.clientHandler1 = clientHandler1;
-        this.clientHandler2 = clientHandler2;
+    Game(ClientHandler clientHandler1, ClientHandler clientHandler2){
+        init();
+        listOfClients.add(clientHandler1);
+        listOfClients.add(clientHandler2);
     }
+
+    private void init(){
+        listOfClients = new LinkedList<>();
+        clientScores = new int[2];
+        currentRound = 1;
+        maxRounds = 1;
+    }
+
 
     private void roundPlay(Hand client1Hand, Hand client2Hand) {
 
@@ -22,93 +32,110 @@ public class Game {
             switch (client1Hand){
                 case ROCK:
                     if (client2Hand == Hand.PAPER){
-                        addPoint(clientHandler2);
+                        addPoint(listOfClients.get(1), client1Hand, client2Hand);
                         return;
                     }
                     break;
                 case PAPER:
                     if (client2Hand == Hand.SCISSORS){
-                        addPoint(clientHandler2);
+                        addPoint(listOfClients.get(1), client1Hand, client2Hand);
                         return;
                     }
                     break;
                 case SCISSORS:
                     if (client2Hand == Hand.ROCK){
-                        addPoint(clientHandler2);
+                        addPoint(listOfClients.get(1), client1Hand, client2Hand);
                         return;
                     }
                     break;
             }
 
-            addPoint(clientHandler1);
+            addPoint(listOfClients.get(0), client1Hand, client2Hand);
             return;
         }
-        String tieString = "It's a tie!"; //ADD TO A MESSAGES CLASS
-        clientHandler1.send(tieString);
-        clientHandler2.send(tieString);
+
+        listOfClients.get(0).send(listOfClients.get(1).getName() + Messages.OPPONENT_PLAYED + client2Hand + Messages.ROUND_TIE);
+        listOfClients.get(1).send(listOfClients.get(0).getName() + Messages.OPPONENT_PLAYED + client1Hand + Messages.ROUND_TIE);
     }
 
-    public void start() {
+    void start() {
+        listOfClients.get(0).send(Messages.VERSUS_PART1 + listOfClients.get(1).getName() + Messages.VERSUS_PART2);
+        listOfClients.get(1).send(Messages.VERSUS_PART1 + listOfClients.get(0).getName() + Messages.VERSUS_PART2);
+
         while (currentRound <= maxRounds) {
-            String roundString = "ROUND " + currentRound + ": < Waiting for each player >"; //ADD TO A MESSAGES CLASS
-            clientHandler1.send(roundString);
-            clientHandler2.send(roundString);
+            newRoundMessage();
 
-            Hand client1Hand;
-            Hand client2Hand;
-
-            while ((client1Hand = clientHandler1.getHand()) != null && (client2Hand = clientHandler2.getHand()) != null) {
-                roundPlay(client1Hand, client2Hand);
-                break;
-            }
+            roundHands();
 
             currentRound++;
         }
 
+        gameOver();
         endGame();
+    }
+
+    private void roundHands(){
+
+        Hand[] clientHands = new Hand[2];
+
+        if ((clientHands[0] = listOfClients.get(0).getHand()) != null && (clientHands[1] = listOfClients.get(1).getHand()) != null) {
+
+            roundPlay(clientHands[0], clientHands[1]);
+
+        }
 
     }
 
-    private void addPoint(ClientHandler clientHandler){
-        String winString = "You win this round!"; //ADD TO A MESSAGES CLASS
-        String looseString = "You lost this round!"; //ADD TO A MESSAGES CLASS
+    private void newRoundMessage(){
+        listOfClients.get(0).send(Messages.ROUND_PART1 + currentRound + Messages.ROUND_PART2);
+        listOfClients.get(1).send(Messages.ROUND_PART1 + currentRound + Messages.ROUND_PART2);
+    }
 
-        if (clientHandler == clientHandler1){
-            client1points++;
-            clientHandler1.send(winString);
-            clientHandler2.send(looseString);
+    private void gameOver(){
+        listOfClients.get(0).gameOver();
+        listOfClients.get(1).gameOver();
+    }
+
+    private void addPoint(ClientHandler clientHandler, Hand client1Hand, Hand client2Hand){
+        if (clientHandler == listOfClients.get(0)) {
+            clientScores[0]++;
+            listOfClients.get(0).send(listOfClients.get(1).getName() + Messages.OPPONENT_PLAYED + client2Hand + Messages.ROUND_WIN);
+            listOfClients.get(1).send(listOfClients.get(0).getName() + Messages.OPPONENT_PLAYED + client1Hand + Messages.ROUND_LOST);
         }else{
-            client2points++;
-            clientHandler1.send(looseString);
-            clientHandler2.send(winString);
+            clientScores[1]++;
+            listOfClients.get(0).send(listOfClients.get(1).getName() + Messages.OPPONENT_PLAYED + client2Hand + Messages.ROUND_LOST);
+            listOfClients.get(1).send(listOfClients.get(0).getName() + Messages.OPPONENT_PLAYED + client1Hand + Messages.ROUND_WIN);
         }
     }
 
     private void endGame(){
-        String tieString = "The game ended in a tie!"; //ADD TO A MESSAGES CLASS
-        String winString = "Congratulations, you won the game!"; //ADD TO A MESSAGES CLASS
-        String looseString = "You lost the game!"; //ADD TO A MESSAGES CLASS
 
-        if (client1points == client2points){
-            clientHandler1.send(tieString);
-            clientHandler2.send(tieString);
+        String client1status = Messages.WON_LOG;
+        String client2stauts = Messages.WON_LOG;
+
+        if (clientScores[0] == clientScores[1]){
+            listOfClients.get(0).send(Messages.GAME_TIE);
+            listOfClients.get(1).send(Messages.GAME_TIE);
+            client1status = Messages.TIE_LOG;
+            client2stauts = Messages.TIE_LOG;
         }
 
-        if (client1points > client2points){
-            clientHandler1.send(winString);
-            clientHandler2.send(looseString);
+        if (clientScores[0] > clientScores[1]){
+            listOfClients.get(0).send(Messages.GAME_WON);
+            listOfClients.get(1).send(Messages.GAME_LOST);
+            client2stauts = Messages.LOST_LOG;
+        }else{
+            listOfClients.get(0).send(Messages.GAME_LOST);
+            listOfClients.get(1).send(Messages.GAME_WON);
+            client1status = Messages.LOST_LOG;
         }
 
-        clientHandler1.send(looseString);
-        clientHandler2.send(winString);
-    }
+        listOfClients.get(0).goToMenu();
+        listOfClients.get(1).goToMenu();
 
-    /**
-     *
-     * DESCRIPTION: in case a specific amount of rounds want to be played
-     * @param maxRounds
-     */
-    public void setRounds(int maxRounds) {
-        this.maxRounds = maxRounds;
+        Score.saveLog(listOfClients.get(0).getName() + Messages.ESCAPE_TAG + client1status + Messages.ESCAPE_TAG +
+                listOfClients.get(1).getName() + Messages.NEW_LINE);
+        Score.saveLog(listOfClients.get(1).getName() + Messages.ESCAPE_TAG + client2stauts + Messages.ESCAPE_TAG +
+                listOfClients.get(2).getName() + Messages.NEW_LINE);
     }
 }

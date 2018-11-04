@@ -2,43 +2,31 @@ package org.academiadecodigo.bootcamp.client;
 
 import org.academiadecodigo.bootcamp.Prompt;
 import org.academiadecodigo.bootcamp.scanners.integer.IntegerInputScanner;
-import org.academiadecodigo.bootcamp.scanners.menu.MenuInputScanner;
 import org.academiadecodigo.bootcamp.scanners.string.StringInputScanner;
 
-import static org.academiadecodigo.bootcamp.client.Messages.*;
+import static org.academiadecodigo.bootcamp.messages.Messages.*;
 
-public class PromptView {
+class PromptView {
 
-    public static Integer showGameMenu(Prompt prompt) {
-        String[] hands = { Messages.ROCK, Messages.PAPER, Messages.SCISSORS};
-
-        MenuInputScanner menu = new MenuInputScanner(hands);
-        menu.setMessage(PICK_HAND);
-
-        return prompt.getUserInput(menu);
-    }
-
-    public static Integer showLobbyMenu(Prompt prompt) {
-        String[] options = { Messages.PLAY, Messages.SCORE, Messages.QUIT };
-
-        MenuInputScanner menu = new MenuInputScanner(options);
-        menu.setMessage(PICK_OPTION);
-
-        return prompt.getUserInput(menu);
-    }
-
-    public static String askServerAddress(Prompt prompt) {
+    static String askServerAddress(Prompt prompt) {
         StringInputScanner server = new StringInputScanner();
         server.setMessage(SERVER);
 
         return prompt.getUserInput(server);
     }
 
-    public static Integer askServerPort(Prompt prompt) {
+    static Integer askServerPort(Prompt prompt) {
         IntegerInputScanner port = new IntegerInputScanner();
         port.setMessage(PORT);
 
         return prompt.getUserInput(port);
+    }
+
+    static String askUsername(Prompt prompt) {
+        StringInputScanner username = new StringInputScanner();
+        username.setMessage(ASK_USERNAME);
+
+        return prompt.getUserInput(username);
     }
 
 

@@ -1,7 +1,10 @@
 package org.academiadecodigo.bootcamp.server;
 
-import org.academiadecodigo.bootcamp.enums.ClientOption;
 import org.academiadecodigo.bootcamp.enums.Hand;
+import org.academiadecodigo.bootcamp.enums.LobbyOption;
+import org.academiadecodigo.bootcamp.enums.MainMenuOption;
+import org.academiadecodigo.bootcamp.enums.ServerResponse;
+import org.academiadecodigo.bootcamp.messages.Messages;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,17 +12,18 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class ClientHandler {
+class ClientHandler {
 
     private String name;
     private Socket socket;
     private BufferedReader input;
     private PrintWriter output;
-    private boolean inGame = false;
+    private boolean logged;
 
-    public ClientHandler(String name, Socket socket) {
+    ClientHandler(String name, Socket socket) {
         this.name = name;
         this.socket = socket;
+        this.logged = false;
         init();
     }
 
@@ -32,58 +36,142 @@ public class ClientHandler {
         }
     }
 
-    public String getName() {
+    String getName() {
         return name;
     }
 
-    public Socket getSocket() {
-        return socket;
-    }
-
-    public void clientCommand() {
-
-        while (!inGame) {
-            try {
-                int userInput = Integer.parseInt(input.readLine());
-                checkOption(ClientOption.values()[userInput - 1]);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    private void clientCommand() {
+        try {
+            int userInput = Integer.parseInt(input.readLine());
+            checkOption(LobbyOption.values()[userInput - 1]);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
     }
 
-    public void checkOption(ClientOption option) {
+    private void checkOption(LobbyOption option) {
         switch (option) {
             case PLAY:
-                inGame = true;
-                Server.joinGame(this);
+                joinGame();
                 break;
             case SCORE:
+                seeScore();
                 break;
             case QUIT:
+                close();
                 break;
         }
     }
 
-    public void setInGame(boolean inGame) {
-        this.inGame = inGame;
+    private void mainMenu() {
+        try {
+            int userInput = Integer.parseInt(input.readLine());
+            MainMenuOption option = MainMenuOption.values()[userInput - 1];
+
+            switch (option) {
+                case LOGIN:
+                    output.println(ServerResponse.LOGIN.ordinal());
+                    waitLogin();
+                    break;
+                case GUEST:
+                    joinGame();
+                    break;
+                case REGISTER:
+                    waitRegister();
+                    break;
+                case QUIT:
+                    close();
+                    break;
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public Hand getHand() {
+    private void seeScore() {
+        output.println(Score.readScore(name));
+    }
+
+    private void waitLogin() {
+        try {
+            String name = input.readLine();
+
+            if (checkClientExist(name)) {
+                this.name = name;
+                this.logged = true;
+                output.println(Messages.SUCCESSFUL_LOGIN + name);
+                clientCommand();
+                return;
+            }
+
+            output.println(Messages.INVALID_USERNAME);
+            waitLogin();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private boolean checkClientExist(String name) {
+        return ClientDB.clientExists(name);
+    }
+
+    private void waitRegister() {
+        String name = null;
+
+        try {
+            name = input.readLine();
+
+            if (name.trim().equals("") || name.contains(Messages.ESCAPE_TAG)) {
+                output.println(Messages.INVALID_USERNAME);
+                return;
+            }
+
+            if (checkClientExist(name)) {
+                // output.println(Messages.REGISTER_NAME_EXIST);
+                return;
+            }
+
+            //output.println(Messages.REGISTER_SUCESS);
+            ClientDB.saveClient(name);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    void gameOver() {
+        output.println(Messages.GAME_OVER);
+    }
+
+    private void register(String name) {
+
+    }
+
+    void goToMenu(){
+        if(logged){
+            clientCommand();
+            return;
+        }
+        mainMenu();
+    }
+
+    private void joinGame() {
+        output.println(Messages.WAITING_FOR_PLAYER);
+        Server.joinGame(this);
+    }
+
+    void gameStart() {
+        output.println(ServerResponse.PLAY.ordinal());
+    }
+
+
+    Hand getHand() {
         try {
 
             int inputHand = Integer.parseInt(input.readLine());
-            Hand option = Hand.values()[inputHand - 1];
-
-            switch (option){
-                case ROCK:
-                    return Hand.ROCK;
-                case PAPER:
-                    return Hand.PAPER;
-                case SCISSORS:
-                    return Hand.SCISSORS;
-            }
+            return Hand.values()[inputHand - 1];
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -91,26 +179,19 @@ public class ClientHandler {
         return null;
     }
 
-    public void run() {
-        clientCommand();
+    void run() {
+        mainMenu();
     }
 
-    public void send(String str) {
+    void send(String str) {
         output.println(str);
     }
 
     private void close() {
         try {
-            if (input != null) {
-                input.close();
-            }
-            if (output != null) {
-                output.close();
-            }
             if (!socket.isClosed()) {
                 socket.close();
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }
