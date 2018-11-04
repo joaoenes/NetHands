@@ -1,7 +1,5 @@
 package org.academiadecodigo.bootcamp.server;
 
-import org.academiadecodigo.bootcamp.server.database.Score;
-
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -15,12 +13,12 @@ public class Server {
     private ServerSocket serverSocket;
     private ExecutorService cachedPool;
 
-    private Server() {
+    public Server() {
         cachedPool = Executors.newCachedThreadPool();
         gameHandler = new GameHandler();
     }
 
-    private void init() {
+    public void init() {
         try {
             System.out.print("PORT: ");
             serverSocket = new ServerSocket(scanner());
@@ -42,7 +40,7 @@ public class Server {
         gameHandler.clientJoin(client);
     }
 
-    private void run() {
+    public void run() {
         int counter = 0;
         String clientName = "";
 

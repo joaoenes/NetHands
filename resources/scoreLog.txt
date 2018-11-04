@@ -1,2 +1,4 @@
 Guest2[*]LOST[*]MrDuck
 MrDuck[*]WON[*]Guest2
+Professor[*]WON[*]This.Man
+This.Man[*]LOST[*]Professor

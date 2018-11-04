@@ -1,9 +1,14 @@
 package org.academiadecodigo.bootcamp.client;
 
 import org.academiadecodigo.bootcamp.Prompt;
-import org.academiadecodigo.bootcamp.client.promptview.*;
-import org.academiadecodigo.bootcamp.enums.*;
+import org.academiadecodigo.bootcamp.client.promptview.IntegerQuestion;
+import org.academiadecodigo.bootcamp.client.promptview.Menu;
+import org.academiadecodigo.bootcamp.client.promptview.StringQuestion;
+import org.academiadecodigo.bootcamp.enums.LobbyOption;
+import org.academiadecodigo.bootcamp.enums.MainMenuOption;
+import org.academiadecodigo.bootcamp.enums.ServerResponse;
 import org.academiadecodigo.bootcamp.messages.Messages;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -11,19 +16,17 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 
-import static org.academiadecodigo.bootcamp.enums.GameState.*;
-
 public class Client {
-    private Prompt prompt;
-    private Socket clientSocket;
-    private PrintWriter output;
+    private Prompt         prompt;
+    private Socket         clientSocket;
+    private PrintWriter    output;
     private BufferedReader input;
-    private GameState gameState;
-    private boolean guest;
+    private ServerResponse clientState;
+    private boolean        guest;
 
     public Client() {
         prompt = new Prompt(System.in, System.out);
-        gameState = MAIN;
+        clientState = ServerResponse.MAIN;
         guest = true;
     }
 
@@ -34,58 +37,61 @@ public class Client {
         client.run();
     }
 
-    private void init() {
-        StringQuestion serverQuestion = new StringQuestion(prompt, Messages.SERVER);
-        String serverAddress = serverQuestion.ask();
+    public void init() {
+        StringQuestion serverQuestion = new StringQuestion(prompt,
+                Messages.SERVER);
+        String         serverAddress  = serverQuestion.ask();
 
-        IntegerQuestion portQuestion = new IntegerQuestion(prompt, Messages.PORT);
-        Integer serverPort = portQuestion.ask();
+        IntegerQuestion portQuestion = new IntegerQuestion(prompt,
+                Messages.PORT);
+        Integer         serverPort   = portQuestion.ask();
 
         try {
-            clientSocket = new Socket(InetAddress.getByName(serverAddress), serverPort);
+            clientSocket = new Socket(InetAddress.getByName(serverAddress),
+                    serverPort);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void run() {
+    public void run() {
         try {
             output = new PrintWriter(clientSocket.getOutputStream(), true);
-            input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            input = new BufferedReader(
+                    new InputStreamReader(clientSocket.getInputStream()));
 
             System.out.println(Messages.WELCOME);
 
             while (!clientSocket.isClosed()) {
 
-                switch (gameState) {
+                switch (clientState) {
                     case MAIN:
                         inMain();
                         break;
-
                     case LOBBY:
                         inLobby();
                         break;
-
                     case LOGIN:
                         inLogin();
                         break;
+<<<<<<< HEAD
 
                     case PASSWORD:
                         inPassWord();
                         break;
 
                     case GAME:
+=======
+                    case PLAY:
+>>>>>>> 9579531960dcf916148e78be4ab6bd73940550c2
                         inGame();
                         break;
-
                     case REGISTER:
                         inRegister();
                         break;
-
                     case SCORE:
                         inScore();
                         break;
-
                     case QUIT:
                         clientSocket.close();
                 }
@@ -97,6 +103,7 @@ public class Client {
         }
     }
 
+<<<<<<< HEAD
 
     private void reactionToServer(Integer input) {
         ServerResponse response = ServerResponse.values()[input];
@@ -132,65 +139,78 @@ public class Client {
         }
     }
 
+=======
+>>>>>>> 9579531960dcf916148e78be4ab6bd73940550c2
     private void inLobby() throws IOException {
-        String[] options = {Messages.PLAY, Messages.SCORE, Messages.QUIT};
-        Menu lobbyMenu = new Menu(prompt, options);
-        Integer option = lobbyMenu.show();
+        String[] options   = {Messages.PLAY, Messages.SCORE, Messages.QUIT};
+        Menu     lobbyMenu = new Menu(prompt, options);
+        Integer  option    = lobbyMenu.show();
         output.println(option);
 
         if (option - 1 == LobbyOption.QUIT.ordinal()) {
-            gameState = QUIT;
+            clientState = ServerResponse.QUIT;
             return;
         }
 
         String message = input.readLine();
         System.out.println(message);
 
-        Integer inputOption = Integer.parseInt(input.readLine());
+        int inputOption = Integer.parseInt(input.readLine());
+        clientState = ServerResponse.values()[inputOption];
 
-        reactionToServer(inputOption);
+
     }
 
     private void inMain() throws IOException {
-        String[] options = {Messages.GUEST, Messages.LOGIN, Messages.REGISTER, Messages.QUIT};
-        Menu mainMenu = new Menu(prompt, options);
-        Integer option = mainMenu.show();
+        String[] options  = {Messages.GUEST, Messages.LOGIN, Messages.REGISTER,
+                Messages.QUIT};
+        Menu     mainMenu = new Menu(prompt, options);
+        Integer  option   = mainMenu.show();
 
         output.println(option);
 
 
         if (option - 1 == MainMenuOption.QUIT.ordinal()) {
-            gameState = QUIT;
+            clientState = ServerResponse.QUIT;
             return;
         }
 
-        Integer inputOption = Integer.parseInt(input.readLine());
-
-        reactionToServer(inputOption);
+        int inputOption = Integer.parseInt(input.readLine());
+        clientState = ServerResponse.values()[inputOption];
     }
 
     private void inLogin() throws IOException {
-        StringQuestion usernameQuestion = new StringQuestion(prompt, Messages.ASK_USERNAME);
-        String username = usernameQuestion.ask();
+        StringQuestion usernameQuestion = new StringQuestion(prompt,
+                Messages.ASK_USERNAME);
+        String         username         = usernameQuestion.ask();
 
         output.println(username);
 
         String message = input.readLine();
 
         if (message.equals(Messages.INVALID_USERNAME)) {
+<<<<<<< HEAD
             System.out.println(message);
             gameState = LOGIN;
             return;
         }
 
         gameState = PASSWORD;
+=======
+            clientState = ServerResponse.LOGIN;
+            return;
+        }
+
+        guest = false;
+        clientState = ServerResponse.LOBBY;
+>>>>>>> 9579531960dcf916148e78be4ab6bd73940550c2
     }
 
     private void inGame() throws IOException {
-        String[] hands = {Messages.ROCK, Messages.PAPER, Messages.SCISSORS};
-        Menu gameMenu = new Menu(prompt, hands);
-        Integer option;
-        String inputOption;
+        String[] hands    = {Messages.ROCK, Messages.PAPER, Messages.SCISSORS};
+        Menu     gameMenu = new Menu(prompt, hands);
+        Integer  option;
+        String   inputOption;
 
         inputOption = input.readLine();
         System.out.println(inputOption);
@@ -218,15 +238,17 @@ public class Client {
         System.out.println(Messages.NEW_LINE + inputOption);
 
         if (guest) {
-            gameState = MAIN;
+            clientState = ServerResponse.MAIN;
         } else {
-            gameState = LOBBY;
+            clientState = ServerResponse.LOBBY;
         }
     }
 
     private void inRegister() throws IOException {
-        StringQuestion usernameQuestion = new StringQuestion(prompt, Messages.ASK_USERNAME);
-        System.out.println("Username can't contain spaces or " + Messages.ESCAPE_TAG);
+        StringQuestion usernameQuestion = new StringQuestion(prompt,
+                Messages.ASK_USERNAME);
+        System.out.println(
+                "Username can't contain spaces or " + Messages.ESCAPE_TAG);
         String username = usernameQuestion.ask();
 
         output.println(username);
@@ -234,15 +256,17 @@ public class Client {
         String message = input.readLine();
         System.out.println(message);
 
-        if (message.equals(Messages.INVALID_USERNAME) || message.equals(Messages.REGISTER_NAME_EXISTS) ) {
-            gameState = REGISTER;
+        if (message.equals(Messages.INVALID_USERNAME) || message
+                .equals(Messages.REGISTER_NAME_EXISTS)) {
+            clientState = ServerResponse.REGISTER;
             return;
         }
 
         guest = false;
-        gameState = LOBBY;
+        clientState = ServerResponse.LOBBY;
     }
 
+<<<<<<< HEAD
     private void inPassWord() throws IOException {
              StringQuestion usernameQuestion = new StringQuestion(prompt, Messages.ASK_PASSWORD);
              String passWord = usernameQuestion.askPass();
@@ -267,6 +291,12 @@ public class Client {
         } catch (IOException e) {
             e.printStackTrace();
         }
+=======
+    private void inScore() throws IOException {
+        String messages = input.readLine();
+        System.out.print(messages);
+        clientState = ServerResponse.LOBBY;
+>>>>>>> 9579531960dcf916148e78be4ab6bd73940550c2
     }
 
     private void closeStreams() {
