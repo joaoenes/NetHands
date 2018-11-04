@@ -99,9 +99,9 @@ class ClientHandler {
         try {
             String name = input.readLine();
             if (checkClientExist(name)) {
+                output.println(Messages.PASSWORD);
                 this.name = name;
                 checkPassword();
-                System.out.println("teasd");
                 goToMenu();
                 return;
             }
@@ -114,7 +114,6 @@ class ClientHandler {
     }
 
     private void checkPassword() throws IOException {
-        output.println(Messages.PASSWORD);
         String password  = input.readLine();
 
          if(Client.checkPass(this.name, password)){

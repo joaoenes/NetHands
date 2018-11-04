@@ -40,11 +40,11 @@ public class Client {
     public void init() {
         StringQuestion serverQuestion = new StringQuestion(prompt,
                 Messages.SERVER);
-        String         serverAddress  = serverQuestion.ask();
+        String serverAddress = serverQuestion.ask();
 
         IntegerQuestion portQuestion = new IntegerQuestion(prompt,
                 Messages.PORT);
-        Integer         serverPort   = portQuestion.ask();
+        Integer serverPort = portQuestion.ask();
 
         try {
             clientSocket = new Socket(InetAddress.getByName(serverAddress),
@@ -74,16 +74,7 @@ public class Client {
                     case LOGIN:
                         inLogin();
                         break;
-<<<<<<< HEAD
-
-                    case PASSWORD:
-                        inPassWord();
-                        break;
-
-                    case GAME:
-=======
                     case PLAY:
->>>>>>> 9579531960dcf916148e78be4ab6bd73940550c2
                         inGame();
                         break;
                     case REGISTER:
@@ -103,49 +94,11 @@ public class Client {
         }
     }
 
-<<<<<<< HEAD
-
-    private void reactionToServer(Integer input) {
-        ServerResponse response = ServerResponse.values()[input];
-
-        switch (response) {
-            case PLAY:
-                gameState = GAME;
-                break;
-
-            case SCORE:
-                gameState = SCORE;
-                break;
-
-            case LOGIN:
-            case INVALID_USER:
-            case USER_EXISTS:
-                gameState = LOGIN;
-                break;
-
-            case LOBBY:
-                gameState = LOBBY;
-                break;
-
-            case REGISTER:
-                gameState = REGISTER;
-                break;
-            case PASSWORD:
-                gameState = PASSWORD;
-
-            case QUIT:
-                gameState = QUIT;
-                break;
-        }
-    }
-
-=======
->>>>>>> 9579531960dcf916148e78be4ab6bd73940550c2
     private void inLobby() throws IOException {
         String[] options   = {Messages.PLAY, Messages.SCORE, Messages.QUIT};
         Menu     lobbyMenu = new Menu(prompt, options);
         Integer  option    = lobbyMenu.show();
-        
+
         output.println(option);
 
         if (option - 1 == LobbyOption.QUIT.ordinal()) {
@@ -161,13 +114,12 @@ public class Client {
     }
 
     private void inMain() throws IOException {
-        String[] options  = {Messages.GUEST, Messages.LOGIN, Messages.REGISTER,
+        String[] options = {Messages.GUEST, Messages.LOGIN, Messages.REGISTER,
                 Messages.QUIT};
-        Menu     mainMenu = new Menu(prompt, options);
-        Integer  option   = mainMenu.show();
+        Menu    mainMenu = new Menu(prompt, options);
+        Integer option   = mainMenu.show();
 
         output.println(option);
-
 
         if (option - 1 == MainMenuOption.QUIT.ordinal()) {
             clientState = ServerResponse.QUIT;
@@ -181,30 +133,35 @@ public class Client {
     private void inLogin() throws IOException {
         StringQuestion usernameQuestion = new StringQuestion(prompt,
                 Messages.ASK_USERNAME);
-        String         username         = usernameQuestion.ask();
+        StringQuestion passwordQuestion = new StringQuestion(prompt,
+                Messages.ASK_PASSWORD);
 
+        String message = askQuestion(usernameQuestion);
 
+        System.out.println(message);
 
-        output.println(username);
-
-        String message = input.readLine();
-
-        if (message.equals(Messages.INVALID_USERNAME)) {
-<<<<<<< HEAD
+        while (message.equals(Messages.INVALID_USERNAME)) {
+            message = askQuestion(usernameQuestion);
             System.out.println(message);
-            gameState = LOGIN;
-            return;
         }
 
-        gameState = PASSWORD;
-=======
-            clientState = ServerResponse.LOGIN;
-            return;
+        message = askQuestion(passwordQuestion);
+
+        System.out.println(message);
+
+        while (message.equals(Messages.INVALID_PASSWORD)) {
+            message = askQuestion(passwordQuestion);
+            System.out.println(message);
         }
 
         guest = false;
         clientState = ServerResponse.LOBBY;
->>>>>>> 9579531960dcf916148e78be4ab6bd73940550c2
+    }
+
+    private String askQuestion(StringQuestion question) throws IOException {
+        String answer = question.ask();
+        output.println(answer);
+        return input.readLine();
     }
 
     private void inGame() throws IOException {
@@ -267,37 +224,10 @@ public class Client {
         clientState = ServerResponse.LOBBY;
     }
 
-<<<<<<< HEAD
-    private void inPassWord() throws IOException {
-             StringQuestion usernameQuestion = new StringQuestion(prompt, Messages.ASK_PASSWORD);
-             String passWord = usernameQuestion.askPass();
-             output.println(passWord);
-
-             String message = input.readLine();
-            System.out.println(message);
-
-       if (message.equals(Messages.INVALID_PASSWORD)) {
-            gameState = PASSWORD;
-            return;
-        }
-        System.out.println("teste");
-        guest = false;
-        gameState = LOBBY;
-    }
-    private void inScore(){
-        try {
-            String messages = input.readLine();
-            System.out.print(messages);
-            gameState = LOBBY;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-=======
     private void inScore() throws IOException {
         String messages = input.readLine();
         System.out.print(messages);
         clientState = ServerResponse.LOBBY;
->>>>>>> 9579531960dcf916148e78be4ab6bd73940550c2
     }
 
     private void closeStreams() {
