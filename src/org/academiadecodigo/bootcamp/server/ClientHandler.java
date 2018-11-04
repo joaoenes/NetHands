@@ -100,8 +100,8 @@ class ClientHandler {
             String name = input.readLine();
             if (checkClientExist(name)) {
                 this.name = name;
+                output.println("asdasd");
                 checkPassword();
-                System.out.println("teasd");
                 goToMenu();
                 return;
             }
