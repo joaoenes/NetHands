@@ -12,15 +12,14 @@ public class Server {
     private static GameHandler gameHandler;
     private ServerSocket serverSocket;
     private ExecutorService cachedPool;
-    private Socket clientSocket;
 
 
-    public Server() {
+    private Server() {
         cachedPool = Executors.newCachedThreadPool();
         gameHandler = new GameHandler();
     }
 
-    public void init() {
+    private void init() {
         try {
             System.out.print("PORT: ");
             serverSocket = new ServerSocket(scanner());
@@ -38,20 +37,19 @@ public class Server {
         });
     }
 
-    public static void joinGame(ClientHandler client) {
+    static void joinGame(ClientHandler client) {
         gameHandler.clientJoin(client);
     }
 
-    public void run() {
+    private void run() {
         int counter = 0;
         String clientName = "";
 
         while (true) {
 
             try {
-
                 clientName = "Guest" + ++counter;
-                clientSocket = serverSocket.accept();
+                Socket clientSocket = serverSocket.accept();
                 ClientHandler clientHandler = new ClientHandler(clientName, clientSocket);
                 newThread(clientHandler);
 
@@ -63,8 +61,7 @@ public class Server {
 
     private int scanner() {
         Scanner scanner = new Scanner(System.in);
-        int port = Integer.parseInt(scanner.nextLine());
-        return port;
+        return Integer.parseInt(scanner.nextLine());
     }
 
     public static void main(String[] args) {

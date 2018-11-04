@@ -12,7 +12,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class ClientHandler {
+class ClientHandler {
 
     private String name;
     private Socket socket;
@@ -20,7 +20,7 @@ public class ClientHandler {
     private PrintWriter output;
     private boolean logged;
 
-    public ClientHandler(String name, Socket socket) {
+    ClientHandler(String name, Socket socket) {
         this.name = name;
         this.socket = socket;
         this.logged = false;
@@ -36,11 +36,11 @@ public class ClientHandler {
         }
     }
 
-    public String getName() {
+    String getName() {
         return name;
     }
 
-    public void clientCommand() {
+    private void clientCommand() {
         try {
             int userInput = Integer.parseInt(input.readLine());
             checkOption(LobbyOption.values()[userInput - 1]);
@@ -49,7 +49,7 @@ public class ClientHandler {
         }
     }
 
-    public void checkOption(LobbyOption option) {
+    private void checkOption(LobbyOption option) {
         switch (option) {
             case PLAY:
                 joinGame();
@@ -63,7 +63,7 @@ public class ClientHandler {
         }
     }
 
-    public void mainMenu() {
+    private void mainMenu() {
         try {
             int userInput = Integer.parseInt(input.readLine());
             MainMenuOption option = MainMenuOption.values()[userInput - 1];
@@ -141,7 +141,7 @@ public class ClientHandler {
         }
     }
 
-    public void gameOver() {
+    void gameOver() {
         output.println(Messages.GAME_OVER);
     }
 
@@ -149,7 +149,7 @@ public class ClientHandler {
 
     }
 
-    public void goToMenu(){
+    void goToMenu(){
         if(logged){
             clientCommand();
             return;
@@ -162,12 +162,12 @@ public class ClientHandler {
         Server.joinGame(this);
     }
 
-    public void gameStart() {
+    void gameStart() {
         output.println(ServerResponse.PLAY.ordinal());
     }
 
 
-    public Hand getHand() {
+    Hand getHand() {
         try {
 
             int inputHand = Integer.parseInt(input.readLine());
@@ -179,11 +179,11 @@ public class ClientHandler {
         return null;
     }
 
-    public void run() {
+    void run() {
         mainMenu();
     }
 
-    public void send(String str) {
+    void send(String str) {
         output.println(str);
     }
 

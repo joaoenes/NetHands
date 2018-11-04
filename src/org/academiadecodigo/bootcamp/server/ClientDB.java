@@ -6,7 +6,7 @@ public class ClientDB {
 
     public static final File FILE = new File("resources/clientSet.txt");
 
-    public static synchronized void saveClient(String client) {
+    static synchronized void saveClient(String client) {
 
         FileWriter fileWriter = null;
 
@@ -29,7 +29,7 @@ public class ClientDB {
         }
     }
 
-    public static synchronized boolean clientExists(String client) {
+    static synchronized boolean clientExists(String client) {
         BufferedReader bufferedReader = null;
 
         try {

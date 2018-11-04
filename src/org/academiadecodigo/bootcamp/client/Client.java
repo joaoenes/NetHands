@@ -1,15 +1,9 @@
 package org.academiadecodigo.bootcamp.client;
 
 import org.academiadecodigo.bootcamp.Prompt;
-import org.academiadecodigo.bootcamp.client.promptview.GameMenu;
-import org.academiadecodigo.bootcamp.client.promptview.LobbyMenu;
-import org.academiadecodigo.bootcamp.client.promptview.MainMenu;
-import org.academiadecodigo.bootcamp.enums.GameState;
-import org.academiadecodigo.bootcamp.enums.LobbyOption;
-import org.academiadecodigo.bootcamp.enums.MainMenuOption;
-import org.academiadecodigo.bootcamp.enums.ServerResponse;
+import org.academiadecodigo.bootcamp.client.promptview.*;
+import org.academiadecodigo.bootcamp.enums.*;
 import org.academiadecodigo.bootcamp.messages.Messages;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -20,8 +14,6 @@ import java.net.Socket;
 import static org.academiadecodigo.bootcamp.enums.GameState.*;
 
 public class Client {
-
-
     private Prompt prompt;
     private Socket clientSocket;
     private PrintWriter output;
@@ -176,11 +168,9 @@ public class Client {
 
         guest = false;
         gameState = LOBBY;
-
     }
 
     private void inGame() throws IOException {
-
         GameMenu gameMenu = new GameMenu(prompt);
         Integer option;
         String inputOption;
