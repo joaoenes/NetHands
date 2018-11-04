@@ -78,6 +78,10 @@ public class Client {
                         inRegister();
                         break;
 
+                    case SCORE:
+                        inScore();
+                        break;
+
                     case QUIT:
                         clientSocket.close();
                 }
@@ -219,8 +223,7 @@ public class Client {
     }
 
     private void inRegister() throws IOException {
-        StringQuestion usernameQuestion = new StringQuestion(prompt,
-                Messages.ASK_USERNAME);
+        StringQuestion usernameQuestion = new StringQuestion(prompt, Messages.ASK_USERNAME);
         System.out.println("Username can't contain spaces or " + Messages.ESCAPE_TAG);
         String username = usernameQuestion.ask();
 
@@ -236,6 +239,17 @@ public class Client {
 
         guest = false;
         gameState = LOBBY;
+    }
+
+    private void inScore(){
+        try {
+            System.out.print("You score is: ");
+            String messages = input.readLine();
+            System.out.print(messages);
+            gameState = LOBBY;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void closeStreams() {

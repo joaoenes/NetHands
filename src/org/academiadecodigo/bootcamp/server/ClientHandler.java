@@ -89,7 +89,9 @@ class ClientHandler {
     }
 
     private void seeScore() {
+        output.println("Score: ");
         output.println(Score.readScore(this.name));
+        output.println(ServerResponse.SCORE.ordinal());
     }
 
     private void waitLogin() {
