@@ -1,13 +1,9 @@
 package org.academiadecodigo.bootcamp.client;
 
 import org.academiadecodigo.bootcamp.Prompt;
-import org.academiadecodigo.bootcamp.client.promptview.GameMenu;
-import org.academiadecodigo.bootcamp.client.promptview.LobbyMenu;
-import org.academiadecodigo.bootcamp.client.promptview.MainMenu;
-import org.academiadecodigo.bootcamp.enums.GameState;
-import org.academiadecodigo.bootcamp.enums.ServerResponse;
+import org.academiadecodigo.bootcamp.client.promptview.*;
+import org.academiadecodigo.bootcamp.enums.*;
 import org.academiadecodigo.bootcamp.messages.Messages;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -16,7 +12,6 @@ import java.net.InetAddress;
 import java.net.Socket;
 
 import static org.academiadecodigo.bootcamp.enums.GameState.*;
-import static org.academiadecodigo.bootcamp.messages.Messages.WELCOME;
 
 public class Client {
     private Prompt prompt;
@@ -50,7 +45,7 @@ public class Client {
 
     private void run() {
 
-        System.out.println(WELCOME);
+        System.out.println(Messages.WELCOME);
 
         try {
             while (clientSocket.isConnected()) {
