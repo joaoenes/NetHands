@@ -74,7 +74,16 @@ public class Client {
                     case LOGIN:
                         inLogin();
                         break;
+<<<<<<< HEAD
+
+                    case PASSWORD:
+                        inPassWord();
+                        break;
+
+                    case GAME:
+=======
                     case PLAY:
+>>>>>>> 9579531960dcf916148e78be4ab6bd73940550c2
                         inGame();
                         break;
                     case REGISTER:
@@ -94,6 +103,44 @@ public class Client {
         }
     }
 
+<<<<<<< HEAD
+
+    private void reactionToServer(Integer input) {
+        ServerResponse response = ServerResponse.values()[input];
+
+        switch (response) {
+            case PLAY:
+                gameState = GAME;
+                break;
+
+            case SCORE:
+                gameState = SCORE;
+                break;
+
+            case LOGIN:
+            case INVALID_USER:
+            case USER_EXISTS:
+                gameState = LOGIN;
+                break;
+
+            case LOBBY:
+                gameState = LOBBY;
+                break;
+
+            case REGISTER:
+                gameState = REGISTER;
+                break;
+            case PASSWORD:
+                gameState = PASSWORD;
+
+            case QUIT:
+                gameState = QUIT;
+                break;
+        }
+    }
+
+=======
+>>>>>>> 9579531960dcf916148e78be4ab6bd73940550c2
     private void inLobby() throws IOException {
         String[] options   = {Messages.PLAY, Messages.SCORE, Messages.QUIT};
         Menu     lobbyMenu = new Menu(prompt, options);
@@ -121,6 +168,7 @@ public class Client {
 
         output.println(option);
 
+
         if (option - 1 == MainMenuOption.QUIT.ordinal()) {
             clientState = ServerResponse.QUIT;
             return;
@@ -140,15 +188,23 @@ public class Client {
         output.println(username);
 
         String message = input.readLine();
-        System.out.println(message);
 
         if (message.equals(Messages.INVALID_USERNAME)) {
+<<<<<<< HEAD
+            System.out.println(message);
+            gameState = LOGIN;
+            return;
+        }
+
+        gameState = PASSWORD;
+=======
             clientState = ServerResponse.LOGIN;
             return;
         }
 
         guest = false;
         clientState = ServerResponse.LOBBY;
+>>>>>>> 9579531960dcf916148e78be4ab6bd73940550c2
     }
 
     private void inGame() throws IOException {
@@ -211,10 +267,37 @@ public class Client {
         clientState = ServerResponse.LOBBY;
     }
 
+<<<<<<< HEAD
+    private void inPassWord() throws IOException {
+             StringQuestion usernameQuestion = new StringQuestion(prompt, Messages.ASK_PASSWORD);
+             String passWord = usernameQuestion.askPass();
+             output.println(passWord);
+
+             String message = input.readLine();
+            System.out.println(message);
+
+       if (message.equals(Messages.INVALID_PASSWORD)) {
+            gameState = PASSWORD;
+            return;
+        }
+        System.out.println("teste");
+        guest = false;
+        gameState = LOBBY;
+    }
+    private void inScore(){
+        try {
+            String messages = input.readLine();
+            System.out.print(messages);
+            gameState = LOBBY;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+=======
     private void inScore() throws IOException {
         String messages = input.readLine();
         System.out.print(messages);
         clientState = ServerResponse.LOBBY;
+>>>>>>> 9579531960dcf916148e78be4ab6bd73940550c2
     }
 
     private void closeStreams() {
