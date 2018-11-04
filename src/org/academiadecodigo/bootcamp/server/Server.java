@@ -1,7 +1,5 @@
 package org.academiadecodigo.bootcamp.server;
 
-import org.academiadecodigo.bootcamp.server.database.Score;
-
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
