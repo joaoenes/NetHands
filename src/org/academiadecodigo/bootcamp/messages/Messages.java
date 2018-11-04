@@ -18,6 +18,13 @@ public class Messages {
     public static final String REGISTER = "Register";
 
     /**
+     * Register messages
+     */
+    public static final String REGISTER_NAME_EXISTS = "This username is "
+            + "already in use.";
+    public static final String REGISTER_SUCCESS = "Register successful.";
+
+    /**
      * After Login
      */
     public static final String ASK_USERNAME = "Username: ";

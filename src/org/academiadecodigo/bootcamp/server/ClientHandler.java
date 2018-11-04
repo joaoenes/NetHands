@@ -75,6 +75,7 @@ class ClientHandler {
                     joinGame();
                     break;
                 case REGISTER:
+                    output.println(ServerResponse.REGISTER.ordinal());
                     waitRegister();
                     break;
                 case QUIT:
@@ -119,7 +120,6 @@ class ClientHandler {
         String name;
 
         try {
-            output.println(ServerResponse.REGISTER.ordinal());
             name = input.readLine();
 
             if (name.trim().equals("") || name.contains(Messages.ESCAPE_TAG)) {
@@ -129,12 +129,12 @@ class ClientHandler {
             }
 
             if (checkClientExist(name)) {
-                output.println(Messages.REGISTER_NAME_EXIST);
+                output.println(Messages.REGISTER_NAME_EXISTS);
                 waitRegister();
                 return;
             }
 
-            output.println(Messages.REGISTER_SUCESS);
+            output.println(Messages.REGISTER_SUCCESS);
             Client.saveClient(name);
 
         } catch (IOException e) {
