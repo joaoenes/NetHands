@@ -98,6 +98,7 @@ public class Client {
         String[] options   = {Messages.PLAY, Messages.SCORE, Messages.QUIT};
         Menu     lobbyMenu = new Menu(prompt, options);
         Integer  option    = lobbyMenu.show();
+        
         output.println(option);
 
         if (option - 1 == LobbyOption.QUIT.ordinal()) {
@@ -110,8 +111,6 @@ public class Client {
 
         int inputOption = Integer.parseInt(input.readLine());
         clientState = ServerResponse.values()[inputOption];
-
-
     }
 
     private void inMain() throws IOException {
