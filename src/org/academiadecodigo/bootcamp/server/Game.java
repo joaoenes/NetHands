@@ -13,18 +13,24 @@ public class Game {
     private int[] clientScores;
     private int currentRound;
     private int maxRounds;
+    private boolean state;
 
     public Game(ClientHandler clientHandler1, ClientHandler clientHandler2){
         init();
         listOfClients.add(clientHandler1);
         listOfClients.add(clientHandler2);
+        state = false;
     }
 
     private void init(){
         listOfClients = new LinkedList<>();
         clientScores = new int[2];
         currentRound = 1;
-        maxRounds = 5;
+        maxRounds = 1;
+    }
+
+    public boolean isState() {
+        return state;
     }
 
     private void roundPlay(Hand client1Hand, Hand client2Hand) {
@@ -131,11 +137,12 @@ public class Game {
             client1status = Messages.LOST_LOG;
         }
 
-        listOfClients.get(0).setInLobby(false);
-        listOfClients.get(1).setInLobby(false);
+        listOfClients.get(0).clientCommand();
+        listOfClients.get(1).clientCommand();
         Score.saveLog(listOfClients.get(0).getName() + Messages.ESCAPE_TAG + client1status + Messages.ESCAPE_TAG +
                 listOfClients.get(1).getName() + Messages.NEW_LINE);
         Score.saveLog(listOfClients.get(1).getName() + Messages.ESCAPE_TAG + client2stauts + Messages.ESCAPE_TAG +
                 listOfClients.get(2).getName() + Messages.NEW_LINE);
+        state = true;
     }
 }

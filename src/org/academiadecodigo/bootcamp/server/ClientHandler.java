@@ -18,14 +18,10 @@ public class ClientHandler {
     private Socket socket;
     private BufferedReader input;
     private PrintWriter output;
-    private boolean inLobby;
-    private boolean logged;
 
     public ClientHandler(String name, Socket socket) {
         this.name = name;
         this.socket = socket;
-        this.inLobby = false;
-        this.logged = false;
         init();
     }
 
@@ -43,13 +39,11 @@ public class ClientHandler {
     }
 
     public void clientCommand() {
-        while (!inLobby) {
-            try {
-                int userInput = Integer.parseInt(input.readLine());
-                checkOption(LobbyOption.values()[userInput - 1]);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        try {
+            int userInput = Integer.parseInt(input.readLine());
+            checkOption(LobbyOption.values()[userInput - 1]);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -74,6 +68,7 @@ public class ClientHandler {
 
             switch (option) {
                 case LOGIN:
+                    output.println(ServerResponse.LOGIN.ordinal());
                     waitLogin();
                     break;
                 case GUEST:
@@ -102,18 +97,17 @@ public class ClientHandler {
 
     private void waitLogin() {
         try {
-            output.println(ServerResponse.LOGIN.ordinal());
             String name = input.readLine();
 
             if (checkClientExist(name)) {
                 this.name = name;
-                this.logged = true;
                 output.println(Messages.SUCCESSFUL_LOGIN + name);
                 clientCommand();
                 return;
             }
 
             output.println(Messages.INVALID_USERNAME);
+            waitLogin();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -157,7 +151,6 @@ public class ClientHandler {
     }
 
     private void joinGame() {
-        inLobby = true;
         output.println(Messages.WAITING_FOR_PLAYER);
         Server.joinGame(this);
     }
@@ -166,9 +159,6 @@ public class ClientHandler {
         output.println(ServerResponse.PLAY.ordinal());
     }
 
-    public void setInLobby(boolean inLobby) {
-        this.inLobby = inLobby;
-    }
 
     public Hand getHand() {
         try {
