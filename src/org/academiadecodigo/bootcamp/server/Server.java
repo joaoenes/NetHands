@@ -40,6 +40,10 @@ public class Server {
         gameHandler.clientJoin(client);
     }
 
+    static void removeClient(ClientHandler clientHandler){
+        gameHandler.removeClient(clientHandler);
+    }
+
     public void run() {
         int counter = 0;
         String clientName = "";
