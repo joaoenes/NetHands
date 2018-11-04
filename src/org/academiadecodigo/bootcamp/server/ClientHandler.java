@@ -132,9 +132,10 @@ class ClientHandler {
             }
 
             output.println(Messages.REGISTER_SUCCESS);
-            System.out.println(name);
             Client.saveClient(name);
-
+            this.name = name;
+            this.logged = true;
+            goToMenu();
         } catch (IOException e) {
             e.printStackTrace();
         }

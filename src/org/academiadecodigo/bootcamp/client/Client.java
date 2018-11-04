@@ -35,12 +35,10 @@ public class Client {
     }
 
     private void init() {
-        StringQuestion serverQuestion = new StringQuestion(prompt,
-                Messages.SERVER);
+        StringQuestion serverQuestion = new StringQuestion(prompt, Messages.SERVER);
         String serverAddress = serverQuestion.ask();
 
-        IntegerQuestion portQuestion = new IntegerQuestion(prompt,
-                Messages.PORT);
+        IntegerQuestion portQuestion = new IntegerQuestion(prompt, Messages.PORT);
         Integer serverPort = portQuestion.ask();
 
         try {
@@ -127,7 +125,6 @@ public class Client {
         String[] options = {Messages.PLAY, Messages.SCORE, Messages.QUIT};
         Menu lobbyMenu = new Menu(prompt, options);
         Integer option = lobbyMenu.show();
-
         output.println(option);
 
         if (option - 1 == LobbyOption.QUIT.ordinal()) {
@@ -144,8 +141,7 @@ public class Client {
     }
 
     private void inMain() throws IOException {
-        String[] options = {Messages.GUEST, Messages.LOGIN,
-                Messages.REGISTER, Messages.QUIT};
+        String[] options = {Messages.GUEST, Messages.LOGIN, Messages.REGISTER, Messages.QUIT};
         Menu mainMenu = new Menu(prompt, options);
         Integer option = mainMenu.show();
 
@@ -167,8 +163,7 @@ public class Client {
     }
 
     private void inLogin() throws IOException {
-        StringQuestion usernameQuestion = new StringQuestion(prompt,
-                Messages.ASK_USERNAME);
+        StringQuestion usernameQuestion = new StringQuestion(prompt, Messages.ASK_USERNAME);
         String username = usernameQuestion.ask();
 
         output.println(username);
@@ -234,34 +229,22 @@ public class Client {
         String message = input.readLine();
         System.out.println(message);
 
-        if (message.equals(Messages.INVALID_USERNAME)) {
+        if (message.equals(Messages.INVALID_USERNAME) || message.equals(Messages.REGISTER_NAME_EXISTS) ) {
             gameState = REGISTER;
             return;
         }
+
+        guest = false;
         gameState = LOBBY;
     }
 
     private void closeStreams() {
         try {
-            if (output != null) {
-                output.close();
+            if (!clientSocket.isClosed()) {
+                clientSocket.close();
             }
-        } finally {
-            try {
-                if (input != null) {
-                    input.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                try {
-                    if (!clientSocket.isClosed()) {
-                        clientSocket.close();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

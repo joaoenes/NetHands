@@ -66,9 +66,7 @@ class Game {
 
         while (currentRound <= maxRounds) {
             newRoundMessage();
-
             roundHands();
-
             currentRound++;
         }
 
