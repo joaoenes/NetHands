@@ -137,8 +137,9 @@ public class Game {
             client1status = Messages.LOST_LOG;
         }
 
-        listOfClients.get(0).clientCommand();
-        listOfClients.get(1).clientCommand();
+        listOfClients.get(0).goToMenu();
+        listOfClients.get(1).goToMenu();
+
         Score.saveLog(listOfClients.get(0).getName() + Messages.ESCAPE_TAG + client1status + Messages.ESCAPE_TAG +
                 listOfClients.get(1).getName() + Messages.NEW_LINE);
         Score.saveLog(listOfClients.get(1).getName() + Messages.ESCAPE_TAG + client2stauts + Messages.ESCAPE_TAG +

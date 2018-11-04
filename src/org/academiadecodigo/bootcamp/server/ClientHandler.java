@@ -18,10 +18,12 @@ public class ClientHandler {
     private Socket socket;
     private BufferedReader input;
     private PrintWriter output;
+    private boolean logged;
 
     public ClientHandler(String name, Socket socket) {
         this.name = name;
         this.socket = socket;
+        this.logged = false;
         init();
     }
 
@@ -101,6 +103,7 @@ public class ClientHandler {
 
             if (checkClientExist(name)) {
                 this.name = name;
+                this.logged = true;
                 output.println(Messages.SUCCESSFUL_LOGIN + name);
                 clientCommand();
                 return;
@@ -148,6 +151,14 @@ public class ClientHandler {
 
     private void register(String name) {
 
+    }
+
+    public void goToMenu(){
+        if(logged){
+            clientCommand();
+            return;
+        }
+        mainMenu();
     }
 
     private void joinGame() {
