@@ -39,4 +39,8 @@ class GameHandler {
         });
     }
 
+    public synchronized void removeClient(ClientHandler clientHandler){
+        listOfClients.remove(clientHandler);
+    }
+
 }

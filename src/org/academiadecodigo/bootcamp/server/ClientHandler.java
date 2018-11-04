@@ -197,6 +197,7 @@ class ClientHandler {
     }
 
     private void close() {
+        Server.removeClient(this);
         try {
             if (!socket.isClosed()) {
                 socket.close();
