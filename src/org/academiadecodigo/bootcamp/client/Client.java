@@ -35,8 +35,13 @@ public class Client {
     }
 
     private void init() {
-        String serverAddress = PromptView.askServerAddress(prompt);
-        Integer serverPort = PromptView.askServerPort(prompt);
+        StringQuestion serverQuestion = new StringQuestion(prompt,
+                Messages.SERVER);
+        String serverAddress = serverQuestion.ask();
+
+        IntegerQuestion portQuestion = new IntegerQuestion(prompt,
+                Messages.PORT);
+        Integer serverPort = portQuestion.ask();
 
         try {
             clientSocket = new Socket(InetAddress.getByName(serverAddress), serverPort);
@@ -51,7 +56,6 @@ public class Client {
             input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
             System.out.println(Messages.WELCOME);
-
 
             while (!clientSocket.isClosed()) {
 
@@ -72,11 +76,14 @@ public class Client {
                         inGame();
                         break;
 
+                    case REGISTER:
+                        inRegister();
+                        break;
+
                     case QUIT:
                         clientSocket.close();
                 }
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -85,7 +92,6 @@ public class Client {
     }
 
     private void reactionToServer(Integer input) {
-
         ServerResponse response = ServerResponse.values()[input];
 
         switch (response) {
@@ -107,6 +113,10 @@ public class Client {
                 gameState = LOBBY;
                 break;
 
+            case REGISTER:
+                gameState = REGISTER;
+                break;
+
             case QUIT:
                 gameState = QUIT;
                 break;
@@ -114,7 +124,8 @@ public class Client {
     }
 
     private void inLobby() throws IOException {
-        LobbyMenu lobbyMenu = new LobbyMenu(prompt);
+        String[] options = {Messages.PLAY, Messages.SCORE, Messages.QUIT};
+        Menu lobbyMenu = new Menu(prompt, options);
         Integer option = lobbyMenu.show();
 
         output.println(option);
@@ -133,7 +144,9 @@ public class Client {
     }
 
     private void inMain() throws IOException {
-        MainMenu mainMenu = new MainMenu(prompt);
+        String[] options = {Messages.GUEST, Messages.LOGIN,
+                Messages.REGISTER, Messages.QUIT};
+        Menu mainMenu = new Menu(prompt, options);
         Integer option = mainMenu.show();
 
         output.println(option);
@@ -154,7 +167,9 @@ public class Client {
     }
 
     private void inLogin() throws IOException {
-        String username = PromptView.askUsername(prompt);
+        StringQuestion usernameQuestion = new StringQuestion(prompt,
+                Messages.ASK_USERNAME);
+        String username = usernameQuestion.ask();
 
         output.println(username);
 
@@ -171,7 +186,8 @@ public class Client {
     }
 
     private void inGame() throws IOException {
-        GameMenu gameMenu = new GameMenu(prompt);
+        String[] hands = {Messages.ROCK, Messages.PAPER, Messages.SCISSORS};
+        Menu gameMenu = new Menu(prompt, hands);
         Integer option;
         String inputOption;
 
@@ -185,6 +201,7 @@ public class Client {
             System.out.println(Messages.NEW_LINE + inputOption);
 
             option = gameMenu.show();
+
             System.out.println(Messages.WAITING_FOR_PLAY);
             output.println(option);
 
@@ -204,6 +221,24 @@ public class Client {
         } else {
             gameState = LOBBY;
         }
+    }
+
+    private void inRegister() throws IOException {
+        StringQuestion usernameQuestion = new StringQuestion(prompt,
+                Messages.ASK_USERNAME);
+        System.out.println("Username can't contain spaces or " + Messages.ESCAPE_TAG);
+        String username = usernameQuestion.ask();
+
+        output.println(username);
+
+        String message = input.readLine();
+        System.out.println(message);
+
+        if (message.equals(Messages.INVALID_USERNAME)) {
+            gameState = REGISTER;
+            return;
+        }
+        gameState = LOBBY;
     }
 
     private void closeStreams() {

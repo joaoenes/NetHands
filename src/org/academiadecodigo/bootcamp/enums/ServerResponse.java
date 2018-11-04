@@ -9,5 +9,6 @@ public enum ServerResponse {
     INVALID_USER,
     USER_EXISTS,
     SUCCESSFUL_LOGIN,
+    REGISTER,
     VALID_REGISTER
 }
