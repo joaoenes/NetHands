@@ -156,11 +156,6 @@ public class Client {
             return;
         }
 
-        if (option - 1 == MainMenuOption.GUEST.ordinal()) {
-            String message = input.readLine();
-            System.out.println(message);
-        }
-
         Integer inputOption = Integer.parseInt(input.readLine());
 
         reactionToServer(inputOption);
@@ -243,7 +238,6 @@ public class Client {
 
     private void inScore(){
         try {
-            System.out.print("You score is: ");
             String messages = input.readLine();
             System.out.print(messages);
             gameState = LOBBY;

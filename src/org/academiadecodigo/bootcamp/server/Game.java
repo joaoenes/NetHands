@@ -131,7 +131,7 @@ class Game {
 
         Score.saveLog(listOfClients.get(0).getName() + Messages.ESCAPE_TAG + client1status + Messages.ESCAPE_TAG +
                 listOfClients.get(1).getName());
-        System.out.println("tesasdasdas");
+
         Score.saveLog(listOfClients.get(1).getName() + Messages.ESCAPE_TAG + client2stauts + Messages.ESCAPE_TAG +
                 listOfClients.get(0).getName());
 
