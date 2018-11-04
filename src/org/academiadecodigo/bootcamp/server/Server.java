@@ -13,7 +13,6 @@ public class Server {
     private ServerSocket serverSocket;
     private ExecutorService cachedPool;
 
-
     private Server() {
         cachedPool = Executors.newCachedThreadPool();
         gameHandler = new GameHandler();
@@ -63,6 +62,7 @@ public class Server {
         Scanner scanner = new Scanner(System.in);
         return Integer.parseInt(scanner.nextLine());
     }
+
 
     public static void main(String[] args) {
         Server server = new Server();

@@ -2,6 +2,8 @@ package org.academiadecodigo.bootcamp.server;
 
 import org.academiadecodigo.bootcamp.enums.Hand;
 import org.academiadecodigo.bootcamp.messages.Messages;
+import org.academiadecodigo.bootcamp.server.database.Score;
+
 import java.util.LinkedList;
 import java.util.List;
 

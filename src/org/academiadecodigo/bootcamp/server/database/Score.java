@@ -1,21 +1,16 @@
-package org.academiadecodigo.bootcamp.server;
+package org.academiadecodigo.bootcamp.server.database;
 
 import org.academiadecodigo.bootcamp.messages.Messages;
 
 import java.io.*;
 
-class Score {
+public class Score {
+    private static final File file = new File("resources/scoreLog.txt");
 
-    private static final String PATH_SCORELOG = "scoreLog.txt";
-    private static final String ROOT_PATH = "resources/";
-    private static final File file = new File(ROOT_PATH + PATH_SCORELOG);
-
-    static synchronized String readScore(String clientName) {
+    public static synchronized String readScore(String clientName) {
         BufferedReader reader = null;
         int score = 0;
-
         try {
-
             reader = new BufferedReader(new FileReader(file));
 
             String line = "";
@@ -23,23 +18,19 @@ class Score {
 
             while ((line = reader.readLine()) != null) {
 
-                lineWords = line.split(Messages.ESCAPE_TAG);
+                lineWords = line.split(Messages.ESCAPE_TAG_REGEX);
 
                 if (lineWords[0].equals(clientName)) {
-                    switch (lineWords[1]) {
-                        case Messages.TIE_LOG:
-                            score += 1;
-                            break;
-                        case Messages.WON_LOG:
-                            score += 2;
-                            break;
-                        default:
-                            break;
+
+                    if(lineWords[1].equals(Messages.TIE_LOG)){
+                        score = score + 1;
+                        break;
+                    }
+                    if(lineWords[1].equals(Messages.WON_LOG)){
+                        score = score + 2;
                     }
                 }
             }
-
-
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -51,12 +42,10 @@ class Score {
                 }
             }
         }
-
         return clientName + " " + score;
-
     }
 
-    static synchronized void saveLog(String line) {
+    public static synchronized void saveLog(String line) {
 
         FileWriter writer = null;
 

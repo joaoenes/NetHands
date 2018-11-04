@@ -1,10 +1,8 @@
 package org.academiadecodigo.bootcamp.server;
-
-import org.academiadecodigo.bootcamp.enums.Hand;
-import org.academiadecodigo.bootcamp.enums.LobbyOption;
-import org.academiadecodigo.bootcamp.enums.MainMenuOption;
-import org.academiadecodigo.bootcamp.enums.ServerResponse;
+import org.academiadecodigo.bootcamp.enums.*;
 import org.academiadecodigo.bootcamp.messages.Messages;
+import org.academiadecodigo.bootcamp.server.database.ClientDB;
+import org.academiadecodigo.bootcamp.server.database.Score;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -90,7 +88,7 @@ class ClientHandler {
     }
 
     private void seeScore() {
-        output.println(Score.readScore(name));
+        output.println(Score.readScore(this.name));
     }
 
     private void waitLogin() {

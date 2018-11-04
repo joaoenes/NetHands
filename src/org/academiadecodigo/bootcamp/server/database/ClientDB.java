@@ -1,4 +1,4 @@
-package org.academiadecodigo.bootcamp.server;
+package org.academiadecodigo.bootcamp.server.database;
 
 import java.io.*;
 
@@ -6,7 +6,7 @@ public class ClientDB {
 
     public static final File FILE = new File("resources/clientSet.txt");
 
-    static synchronized void saveClient(String client) {
+    public static synchronized void saveClient(String client) {
 
         FileWriter fileWriter = null;
 
@@ -29,7 +29,7 @@ public class ClientDB {
         }
     }
 
-    static synchronized boolean clientExists(String client) {
+    public static synchronized boolean clientExists(String client) {
         BufferedReader bufferedReader = null;
 
         try {

@@ -2,7 +2,3 @@ Professor
 MrDuck
 This.Man
 GUIGuy
-new
-NotNEW
-new
-NotNEW

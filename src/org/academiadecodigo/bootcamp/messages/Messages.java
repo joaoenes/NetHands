@@ -69,7 +69,8 @@ public class Messages {
     /**
      * To write to the score log file
      */
-    public static final String ESCAPE_TAG = "[/$]";
+    public static final String ESCAPE_TAG_REGEX = "\\[\\*]";
+    public static final String ESCAPE_TAG = "[*]";
     public static final String NEW_LINE = "\r\n";
     public static final String TIE_LOG = "TIE";
     public static final String WON_LOG = "WON";
