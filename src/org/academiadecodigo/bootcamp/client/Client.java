@@ -30,13 +30,6 @@ public class Client {
         guest = true;
     }
 
-    public static void main(String[] args) {
-
-        Client client = new Client();
-        client.init();
-        client.run();
-    }
-
     public void init() {
         StringQuestion serverQuestion = new StringQuestion(prompt,
                 Messages.SERVER);

@@ -40,3 +40,5 @@ Guest5[*]WON[*]Guest3
 Guest3[*]LOST[*]Guest5
 This.Man[*]LOST[*]Guest3
 Guest3[*]WON[*]This.Man
+Guest1[*]LOST[*]This.Man
+This.Man[*]WON[*]Guest1

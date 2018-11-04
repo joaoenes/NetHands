@@ -24,7 +24,7 @@ class Game {
         listOfClients = new LinkedList<>();
         clientScores = new int[2];
         currentRound = 1;
-        maxRounds = 1;
+        maxRounds = 5;
     }
 
 

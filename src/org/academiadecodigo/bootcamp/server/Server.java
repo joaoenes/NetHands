@@ -67,10 +67,4 @@ public class Server {
         return Integer.parseInt(scanner.nextLine());
     }
 
-
-    public static void main(String[] args) {
-        Server server = new Server();
-        server.init();
-        server.run();
-    }
 }
