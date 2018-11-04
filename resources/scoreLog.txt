@@ -1,4 +1,5 @@
-MrDuck[*]WON[*]This.Man
-MrDuck[*]WON[*]This.Man
-MrDuck[*]WON[*]This.Man
-MrDuck[*]TIE[*]This.Man
+
+teste
+asdasdasd
+Guest1[*]WON[*]teste
+

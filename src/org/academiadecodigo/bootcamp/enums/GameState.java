@@ -6,5 +6,6 @@ public enum GameState {
     LOBBY,
     GAME,
     SCORE,
+    REGISTER,
     QUIT
 }

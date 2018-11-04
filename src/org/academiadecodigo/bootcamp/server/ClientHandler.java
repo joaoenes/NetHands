@@ -1,7 +1,7 @@
 package org.academiadecodigo.bootcamp.server;
 import org.academiadecodigo.bootcamp.enums.*;
 import org.academiadecodigo.bootcamp.messages.Messages;
-import org.academiadecodigo.bootcamp.server.database.ClientDB;
+import org.academiadecodigo.bootcamp.server.database.Client;
 import org.academiadecodigo.bootcamp.server.database.Score;
 
 import java.io.BufferedReader;
@@ -75,6 +75,7 @@ class ClientHandler {
                     joinGame();
                     break;
                 case REGISTER:
+                    output.println(ServerResponse.REGISTER.ordinal());
                     waitRegister();
                     break;
                 case QUIT:
@@ -88,7 +89,9 @@ class ClientHandler {
     }
 
     private void seeScore() {
+        output.println("Score: ");
         output.println(Score.readScore(this.name));
+        output.println(ServerResponse.SCORE.ordinal());
     }
 
     private void waitLogin() {
@@ -112,28 +115,29 @@ class ClientHandler {
     }
 
     private boolean checkClientExist(String name) {
-        return ClientDB.clientExists(name);
+        return Client.clientExists(name);
     }
 
     private void waitRegister() {
-        String name = null;
-
+        String name;
         try {
             name = input.readLine();
 
-            if (name.trim().equals("") || name.contains(Messages.ESCAPE_TAG)) {
+            if (name.trim().equals("") || name.contains(Messages.ESCAPE_TAG_REGEX)) {
                 output.println(Messages.INVALID_USERNAME);
-                return;
+                waitRegister();
             }
 
             if (checkClientExist(name)) {
-                // output.println(Messages.REGISTER_NAME_EXIST);
-                return;
+                output.println(Messages.REGISTER_NAME_EXISTS);
+                waitRegister();
             }
 
-            //output.println(Messages.REGISTER_SUCESS);
-            ClientDB.saveClient(name);
-
+            output.println(Messages.REGISTER_SUCCESS);
+            Client.saveClient(name);
+            this.name = name;
+            this.logged = true;
+            goToMenu();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -141,10 +145,6 @@ class ClientHandler {
 
     void gameOver() {
         output.println(Messages.GAME_OVER);
-    }
-
-    private void register(String name) {
-
     }
 
     void goToMenu(){

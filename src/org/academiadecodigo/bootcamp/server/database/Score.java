@@ -22,11 +22,11 @@ public class Score {
 
                 if (lineWords[0].equals(clientName)) {
 
-                    if(lineWords[1].equals(Messages.TIE_LOG)){
+                    if (lineWords[1].equals(Messages.TIE_LOG)) {
                         score = score + 1;
                         break;
                     }
-                    if(lineWords[1].equals(Messages.WON_LOG)){
+                    if (lineWords[1].equals(Messages.WON_LOG)) {
                         score = score + 2;
                     }
                 }
@@ -45,25 +45,27 @@ public class Score {
         return clientName + " " + score;
     }
 
-    public static synchronized void saveLog(String line) {
+    public static synchronized void saveLog(String log) {
 
-        FileWriter writer = null;
+        FileWriter fileWriter = null;
 
         try {
-            writer = new FileWriter(file);
 
-            writer.write(line);
+            fileWriter = new FileWriter(file, true);
+            fileWriter.write(log + "\n");
+            fileWriter.flush();
 
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            if (writer != null) {
+            if (fileWriter != null) {
                 try {
-                    writer.close();
+                    fileWriter.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-        }    
+        }
     }
 }
+
