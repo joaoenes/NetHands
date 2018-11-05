@@ -1,5 +1,9 @@
 package org.academiadecodigo.bootcamp.server;
-import org.academiadecodigo.bootcamp.enums.*;
+
+import org.academiadecodigo.bootcamp.enums.Hand;
+import org.academiadecodigo.bootcamp.enums.LobbyOption;
+import org.academiadecodigo.bootcamp.enums.MainMenuOption;
+import org.academiadecodigo.bootcamp.enums.ServerResponse;
 import org.academiadecodigo.bootcamp.messages.Messages;
 import org.academiadecodigo.bootcamp.server.database.Client;
 import org.academiadecodigo.bootcamp.server.database.Score;
@@ -12,11 +16,11 @@ import java.net.Socket;
 
 class ClientHandler {
 
-    private String name;
-    private Socket socket;
+    private String         name;
+    private Socket         socket;
     private BufferedReader input;
-    private PrintWriter output;
-    private boolean logged;
+    private PrintWriter    output;
+    private boolean        logged;
 
     ClientHandler(String name, Socket socket) {
         this.name = name;
@@ -27,7 +31,8 @@ class ClientHandler {
 
     private void init() {
         try {
-            input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            input = new BufferedReader(
+                    new InputStreamReader(socket.getInputStream()));
             output = new PrintWriter(socket.getOutputStream(), true);
         } catch (IOException e) {
             e.printStackTrace();
@@ -40,7 +45,8 @@ class ClientHandler {
 
     private void loggedMenu() {
         try {
-            int userInput = Integer.parseInt(input.readLine());
+            String inputStr  = input.readLine();
+            int    userInput = Integer.parseInt(inputStr);
             checkOption(LobbyOption.values()[userInput - 1]);
         } catch (IOException e) {
             e.printStackTrace();
@@ -63,8 +69,10 @@ class ClientHandler {
 
     private void mainMenu() {
         try {
-            int userInput = Integer.parseInt(input.readLine());
-            MainMenuOption option = MainMenuOption.values()[userInput - 1];
+
+            String         inputStr  = input.readLine();
+            int            userInput = Integer.parseInt(inputStr);
+            MainMenuOption option    = MainMenuOption.values()[userInput - 1];
 
             switch (option) {
                 case LOGIN:
@@ -92,7 +100,7 @@ class ClientHandler {
         output.println("Your score is: ");
         output.println(ServerResponse.SCORE.ordinal());
         output.println(Score.readScore(this.name));
-        Score.class.notifyAll();
+        //Score.class.notifyAll();
         goToMenu();
     }
 
@@ -115,13 +123,13 @@ class ClientHandler {
     }
 
     private void checkPassword() throws IOException {
-        String password  = input.readLine();
+        String password = input.readLine();
 
-         if(Client.checkPass(this.name, password)){
-             this.logged = true;
-             output.println(Messages.SUCCESSFUL_LOGIN + this.name);
-             return;
-         }
+        if (Client.checkPass(this.name, password)) {
+            this.logged = true;
+            output.println(Messages.SUCCESSFUL_LOGIN + this.name);
+            return;
+        }
         output.println(Messages.INVALID_PASSWORD);
         checkPassword();
     }
@@ -135,7 +143,8 @@ class ClientHandler {
         try {
             name = input.readLine();
 
-            if (name.trim().equals("") || name.contains(Messages.ESCAPE_TAG_REGEX)) {
+            if (name.trim().equals("") || name
+                    .contains(Messages.ESCAPE_TAG_REGEX)) {
                 output.println(Messages.INVALID_USERNAME);
                 waitRegister();
             }
@@ -159,8 +168,8 @@ class ClientHandler {
         output.println(Messages.GAME_OVER);
     }
 
-    void goToMenu(){
-        if(logged){
+    void goToMenu() {
+        if (logged) {
             loggedMenu();
             return;
         }
