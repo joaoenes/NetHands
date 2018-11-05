@@ -218,6 +218,9 @@ public class Client {
             return;
         }
 
+        StringQuestion passwordQuestion = new StringQuestion(prompt,
+                Messages.ASK_PASSWORD);
+
         guest = false;
         clientState = ServerResponse.LOBBY;
     }

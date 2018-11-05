@@ -140,6 +140,7 @@ class ClientHandler {
 
     private void waitRegister() {
         String name;
+        String password;
         try {
             name = input.readLine();
 
@@ -155,12 +156,20 @@ class ClientHandler {
             }
 
             output.println(Messages.REGISTER_SUCCESS);
+            password = registerPassword();
             Client.saveClient(name);
             this.name = name;
             this.logged = true;
             goToMenu();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private String registerPassword() {
+        String password;
+        try {
+            password =
         }
     }
 
