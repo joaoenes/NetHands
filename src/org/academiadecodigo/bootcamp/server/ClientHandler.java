@@ -155,7 +155,7 @@ class ClientHandler {
             }
 
             output.println(Messages.REGISTER_SUCCESS);
-            Client.saveClient(name);
+            Client.saveClient(name + Messages.ESCAPE_TAG + "1234");
             this.name = name;
             this.logged = true;
             goToMenu();
