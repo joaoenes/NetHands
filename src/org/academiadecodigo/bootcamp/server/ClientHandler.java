@@ -92,6 +92,7 @@ class ClientHandler {
         output.println("Your score is: ");
         output.println(ServerResponse.SCORE.ordinal());
         output.println(Score.readScore(this.name));
+        Score.class.notifyAll();
         goToMenu();
     }
 

@@ -9,11 +9,11 @@ public class Score {
 
     public static synchronized String readScore(String clientName) {
         BufferedReader reader = null;
-        int score = 0;
+        int            score  = 0;
         try {
             reader = new BufferedReader(new FileReader(file));
 
-            String line = "";
+            String   line = "";
             String[] lineWords;
 
             while ((line = reader.readLine()) != null) {
@@ -30,6 +30,9 @@ public class Score {
                     }
                 }
             }
+
+            return clientName + " " + score;
+
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -41,7 +44,9 @@ public class Score {
                 }
             }
         }
-        return clientName + " " + score;
+
+        return null;
+
     }
 
     public static synchronized void saveLog(String log) {
