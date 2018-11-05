@@ -28,7 +28,7 @@
             </manifest>
             <zipgroupfileset dir="${lib.dir}" includes="*.jar"/>
             <fileset dir=".">
-                <include name="**/${resources.dir}/**" />
+                <include name="${resources.dir}/**" />
             </fileset>
         </jar>
     </target>

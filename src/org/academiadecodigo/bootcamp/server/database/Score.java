@@ -5,7 +5,7 @@ import org.academiadecodigo.bootcamp.messages.Messages;
 import java.io.*;
 
 public class Score {
-    private static final File file = new File("resources/scoreLog.txt");
+    private static final String file = "resources/scoreLog.txt";
 
     public static synchronized String readScore(String clientName) {
         BufferedReader reader = null;
