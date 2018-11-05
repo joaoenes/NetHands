@@ -1,5 +1,5 @@
 # {Bravo Team} 
-### <Academia de Código_> ![alt text](https://github.com/joaoenes/NetHands/blob/master/resources/logo.png)
+![alt text](https://github.com/joaoenes/NetHands/blob/master/resources/logo.png)
 [Firmino This.Man]
 [João Professor]
 [Luís Duck]
