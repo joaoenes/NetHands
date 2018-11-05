@@ -1,6 +1,5 @@
 # {Bravo Team} 
-### <Academia de Código_>
-![alt text](http://applyto.academiadecodigo.org/images/logo-tab.png)
+### <Academia de Código_> ![alt text](http://applyto.academiadecodigo.org/images/logo-tab.png)
 [Firmino This.Man]
 [João Professor]
 [Luís Duck]
