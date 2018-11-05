@@ -6,7 +6,7 @@
 
 # NetHands
 
-The classic Rock, Paper, Scissors in thwe form of command line game. Test your instincts in a quick game against another random player.
+The classic Rock, Paper, Scissors in the form of command line game. Test your instincts in a quick game against another random player.
 
 
 ### Prerequisites
