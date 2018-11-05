@@ -210,16 +210,19 @@ public class Client {
         output.println(username);
 
         String message = input.readLine();
-        System.out.println(message);
 
         if (message.equals(Messages.INVALID_USERNAME) || message
                 .equals(Messages.REGISTER_NAME_EXISTS)) {
+            System.out.println(message);
             clientState = ServerResponse.REGISTER;
             return;
         }
 
         StringQuestion passwordQuestion = new StringQuestion(prompt,
                 Messages.ASK_PASSWORD);
+        String password = passwordQuestion.askPass();
+
+        output.println(password);
 
         guest = false;
         clientState = ServerResponse.LOBBY;

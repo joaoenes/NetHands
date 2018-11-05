@@ -154,10 +154,10 @@ class ClientHandler {
                 output.println(Messages.REGISTER_NAME_EXISTS);
                 waitRegister();
             }
-
-            output.println(Messages.REGISTER_SUCCESS);
+            output.println(Messages.ASK_PASSWORD);
             password = registerPassword();
-            Client.saveClient(name);
+            output.println(Messages.REGISTER_SUCCESS);
+            Client.saveClient(name + Messages.ESCAPE_TAG + password);
             this.name = name;
             this.logged = true;
             goToMenu();
@@ -169,8 +169,12 @@ class ClientHandler {
     private String registerPassword() {
         String password;
         try {
-            password =
+            password = input.readLine();
+            return password;
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        return null;
     }
 
     void gameOver() {
