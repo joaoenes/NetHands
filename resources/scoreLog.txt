@@ -42,3 +42,11 @@ This.Man[*]LOST[*]Guest3
 Guest3[*]WON[*]This.Man
 Guest1[*]LOST[*]This.Man
 This.Man[*]WON[*]Guest1
+Professor[*]WON[*]This.Man
+This.Man[*]LOST[*]Professor
+Professor[*]WON[*]This.Man
+This.Man[*]LOST[*]Professor
+Professor[*]WON[*]This.Man
+This.Man[*]LOST[*]Professor
+Professor[*]WON[*]This.Man
+This.Man[*]LOST[*]Professor
