@@ -143,7 +143,7 @@ public class Client {
             System.out.println(message);
         }
 
-        message = askQuestion(passwordQuestion);
+        message = askPassword(passwordQuestion);
 
         System.out.println(message);
 
@@ -158,6 +158,12 @@ public class Client {
 
     private String askQuestion(StringQuestion question) throws IOException {
         String answer = question.ask();
+        output.println(answer);
+        return input.readLine();
+    }
+
+    private String askPassword(StringQuestion question) throws IOException {
+        String answer = question.askPass();
         output.println(answer);
         return input.readLine();
     }
