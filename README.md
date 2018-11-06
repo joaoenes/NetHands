@@ -1,5 +1,5 @@
 # {Bravo Team} 
-![alt text](https://github.com/joaoenes/NetHands/blob/master/resources/logo.png)
+![alt text](https://github.com/joaoenes/NetHands/blob/master/resources/logo.png | width=200)
 [Firmino This.Man]
 [João Professor]
 [Luís Duck]
