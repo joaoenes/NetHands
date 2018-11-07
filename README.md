@@ -1,9 +1,12 @@
 # {Bravo Team} 
-![alt text](https://github.com/joaoenes/NetHands/blob/master/resources/logo.png)
+<p align="center">
+  <img width="460" height="300" src="https://github.com/joaoenes/NetHands/blob/master/resources/logo.png">
+</p>
 [Firmino This.Man]
 [João Professor]
 [Luís Duck]
 [Tiago GUI]
+
 
 # NetHands
 
